@@ -1,7 +1,12 @@
 package com.cambricon.productdisplay.activity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -52,7 +57,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private LinearLayout tab_data;
     private LinearLayout tab_adv;
 
-    private TextView jni_test;
+
+    final int PERMISSION_REQUST_CODE=0x001;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +70,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setActionBar();
         setDrawerToggle();
         setListener();
+        if(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},PERMISSION_REQUST_CODE);
+        }else{
+
+        }
     }
 
     /**
@@ -78,10 +90,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mGridView = findViewById(R.id.functions_gv);
         mGridViewAdapter = new GridViewAdapter(MainActivity.this);
         mGridView.setAdapter(mGridViewAdapter);
-        jni_test=findViewById(R.id.jni_test);
-        jni_test.setText(stringFromJNI());
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode==PERMISSION_REQUST_CODE){
+
+        }
+    }
     /**
      * 去掉navigation中的滑动条*
      */
@@ -136,8 +153,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         break;
                     case VOICE:
                         //startActivity(new Intent(MainActivity.this,MainActivity.class));
-                        CaffeClassification cf=new CaffeClassification();
-                        cf.hello();
+                        //CaffeClassification cf=new CaffeClassification();
+                        //cf.hello();
 
                         break;
                     case MOREFUNCTIONS:
