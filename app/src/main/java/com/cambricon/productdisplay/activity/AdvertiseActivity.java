@@ -137,7 +137,7 @@ public class AdvertiseActivity extends AppCompatActivity implements ViewPager.On
         }
         mBannerTimerTask=new BannerTimerTask(bannerHandler);
         if(timer!=null && mBannerTimerTask!=null){
-            timer.schedule(mBannerTimerTask,3000,3000);
+            timer.schedule(mBannerTimerTask,2000,2000);
         }
     }
 
