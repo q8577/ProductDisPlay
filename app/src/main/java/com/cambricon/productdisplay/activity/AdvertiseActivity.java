@@ -203,12 +203,13 @@ public class AdvertiseActivity extends AppCompatActivity implements ViewPager.On
         switch (view.getId()) {
             case R.id.tab_test:
                 startActivity(new Intent(AdvertiseActivity.this,MainActivity.class));
+                finish();
                 break;
             case R.id.tab_data:
                 startActivity(new Intent(AdvertiseActivity.this,DataStatisticsActivity.class));
+                finish();
                 break;
             case R.id.tab_adv:
-                Log.d("huangyaling","tab_adv");
                 //startActivity(new Intent(AdvertiseActivity.this,AdvertiseActivity.class));
                 break;
         }

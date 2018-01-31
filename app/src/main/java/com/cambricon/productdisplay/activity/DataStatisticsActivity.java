@@ -73,13 +73,14 @@ public class DataStatisticsActivity extends AppCompatActivity implements View.On
         switch (view.getId()) {
             case R.id.tab_test:
                 startActivity(new Intent(DataStatisticsActivity.this,MainActivity.class));
+                finish();
                 break;
             case R.id.tab_data:
                 //startActivity(new Intent(DataStatisticsActivity.this,DataStatisticsActivity.class));
                 break;
             case R.id.tab_adv:
-                Log.d("huangyaling","tab_adv");
                 startActivity(new Intent(DataStatisticsActivity.this,AdvertiseActivity.class));
+                finish();
                 break;
         }
     }

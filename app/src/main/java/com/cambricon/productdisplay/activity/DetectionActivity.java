@@ -44,7 +44,7 @@ public class DetectionActivity extends AppCompatActivity {
      * 设置toolbar属性
      */
     public void setToolbar(){
-        toolbar.setTitle(R.string.gv_text_item1);
+        toolbar.setTitle(R.string.gv_text_item2);
         setSupportActionBar(toolbar);
         /*显示Home图标*/
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

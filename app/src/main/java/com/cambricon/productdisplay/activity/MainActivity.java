@@ -165,7 +165,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(MainActivity.this,DataStatisticsActivity.class));
                 break;
             case R.id.tab_adv:
-                Log.d("huangyaling","tab_adv");
                 startActivity(new Intent(MainActivity.this,AdvertiseActivity.class));
                 break;
         }
