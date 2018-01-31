@@ -53,6 +53,10 @@
                 android:paddingTop="20dp"
                 android:numColumns="2"/>
         </LinearLayout>
+        <TextView
+            android:id="@+id/jni_test"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
         <include layout="@layout/home_bottom_tab"/>
 
 

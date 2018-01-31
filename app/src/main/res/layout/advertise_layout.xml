@@ -29,5 +29,6 @@
             android:layout_height="20dp">
         </LinearLayout>
     </RelativeLayout>
+    <include layout="@layout/home_bottom_tab"/>
 
 </LinearLayout>

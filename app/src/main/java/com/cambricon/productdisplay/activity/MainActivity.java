@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.cambricon.productdisplay.R;
 import com.cambricon.productdisplay.adapter.GridViewAdapter;
+import com.cambricon.productdisplay.caffenative.CaffeClassification;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +52,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private LinearLayout tab_data;
     private LinearLayout tab_adv;
 
+    private TextView jni_test;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +78,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mGridView = findViewById(R.id.functions_gv);
         mGridViewAdapter = new GridViewAdapter(MainActivity.this);
         mGridView.setAdapter(mGridViewAdapter);
+        jni_test=findViewById(R.id.jni_test);
+        jni_test.setText(stringFromJNI());
     }
 
     /**
@@ -131,6 +136,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         break;
                     case VOICE:
                         //startActivity(new Intent(MainActivity.this,MainActivity.class));
+                        CaffeClassification cf=new CaffeClassification();
+                        cf.hello();
+
                         break;
                     case MOREFUNCTIONS:
                         break;
@@ -146,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * A native method that is implemented by the 'native-lib' native library,
      * which is packaged with this application.
      */
-    //public native String stringFromJNI();
+    public native String stringFromJNI();
 
     @Override
     public void onClick(View view) {

@@ -1,6 +1,7 @@
 package com.cambricon.productdisplay.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -27,7 +28,7 @@ import java.util.Timer;
  * Created by dell on 18-1-29.
  */
 
-public class AdvertiseActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener{
+public class AdvertiseActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener,View.OnClickListener{
 
     private ViewPager mViewPager;
     private BannerPagerAdapter mBannerPagerAdapter;
@@ -39,6 +40,10 @@ public class AdvertiseActivity extends AppCompatActivity implements ViewPager.On
     private boolean mIsUserTouched=false;
     private LinearLayout mLinearLayout;
     private int mPagerindex=0;
+
+    private LinearLayout tab_test;
+    private LinearLayout tab_data;
+    private LinearLayout tab_adv;
 
     private android.support.v7.widget.Toolbar toolbar;
 
@@ -99,6 +104,15 @@ public class AdvertiseActivity extends AppCompatActivity implements ViewPager.On
         mViewPager.setCurrentItem(pictureList.size()*100);
         mViewPager.setPageTransformer(true,new DepthPageTransformer());
         toolbar=findViewById(R.id.adv_toolbar);
+
+        tab_test = findViewById(R.id.tab_test);
+        tab_data = findViewById(R.id.tab_data);
+        tab_adv = findViewById(R.id.tab_adv);
+
+        tab_adv.setOnClickListener(this);
+        tab_test.setOnClickListener(this);
+        tab_data.setOnClickListener(this);
+
         mViewPager.setOnTouchListener(new View.OnTouchListener(){
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -182,5 +196,21 @@ public class AdvertiseActivity extends AppCompatActivity implements ViewPager.On
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tab_test:
+                startActivity(new Intent(AdvertiseActivity.this,MainActivity.class));
+                break;
+            case R.id.tab_data:
+                startActivity(new Intent(AdvertiseActivity.this,DataStatisticsActivity.class));
+                break;
+            case R.id.tab_adv:
+                Log.d("huangyaling","tab_adv");
+                //startActivity(new Intent(AdvertiseActivity.this,AdvertiseActivity.class));
+                break;
+        }
     }
 }
