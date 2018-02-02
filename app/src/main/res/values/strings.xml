@@ -13,5 +13,6 @@
     <string name="classification_imge_guide">图片分类会通过特定的训练模型，分类识别图片，按照分类概率高低输出可能的结果列表</string>
     <string name="newsinfo_title">"寒武纪科技"</string>
     <string name="news_item_foot">"* * * * * * 已浏览全部内容 * * * * * *"</string>
+    <string name="newsinfo_recover">"重新加载"</string>
 
 </resources>

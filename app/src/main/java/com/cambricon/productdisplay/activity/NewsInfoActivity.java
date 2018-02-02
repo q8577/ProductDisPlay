@@ -1,11 +1,17 @@
 package com.cambricon.productdisplay.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.cambricon.productdisplay.R;
@@ -18,6 +24,9 @@ public class NewsInfoActivity extends AppCompatActivity {
     private android.support.v7.widget.Toolbar toolbar;
     private WebView webView;
     private ProgressBar progressBar;
+    private ImageView errorImage;
+    private Button button;
+    private String url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +52,16 @@ public class NewsInfoActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
+            //返回按钮
             case android.R.id.home:
                 finish();
                 break;
+            //分享按钮
+            case R.id.share:
+                Intent textIntent = new Intent(Intent.ACTION_SEND);
+                textIntent.setType("text/plain");
+                textIntent.putExtra(Intent.EXTRA_TEXT, url);
+                startActivity(Intent.createChooser(textIntent, "Share"));
             default:
                 break;
         }
@@ -64,14 +80,28 @@ public class NewsInfoActivity extends AppCompatActivity {
     }
 
     /**
+     * 添加菜单栏
+     * @param menu
+     * @return
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.news_toolbar, menu);
+        return true;
+    }
+
+
+
+    /**
      * 加载资讯页面
      */
     public void initNewsInfo(){
-        String url = getIntent().getStringExtra("url");
+        url = getIntent().getStringExtra("url");
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebChromeClient(new WebViewClient());
-        webView.getSettings().setSupportZoom(true);
-        webView.getSettings().setBuiltInZoomControls(true);
+//        webView.getSettings().setSupportZoom(true);
+//        webView.getSettings().setBuiltInZoomControls(true);
+        webView.setWebViewClient(new WebClient());
         webView.loadUrl(url);
     }
 
@@ -88,7 +118,41 @@ public class NewsInfoActivity extends AppCompatActivity {
             }
             super.onProgressChanged(view, newProgress);
         }
+
     }
+
+    private class WebClient extends android.webkit.WebViewClient{
+        @Override
+        public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+            super.onReceivedError(view, request, error);
+            showErrorPage();
+        }
+
+
+
+    }
+
+    /**
+     * 显示自定义错误提示页面，用一个View覆盖在WebView
+     */
+    private void showErrorPage() {
+        webView.removeAllViews(); //移除加载网页错误时，默认的提示信息
+        webView.setVisibility(View.GONE);
+        errorImage = findViewById(R.id.error_image);
+        errorImage.setVisibility(View.VISIBLE);
+        button = findViewById(R.id.recover);
+        button.setVisibility(View.VISIBLE);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                errorImage.setVisibility(View.GONE);
+                button.setVisibility(View.GONE);
+                String url = getIntent().getStringExtra("url");
+                webView.loadUrl(url);
+            }
+        });
+    }
+
 
 
 
