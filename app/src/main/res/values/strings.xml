@@ -11,4 +11,7 @@
     <string name="end_btn">停止测试</string>
     <string name="classification_data_guide">机器识别图片分类，评测机器每秒可以处理图片的FPS值</string>
     <string name="classification_imge_guide">图片分类会通过特定的训练模型，分类识别图片，按照分类概率高低输出可能的结果列表</string>
+    <string name="newsinfo_title">"寒武纪科技"</string>
+    <string name="news_item_foot">"* * * * * * 已浏览全部内容 * * * * * *"</string>
+
 </resources>
