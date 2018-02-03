@@ -2,7 +2,7 @@ package com.cambricon.productdisplay.task;
 
 import android.os.Handler;
 
-import com.cambricon.productdisplay.activity.AdvertiseActivity;
+import com.cambricon.productdisplay.activity.NewsFragment;
 
 import java.util.TimerTask;
 
@@ -20,6 +20,6 @@ public class BannerTimerTask extends TimerTask {
     }
     @Override
     public void run() {
-        handler.sendEmptyMessage(AdvertiseActivity.AUTOBANNER_CODE);
+        handler.sendEmptyMessage(NewsFragment.AUTOBANNER_CODE);
     }
 }
