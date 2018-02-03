@@ -36,7 +36,7 @@
                     android:button="@null"
                     android:gravity="center"
                     android:id="@+id/tab_test"
-                    android:padding="20dp"
+                    android:padding="10dp"
                     android:drawableTop="@drawable/dl_settings"
                     android:checked="true"/>
                 <RadioButton
@@ -45,7 +45,7 @@
                     android:layout_weight="1"
                     android:text="@string/home_tab_db"
                     android:button="@null"
-                    android:padding="20dp"
+                    android:padding="10dp"
                     android:gravity="center"
                     android:id="@+id/tab_data"
                     android:drawableTop="@drawable/dl_settings"/>
@@ -56,7 +56,7 @@
                     android:text="@string/home_tab_adv"
                     android:button="@null"
                     android:gravity="center"
-                    android:padding="20dp"
+                    android:padding="10dp"
                     android:id="@+id/tab_adv"
                     android:drawableTop="@drawable/dl_settings"/>
             </RadioGroup>
@@ -70,18 +70,57 @@
 
             </FrameLayout>
         </RelativeLayout>
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="260dp"
             android:layout_height="match_parent"
             android:id="@+id/rel_menu"
             android:layout_gravity="start"
+            android:orientation="vertical"
             android:background="#fff">
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/ic_launcher"
-                android:id="@+id/img_title"
-                android:layout_marginBottom="50dp"/>
-        </RelativeLayout>
+                android:id="@+id/header_drawer"
+                android:background="@color/colorPrimary"
+                android:layout_width="match_parent"
+                android:layout_height="200dp" />
+            <RelativeLayout
+                android:id="@+id/cpu_mode"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:paddingLeft="20dp"
+                    android:text="CPU模式"/>
+                <com.cambricon.productdisplay.view.SwitchButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:paddingRight="20dp">
+                </com.cambricon.productdisplay.view.SwitchButton>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/ipu_mode"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:paddingLeft="20dp"
+                    android:text="IPU模式"/>
+                <com.cambricon.productdisplay.view.SwitchButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:paddingRight="20dp">
+                </com.cambricon.productdisplay.view.SwitchButton>
+            </RelativeLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:paddingLeft="20dp"
+                android:text="关于我们"/>
+        </LinearLayout>
     </android.support.v4.widget.DrawerLayout>
 </RelativeLayout>
