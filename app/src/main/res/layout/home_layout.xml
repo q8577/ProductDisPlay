@@ -67,7 +67,6 @@
                 android:paddingTop="50dp"
                 android:layout_above="@id/rel_navigate"
                 android:id="@+id/main_content">
-
             </FrameLayout>
         </RelativeLayout>
         <LinearLayout
