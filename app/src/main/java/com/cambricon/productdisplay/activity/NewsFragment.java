@@ -32,7 +32,7 @@ public class NewsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.advertise_layout, null);
+        view = inflater.inflate(R.layout.news_fragment, null);
         initNews();
         return view;
     }
