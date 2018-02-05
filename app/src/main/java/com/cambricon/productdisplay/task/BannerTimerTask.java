@@ -14,10 +14,11 @@ import java.util.TimerTask;
 public class BannerTimerTask extends TimerTask {
     Handler handler;
 
-    public BannerTimerTask(Handler handler){
+    public BannerTimerTask(Handler handler) {
         super();
-        this.handler=handler;
+        this.handler = handler;
     }
+
     @Override
     public void run() {
         handler.sendEmptyMessage(NewsFragment.AUTOBANNER_CODE);
