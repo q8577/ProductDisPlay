@@ -30,7 +30,7 @@ public class TestFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.test1, null);
+        view = inflater.inflate(R.layout.test_fragment, null);
         initView();
         setListener();
         return view;

@@ -14,6 +14,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 
@@ -30,7 +31,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private RadioGroup radioGroup;
-    private RelativeLayout relMenu;
+    private LinearLayout relMenu;
 
     private TestFragment testFragment;
     private DataFragment dataFragment;
