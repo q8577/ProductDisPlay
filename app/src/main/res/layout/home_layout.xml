@@ -78,7 +78,7 @@
             android:background="#fff">
             <ImageView
                 android:id="@+id/header_drawer"
-                android:background="@color/colorPrimary"
+                android:background="@color/main_line"
                 android:layout_width="match_parent"
                 android:layout_height="200dp" />
             <RelativeLayout
