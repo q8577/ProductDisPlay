@@ -29,26 +29,21 @@
             android:layout_height="match_parent"
             android:visibility="gone">
         </WebView>
-        <ImageView
-            android:id="@+id/error_image"
-            android:layout_width="wrap_content"
-            android:layout_height="200dp"
-            android:src="@drawable/error"
-            android:scaleType="fitXY"
-            android:visibility="gone"
-            />
+
+
         <Button
             android:id="@+id/recover"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:text="@string/newsinfo_recover"
             android:background="@color/news_item_touch"
-            android:layout_below="@id/error_image"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="400dp"
             android:visibility="gone"
             />
 
     </RelativeLayout>
+
+
 
 </LinearLayout>

@@ -35,6 +35,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     private static final int BODY_TYPE = 2;
     private static final int FOOT_TYPE = 3;
 
+
     //头部个数
     private int headCount = 1;
     //尾部个数
@@ -131,10 +132,10 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         }
         else if (holder instanceof FootViewHolder) {
             FootViewHolder viewHolder = (FootViewHolder) holder;
-            viewHolder.foot.setText(R.string.news_item_foot);
         }
 
     }
+
 
     /**
      * 返回选项数量
@@ -176,6 +177,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
             mViewPager.setCurrentItem(pictureList.size() * 100);
             mViewPager.setPageTransformer(true, new DepthPageTransformer());
             mViewPager.setOnTouchListener(this);
+            mViewPager.setOnPageChangeListener(this);
 
             initData();
             startBannerTimer();
@@ -267,6 +269,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
         @Override
         public void onPageSelected(int position) {
+            position %= pictureList.size();
             mLinearLayout.getChildAt(mPagerindex).setEnabled(false);
             mLinearLayout.getChildAt(position).setEnabled(true);
             mPagerindex = position;

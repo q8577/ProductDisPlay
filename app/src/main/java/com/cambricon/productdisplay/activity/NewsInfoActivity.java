@@ -38,10 +38,20 @@ public class NewsInfoActivity extends AppCompatActivity {
     }
 
     public void initView(){
+        button = findViewById(R.id.recover);
         toolbar = findViewById(R.id.detection_toolbar);
         webView = findViewById(R.id.news_info);
         progressBar = findViewById(R.id.webProgressBar);
         progressBar.setMax(100);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                button.setVisibility(View.GONE);
+                String url = getIntent().getStringExtra("url");
+                webView.setWebViewClient(new WebClient());
+                webView.loadUrl(url);
+            }
+        });
     }
 
     /**
@@ -99,8 +109,6 @@ public class NewsInfoActivity extends AppCompatActivity {
         url = getIntent().getStringExtra("url");
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebChromeClient(new WebViewClient());
-//        webView.getSettings().setSupportZoom(true);
-//        webView.getSettings().setBuiltInZoomControls(true);
         webView.setWebViewClient(new WebClient());
         webView.loadUrl(url);
     }
@@ -125,32 +133,10 @@ public class NewsInfoActivity extends AppCompatActivity {
         @Override
         public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
             super.onReceivedError(view, request, error);
-            showErrorPage();
+            webView.loadUrl("file:///android_asset/error.html");
+            button.setVisibility(View.VISIBLE);
         }
 
-
-
-    }
-
-    /**
-     * 显示自定义错误提示页面，用一个View覆盖在WebView
-     */
-    private void showErrorPage() {
-        webView.removeAllViews(); //移除加载网页错误时，默认的提示信息
-        webView.setVisibility(View.GONE);
-        errorImage = findViewById(R.id.error_image);
-        errorImage.setVisibility(View.VISIBLE);
-        button = findViewById(R.id.recover);
-        button.setVisibility(View.VISIBLE);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                errorImage.setVisibility(View.GONE);
-                button.setVisibility(View.GONE);
-                String url = getIntent().getStringExtra("url");
-                webView.loadUrl(url);
-            }
-        });
     }
 
 

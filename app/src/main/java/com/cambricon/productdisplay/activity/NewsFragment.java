@@ -1,14 +1,19 @@
 package com.cambricon.productdisplay.activity;
 
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.cambricon.productdisplay.R;
 import com.cambricon.productdisplay.adapter.NewsAdapter;
@@ -28,6 +33,10 @@ public class NewsFragment extends Fragment {
     private NewsAdapter adapter;
     private List<News> newsList = new ArrayList<>();
     public static final int AUTOBANNER_CODE = 0x1001;
+    public static final int LOAD_MORE = 1;
+    public static final int LOAD_BOTTOM = 2;
+    public static final int LOAD_START = 3;
+    private ProgressBar loadMore;
 
     @Nullable
     @Override
@@ -41,15 +50,25 @@ public class NewsFragment extends Fragment {
      * 加载资讯列表
      */
     private LinearLayoutManager mLinearLayoutManager;
+    private ImageButton upBtn;
 
     public void initNews() {
         initNewsData();
-
+        upBtn = view.findViewById(R.id.up);
+        loadMore = view.findViewById(R.id.load_more);
         recyclerView = view.findViewById(R.id.recycler_view);
         mLinearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLinearLayoutManager);
         adapter = new NewsAdapter(newsList);
         recyclerView.setAdapter(adapter);
+
+        upBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                recyclerView.scrollToPosition(0);
+                upBtn.setVisibility(View.GONE);
+            }
+        });
 
         swipeRefresh = view.findViewById(R.id.news_refresh);
         swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
@@ -84,12 +103,40 @@ public class NewsFragment extends Fragment {
         recyclerView.addOnScrollListener(new EndLessOnScrollListener(mLinearLayoutManager) {
             @Override
             public void onLoadMore(int currentPage) {
-                loadMoreData();
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadMoreData();
+                    }
+                }).start();
             }
         });
 
 
     }
+
+    Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case LOAD_MORE:
+                    adapter.notifyDataSetChanged();
+                    loadMore.setVisibility(View.GONE);
+                    break;
+                case LOAD_BOTTOM:
+                    loadMore.setVisibility(View.GONE);
+                    Toast.makeText(getContext(), "已经到底部啦", Toast.LENGTH_SHORT).show();
+                    upBtn.setVisibility(View.VISIBLE);
+                    break;
+                case LOAD_START:
+                    loadMore.setVisibility(View.VISIBLE);
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
     /**
      * 资讯测试集合
@@ -115,7 +162,7 @@ public class NewsFragment extends Fragment {
         testList.add(news5);
     }
 
-    int max = 40;
+    int max = 50;
     boolean start = true;
 
     /**
@@ -123,7 +170,7 @@ public class NewsFragment extends Fragment {
      */
     public void initNewsData() {
         test();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 15; i++) {
             newsList.add(testList.get((int) (Math.random() * 4 + 1)));
         }
     }
@@ -143,11 +190,25 @@ public class NewsFragment extends Fragment {
      * 上划加载更多数据
      */
     public void loadMoreData() {
+        Message msgtemp = Message.obtain();
+        msgtemp.what = LOAD_START;
+        mHandler.sendMessage(msgtemp);
         if (adapter.getItemCount() < max) {
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < 10; i++) {
                 newsList.add(testList.get((int) (Math.random() * 4 + 1)));
-                adapter.notifyDataSetChanged();
             }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Message msg = Message.obtain();
+            msg.what = LOAD_MORE;
+            mHandler.sendMessage(msg);
+        }else{
+            Message msg = Message.obtain();
+            msg.what = LOAD_BOTTOM;
+            mHandler.sendMessage(msg);
         }
     }
 }
