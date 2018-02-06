@@ -14,5 +14,6 @@
     <string name="newsinfo_title">"寒武纪科技"</string>
     <string name="news_item_foot">"* * * * * * 已浏览全部内容 * * * * * *"</string>
     <string name="newsinfo_recover">"重新加载"</string>
+    <string name="classificaton_res_toast">请先导入需要的资源文件</string>
 
 </resources>

@@ -12,6 +12,11 @@ import java.nio.ByteBuffer;
  */
 
 public class CaffeClassification {
+    // Used to load the 'native-lib' library on application startup.
+    static {
+        //System.loadLibrary("caffe-jni");
+        System.loadLibrary("native-lib");
+    }
 
     private static String TAG = "CaffeClassification";
     public native boolean loadModel(String modelPath, String weightPath);

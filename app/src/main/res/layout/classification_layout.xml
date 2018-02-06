@@ -28,18 +28,24 @@
                 android:id="@+id/load_caffe"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
-                android:text="detection" />
+                android:textColor="@android:color/white"/>
+            <TextView
+                android:layout_below="@id/load_caffe"
+                android:id="@+id/test_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"/>
             <LinearLayout
                 android:id="@+id/line_chart_view"
                 android:layout_below="@id/load_caffe"
                 android:layout_width="wrap_content"
                 android:layout_height="200dp"
+                android:visibility="gone"
                 android:orientation="horizontal">
 
             </LinearLayout>
             <Button
-                android:id="@+id/classification_btn"
+                android:id="@+id/classification_begin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
@@ -63,14 +69,12 @@
 
             <ImageView
                 android:id="@+id/classification_img"
-                android:layout_width="300dp"
-                android:layout_height="200dp"
-                android:padding="1dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:scaleType="centerInside"
                 android:src="@drawable/ad_2"
                 android:layout_centerInParent="true"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/imageboundshape"/>
+                android:layout_gravity="center_horizontal"/>
 
         </RelativeLayout>
 
