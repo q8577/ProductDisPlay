@@ -33,7 +33,7 @@
             android:layout_alignParentBottom="true"
             android:horizontalSpacing="1dp"
             android:numColumns="2"
-            android:background="#DCDCDC"
+            android:background="@color/gridview_bg"
             android:verticalSpacing="1dp" />
     </RelativeLayout>
 </LinearLayout>
