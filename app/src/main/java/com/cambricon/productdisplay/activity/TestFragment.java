@@ -55,7 +55,7 @@ public class TestFragment extends Fragment {
                         startActivity(new Intent(getActivity(),DetectionActivity.class));
                         break;
                     case VOICE:
-
+                        startActivity(new Intent(getActivity(),SemanticsActivity.class));
                         break;
                     case MOREFUNCTIONS:
                         break;

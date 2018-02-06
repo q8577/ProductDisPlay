@@ -1,5 +1,6 @@
 package com.cambricon.productdisplay.activity;
 
+import android.annotation.SuppressLint;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ public class TabFragment extends Fragment {
 
     }
 
+    @SuppressLint("ValidFragment")
     public TabFragment(Context contexts, String content) {
         this.context = contexts;
         this.content = content;

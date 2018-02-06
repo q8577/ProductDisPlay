@@ -8,4 +8,6 @@
     <color name="news_item">#ffffff</color>
     <color name="news_item_line">#AAAAAA</color>
     <color name="main_line">#4169E1</color>
+    <color name="gridview_bg">#DCDCDC</color>
+    <color name="Color_red">#FF0000</color>
 </resources>
