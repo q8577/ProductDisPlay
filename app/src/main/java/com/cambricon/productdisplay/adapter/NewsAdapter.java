@@ -18,14 +18,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cambricon.productdisplay.R;
-import com.cambricon.productdisplay.activity.NewsFragment;
+import com.cambricon.productdisplay.activity.NewsInfoActivity;
 import com.cambricon.productdisplay.bean.News;
 import com.cambricon.productdisplay.task.BannerTimerTask;
 import com.cambricon.productdisplay.view.DepthPageTransformer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
+import java.util.Timer; 
 
 public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     private static final String TAG = "NewsAdapter";
@@ -305,7 +305,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                 @Override
                 public void onClick(View view) {
                     Context context = view.getContext();
-                    Intent intent = new Intent(context, NewsFragment.class);
+                    Intent intent = new Intent(context, NewsInfoActivity.class);
                     intent.putExtra("url",line.getText());
                     context.startActivity(intent);
                 }

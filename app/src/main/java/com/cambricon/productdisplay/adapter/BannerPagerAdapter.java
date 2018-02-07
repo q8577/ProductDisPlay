@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.cambricon.productdisplay.R;
-import com.cambricon.productdisplay.activity.NewsFragment;
+import com.cambricon.productdisplay.activity.NewsInfoActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +69,7 @@ public class BannerPagerAdapter extends PagerAdapter implements View.OnClickList
 
     @Override
     public void onClick(View view) {
-        Intent intent = new Intent(view.getContext(), NewsFragment.class);
+        Intent intent = new Intent(view.getContext(), NewsInfoActivity.class);
         switch (positionNum){
             case 0:
                 break;
