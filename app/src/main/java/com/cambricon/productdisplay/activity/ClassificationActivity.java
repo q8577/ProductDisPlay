@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.cambricon.productdisplay.R;
 import com.cambricon.productdisplay.caffenative.CaffeClassification;
+import com.cambricon.productdisplay.db.ClassificationDB;
 import com.cambricon.productdisplay.view.ChartService;
 
 import org.achartengine.GraphicalView;
@@ -35,6 +36,9 @@ import static com.cambricon.productdisplay.db.DetectionDB.LOG_TAG;
 /**
  * Created by huangyaling on 18-1-30.
  */
+
+
+
 
 public class ClassificationActivity extends AppCompatActivity {
     private final int CLASSIFICATION_NUM=4;
@@ -65,9 +69,10 @@ public class ClassificationActivity extends AppCompatActivity {
     private Handler myHandler;
     private Bitmap bmp;
 
-
     private int temp=0;
     private Timer timer;
+
+    private ClassificationDB classificationDB;
     protected class Cate implements Comparable<Cate> {
         public final int    idx;
         public final float  prob;
@@ -139,6 +144,9 @@ public class ClassificationActivity extends AppCompatActivity {
         bmp = BitmapFactory.decodeFile(imageFile.getPath());
         classification_img.setImageBitmap(bmp);
 
+        classificationDB=new ClassificationDB(this);
+        classificationDB.open();
+
     }
 
 
@@ -184,6 +192,8 @@ public class ClassificationActivity extends AppCompatActivity {
                                     for (int i = 0; i < topN; i++) {
                                         msg.obj += "output[" + cates[i].idx + "]\t=" + cates[i].prob + "\n";
                                     }
+                                    String fps=getFps(difference);
+                                    classificationDB.addClassification(imageName[j],String.valueOf(difference),fps,(String)msg.obj);
                                 } else {
                                     msg.obj = "output=null (some error happens)";
                                 }
@@ -237,5 +247,26 @@ public class ClassificationActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         /*显示Home图标*/
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    /**
+     * 计fps值取整
+     * @param time
+     * @return
+     */
+    public String getFps(double time){
+        double resultFps=1000/time;
+
+        String[] args=String.valueOf(resultFps).split(".");
+        Log.d("huangyaling","time="+time+";resultfps="+resultFps);
+        return String.valueOf((int)resultFps);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if(classificationDB!=null){
+            classificationDB.close();
+        }
+        super.onDestroy();
     }
 }

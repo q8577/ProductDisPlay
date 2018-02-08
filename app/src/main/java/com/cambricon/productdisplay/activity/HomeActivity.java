@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 
 import com.cambricon.productdisplay.R;
+import com.cambricon.productdisplay.db.CommDB;
 
 /**
  * Created by dell on 18-2-3.
@@ -38,6 +39,8 @@ public class HomeActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     final int PERMISSION_REQUST_CODE = 0x001;
+
+    private CommDB commDB;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,6 +78,8 @@ public class HomeActivity extends AppCompatActivity {
         this.toolbar = (Toolbar) findViewById(R.id.toolbar);
         drawerLayout = findViewById(R.id.mydrawer);
         radioGroup = findViewById(R.id.rel_navigate);
+        commDB=new CommDB(this);
+        commDB.open();
 
     }
 
@@ -157,6 +162,11 @@ public class HomeActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-
-
+    @Override
+    protected void onDestroy() {
+        if(commDB!=null){
+            commDB.close();
+        }
+        super.onDestroy();
+    }
 }

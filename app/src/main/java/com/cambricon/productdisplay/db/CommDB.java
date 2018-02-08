@@ -19,7 +19,7 @@ public class CommDB {
             ClassificationDB.KEY_TIME + "," +
             ClassificationDB.KEY_FPS + "," +
             ClassificationDB.KEY_RESULT + "," +
-           " UNIQUE (" + ClassificationDB.KEY_NAME +"));";
+           " UNIQUE (" + ClassificationDB.KEY_NAME +")"+"ON CONFLICT REPLACE"+");";
 
     //创建目标检测分类表
     private static final String CREATE_TABLE_Detection="CREATE TABLE if not exists " + DetectionDB.SQLITE_TABLE + " (" +
@@ -29,7 +29,7 @@ public class CommDB {
             DetectionDB.KEY_FPS + "," +
             DetectionDB.KEY_RESULT + "," +
             DetectionDB.KEY_NETTYPE + "," +
-            " UNIQUE (" + DetectionDB.KEY_NAME +"));";
+            " UNIQUE (" + DetectionDB.KEY_NAME +")"+"ON CONFLICT REPLACE"+");";
 
     private final Context context;
     private DataBaseHelper dataBaseHelper;
