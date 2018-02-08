@@ -11,13 +11,23 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:background="@color/main_line">
-        <TextView
-            android:layout_width="match_parent"
+        <ImageButton
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-           android:layout_centerInParent="true"
+            android:src="@mipmap/test"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:background="@color/main_line"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:textColor="@android:color/white"
-            android:textSize="20dp"
-            android:text="芯片信息"/>
+            android:textSize="25dp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="PingFangSC"
+            android:text="立即测试"/>
     </RelativeLayout>
 
 

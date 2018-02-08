@@ -16,7 +16,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 
 import com.cambricon.productdisplay.R;
 
@@ -111,6 +110,7 @@ public class HomeActivity extends AppCompatActivity {
                 Log.d("huangyaling", "checkId:" + checkId);
                 switch (checkId) {
                     case R.id.tab_test:
+
                         FragmentTransaction testTransaction = fragmentManager.beginTransaction();
                         hideAll(testTransaction);
                         if (testFragment == null) {
@@ -156,4 +156,7 @@ public class HomeActivity extends AppCompatActivity {
         /*显示Home图标*/
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
+
+
+
 }

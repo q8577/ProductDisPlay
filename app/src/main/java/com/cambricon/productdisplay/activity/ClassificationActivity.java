@@ -121,8 +121,8 @@ public class ClassificationActivity extends AppCompatActivity {
     public void initData(){
         //fps折线图
         chartService=new ChartService(this);
-        chartService.setXYMultipleSeriesDataset("测试");
-        chartService.setXYMultipleSeriesRenderer(60, 10, "测试", "时间:s", "fps:千张/秒",
+        chartService.setXYMultipleSeriesDataset("testing");
+        chartService.setXYMultipleSeriesRenderer(60, 10, "testing", "时间:s", "fps:千张/秒",
                 Color.WHITE, Color.WHITE, Color.BLUE, Color.WHITE);
         graphicalView=chartService.getGraphicalView();
         chartView.addView(graphicalView);
