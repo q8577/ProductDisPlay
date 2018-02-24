@@ -158,7 +158,8 @@ public class DetectionActivity extends AppCompatActivity implements CNNListener{
         @Override
         protected Integer doInBackground(String... strings) {
             startTime = SystemClock.uptimeMillis();
-            return caffeDetection.detectImage(strings[0])[0];
+            //return caffeDetection.detectImage(strings[0])[0];
+            return null;
         }
 
         @Override

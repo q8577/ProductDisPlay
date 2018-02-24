@@ -36,20 +36,31 @@ find_library( # Sets the name of the path variable.
 # build script, prebuilt third-party libraries, or system libraries.
 #huangyaling add 2018.01.31 begin
 add_library(
-    caffe-jni
+    caffe_jni
     SHARED
     IMPORTED
     )
 set_target_properties(
-    caffe-jni
+    caffe_jni
     PROPERTIES IMPORTED_LOCATION
-    ${CMAKE_CURRENT_LIST_DIR}/src/main/jniLibs/${ANDROID_ABI}/libcaffe-jni.so
+    ${CMAKE_CURRENT_LIST_DIR}/src/main/jniLibs/${ANDROID_ABI}/libcaffe_jni.so
+    )
+add_library(
+    detecte_jni
+    SHARED
+    IMPORTED
+    )
+set_target_properties(
+    detecte_jni
+    PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_CURRENT_LIST_DIR}/src/main/jniLibs/${ANDROID_ABI}/libdetecte_jni.so
     )
 #huangyaling add 2018.01.31 end
 
 target_link_libraries( # Specifies the target library.
                        native-lib
-                       caffe-jni
+                       caffe_jni
+                       detecte_jni
                        # Links the target library to the log library
                        # included in the NDK.
                        ${log-lib} )

@@ -10,11 +10,13 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cambricon.productdisplay.R;
 import com.cambricon.productdisplay.caffenative.CaffeMobile;
@@ -33,9 +35,12 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
     public static final int MEDIA_TYPE_IMAGE = 1;
     private static String[] IMAGENET_CLASSES;
 
+    private android.support.v7.widget.Toolbar toolbar;
+
     private Button test;
     private ImageView ivCaptured;
     private TextView tvLabel;
+    private TextView loadCaffe;
     private ProgressDialog dialog;
     private Bitmap bmp;
     private CaffeMobile caffeMobile;
@@ -53,18 +58,15 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
     File imageFile = new File(sdcard, imageName[0]);
 
     static {
-        System.loadLibrary("caffe-jni");
+        System.loadLibrary("caffe_jni");
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.classification_layout);
-
-        ivCaptured = (ImageView) findViewById(R.id.classification_img);
-        tvLabel = (TextView) findViewById(R.id.test_result);
-
-        test = findViewById(R.id.classification_begin);
+        init();
+        setActionBar();
         test.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,7 +80,12 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
                             bmp = BitmapFactory.decodeFile(imageFile.getPath());
                             dialog = ProgressDialog.show(ClassificationActivity.this, "Predicting...", "Wait for one sec...", true);
                             CNNTask cnnTask = new CNNTask(ClassificationActivity.this);
-                            cnnTask.execute(imageFile.getPath());
+                            if(imageFile.exists()){
+                                cnnTask.execute(imageFile.getPath());
+                            }else{
+                                Toast.makeText(ClassificationActivity.this,"image File is not exists",Toast.LENGTH_SHORT).show();
+                            }
+
                         }else {
                             return;
                         }
@@ -89,7 +96,10 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
         // TODO: implement a splash screen(?
         caffeMobile = new CaffeMobile();
         caffeMobile.setNumThreads(4);
+        long start_time = System.nanoTime();
         caffeMobile.loadModel(modelProto, modelBinary);
+        long end_time = System.nanoTime();
+        loadCaffe.setText(String.valueOf((end_time - start_time) / 1e6));
 
         float[] meanValues = {104, 117, 123};
         caffeMobile.setMean(meanValues);
@@ -107,6 +117,27 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    private void init(){
+        ivCaptured = (ImageView) findViewById(R.id.classification_img);
+        tvLabel = (TextView) findViewById(R.id.test_result);
+        loadCaffe=findViewById(R.id.load_caffe);
+        test = findViewById(R.id.classification_begin);
+        this.toolbar = (Toolbar) findViewById(R.id.classification_toolbar);
+        if(imageFile.exists()){
+            bmp = BitmapFactory.decodeFile(imageFile.getPath());
+            ivCaptured.setImageBitmap(bmp);
+        }else{
+            Toast.makeText(ClassificationActivity.this,"image File is not exists",Toast.LENGTH_SHORT).show();
+        }
+    }
+    /**
+     * 设置ActionBar
+     */
+    private void setActionBar() {
+        setSupportActionBar(toolbar);
+        /*显示Home图标*/
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
 
@@ -126,6 +157,8 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
 
         @Override
         protected void onPostExecute(Integer integer) {
+            String loadtime=String.valueOf(SystemClock.uptimeMillis() - startTime);
+            tvLabel.setText(loadtime+"/n");
             Log.i(LOG_TAG, String.format("elapsed wall time: %d ms", SystemClock.uptimeMillis() - startTime));
             listener.onTaskCompleted(integer);
             super.onPostExecute(integer);

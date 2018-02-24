@@ -8,12 +8,20 @@
 	"cppFileExtensions" : [ "cpp" ],
 	"libraries" : 
 	{
-		"caffe-jni-Debug-armeabi" : 
+		"caffe_jni-Debug-armeabi" : 
 		{
 			"abi" : "armeabi",
-			"artifactName" : "caffe-jni",
+			"artifactName" : "caffe_jni",
 			"buildType" : "debug",
-			"output" : "/home/dell/huangyaling/ProductDisPlay/app/src/main/jniLibs/armeabi/libcaffe-jni.so",
+			"output" : "/home/dell/huangyaling/ProductDisPlay/app/src/main/jniLibs/armeabi/libcaffe_jni.so",
+			"toolchain" : "13013303100772050520"
+		},
+		"detecte_jni-Debug-armeabi" : 
+		{
+			"abi" : "armeabi",
+			"artifactName" : "detecte_jni",
+			"buildType" : "debug",
+			"output" : "/home/dell/huangyaling/ProductDisPlay/app/src/main/jniLibs/armeabi/libdetecte_jni.so",
 			"toolchain" : "13013303100772050520"
 		},
 		"native-lib-Debug-armeabi" : 
