@@ -6,18 +6,22 @@ import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
 import android.media.ImageReader;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Layout;
+import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.MenuItem;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.TextureView;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,6 +29,7 @@ import android.widget.TextView;
 
 import com.cambricon.productdisplay.R;
 import com.cambricon.productdisplay.caffenative.CaffeDetection;
+import com.cambricon.productdisplay.task.CNNListener;
 
 import java.io.File;
 
@@ -32,7 +37,7 @@ import java.io.File;
  * Created by dell on 18-1-30.
  */
 
-public class DetectionActivity extends AppCompatActivity {
+public class DetectionActivity extends AppCompatActivity implements CNNListener{
 
     private static final SparseIntArray ORIENTATIONS =  new SparseIntArray();
     static {
@@ -46,6 +51,8 @@ public class DetectionActivity extends AppCompatActivity {
     private CaffeDetection mCaffeDetection;
     private LinearLayout mLinearLayout;
     private Button mButton;
+    private static String LOG_TAG="DetectionActivity";
+    private CaffeDetection caffeDetection;
 
     //camera
     private SurfaceView mSurfaceView;
@@ -60,6 +67,9 @@ public class DetectionActivity extends AppCompatActivity {
 
     final File modelFile = new File(Environment.getExternalStorageDirectory(), "resnet101_train_agnostic.prototxt");
     final File weightFile = new File(Environment.getExternalStorageDirectory(), "resnet101_rfcn_final.caffemodel");
+    File sdcard = Environment.getExternalStorageDirectory();
+    String modelProto = sdcard + "/resnet101_train_agnostic.prototxt";
+    String modelBinary = sdcard + "/resnet101_rfcn_final.caffemodel";
 
 
     @Override
@@ -76,6 +86,14 @@ public class DetectionActivity extends AppCompatActivity {
     }
     //绑定监听事件
     private void setListener() {
+        caffeDetection=new CaffeDetection();
+        caffeDetection.loadModel(modelProto,modelBinary);
+        mButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
     }
 
@@ -91,13 +109,7 @@ public class DetectionActivity extends AppCompatActivity {
     }
 
     public void initData() {
-//        long start_time = System.nanoTime();
-//        mCaffeDetection = new CaffeDetection();
-//        tv.append(" loading caffe model ....");
-//        boolean res = mCaffeDetection.loadModel(modelFile.getPath(), weightFile.getPath());
-//        long end_time = System.nanoTime();
-//        double difference = (end_time - start_time) / 1e6;
-//        tv.append(String.valueOf(difference));
+
     }
 
     /**
@@ -127,6 +139,33 @@ public class DetectionActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onTaskCompleted(int result) {
+
+    }
+
     private static class ORIENTATIONS {
+    }
+
+    private class CNNTask extends AsyncTask<String, Void, Integer> {
+        private CNNListener listener;
+        private long startTime;
+
+        public CNNTask(CNNListener listener) {
+            this.listener = listener;
+        }
+
+        @Override
+        protected Integer doInBackground(String... strings) {
+            startTime = SystemClock.uptimeMillis();
+            return caffeDetection.detectImage(strings[0])[0];
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            Log.i(LOG_TAG, String.format("elapsed wall time: %d ms", SystemClock.uptimeMillis() - startTime));
+            listener.onTaskCompleted(integer);
+            super.onPostExecute(integer);
+        }
     }
 }

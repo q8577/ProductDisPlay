@@ -7,7 +7,7 @@ arguments :
 -DCMAKE_LIBRARY_OUTPUT_DIRECTORY=/home/dell/huangyaling/ProductDisPlay/app/build/intermediates/cmake/debug/obj/arm64-v8a
 -DCMAKE_BUILD_TYPE=Debug
 -DANDROID_NDK=/home/dell/Android/Sdk/ndk-bundle
--DCMAKE_CXX_FLAGS=
+-DCMAKE_CXX_FLAGS=-fexceptions
 -DCMAKE_TOOLCHAIN_FILE=/home/dell/Android/Sdk/ndk-bundle/build/cmake/android.toolchain.cmake
 -DCMAKE_MAKE_PROGRAM=/home/dell/Android/Sdk/cmake/3.6.4111459/bin/ninja
 -GAndroid Gradle - Ninja

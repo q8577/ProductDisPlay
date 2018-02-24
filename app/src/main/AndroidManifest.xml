@@ -21,11 +21,10 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity
-            android:name=".activity.ClassificationActivity"
-            android:screenOrientation="landscape"/>
         <activity android:name=".activity.DetectionActivity"/>
         <activity android:name=".activity.NewsInfoActivity"/>
+        <activity android:name=".activity.ClassificationActivity"
+            android:screenOrientation="landscape"/>
         <activity
             android:name=".activity.HomeActivity"
             android:screenOrientation="portrait"/>

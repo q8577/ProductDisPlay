@@ -1,272 +1,145 @@
 package com.cambricon.productdisplay.activity;
 
-
+import android.app.ProgressDialog;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.os.Message;
-import android.support.annotation.Nullable;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cambricon.productdisplay.R;
-import com.cambricon.productdisplay.caffenative.CaffeClassification;
-import com.cambricon.productdisplay.db.ClassificationDB;
-import com.cambricon.productdisplay.view.ChartService;
-
-import org.achartengine.GraphicalView;
+import com.cambricon.productdisplay.caffenative.CaffeMobile;
+import com.cambricon.productdisplay.task.CNNListener;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.Timer;
-
-import static com.cambricon.productdisplay.db.DetectionDB.LOG_TAG;
-
-/**
- * Created by huangyaling on 18-1-30.
- */
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 
+public class ClassificationActivity extends AppCompatActivity implements CNNListener {
+    private static final String LOG_TAG = "ClassificationActivity";
+    public static final int MEDIA_TYPE_IMAGE = 1;
+    private static String[] IMAGENET_CLASSES;
 
-
-public class ClassificationActivity extends AppCompatActivity {
-    private final int CLASSIFICATION_NUM=4;
-    private android.support.v7.widget.Toolbar toolbar;
-    private ImageView classification_img;
-    private TextView load_caffe;
-    private Button btn_begin;
-    private Button btn_end;
-    private Boolean isTest=true;
-    private TextView test_result;
-    private Boolean isLoadRes;
-
-
-    //fps折线图
-    private LinearLayout chartView;
-    private GraphicalView graphicalView;
-    private ChartService chartService;
-
-    private CaffeClassification caffeClassification;
-    private File sdCard= Environment.getExternalStorageDirectory();
-
-    String[] imageName=new String[]{"test_image.jpg","test_image2.jpg","test_image3.jpg","test_image4.jpg"};
-    File imageFile=new File(sdCard,imageName[0]);
-    final File modelFile = new File(Environment.getExternalStorageDirectory(), "net.protobin");
-    final File weightFile = new File(Environment.getExternalStorageDirectory(), "weight.caffemodel");
-    final int REQUST_CODE=001;
-
-    private Handler myHandler;
+    private Button test;
+    private ImageView ivCaptured;
+    private TextView tvLabel;
+    private ProgressDialog dialog;
     private Bitmap bmp;
+    private CaffeMobile caffeMobile;
 
-    private int temp=0;
-    private Timer timer;
+    private static Boolean isTest = true;
+    private Handler mHandler;
+    public static int startIndex = 0;
 
-    private ClassificationDB classificationDB;
-    protected class Cate implements Comparable<Cate> {
-        public final int    idx;
-        public final float  prob;
+    File sdcard = Environment.getExternalStorageDirectory();
+    String modelDir = sdcard.getAbsolutePath() + "/caffe_mobile/bvlc_reference_caffenet";
+    String modelProto = modelDir + "/deploy.prototxt";
+    String modelBinary = modelDir + "/bvlc_reference_caffenet.caffemodel";
 
-        public Cate(int idx, float prob) {
-            this.idx = idx;
-            this.prob = prob;
-        }
+    String[] imageName = new String[]{"test_image.jpg", "test_image2.jpg", "test_image3.jpg", "test_image4.jpg"};
+    File imageFile = new File(sdcard, imageName[0]);
 
-        @Override
-        public int compareTo(Cate other) {
-            // need descending sort order
-            return Float.compare(other.prob, this.prob);
-        }
+    static {
+        System.loadLibrary("caffe-jni");
     }
-
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         setContentView(R.layout.classification_layout);
-        initView();
-        setToolbar();
-        initData();
-        setListener();
-        myHandler = new Handler(){
-            @Override
-            public void handleMessage(Message msg) {
-                //load_caffe.append((String)msg.obj);
-                test_result.setText((String)msg.obj);
-                classification_img.setImageBitmap(bmp);
-               // chartService.updateChart(temp,Math.random() * 10);
-               // temp++;
 
-            }
-        };
-    }
+        ivCaptured = (ImageView) findViewById(R.id.classification_img);
+        tvLabel = (TextView) findViewById(R.id.test_result);
 
-
-    public void initView(){
-        toolbar=findViewById(R.id.classification_toolbar);
-        chartView=findViewById(R.id.line_chart_view);
-        classification_img=findViewById(R.id.classification_img);
-        load_caffe=findViewById(R.id.load_caffe);
-        btn_begin=findViewById(R.id.classification_begin);
-        btn_end=findViewById(R.id.classification_end);
-        test_result=findViewById(R.id.test_result);
-    }
-
-    public void initData(){
-        //fps折线图
-        chartService=new ChartService(this);
-        chartService.setXYMultipleSeriesDataset("testing");
-        chartService.setXYMultipleSeriesRenderer(60, 10, "testing", "时间:s", "fps:千张/秒",
-                Color.WHITE, Color.WHITE, Color.BLUE, Color.WHITE);
-        graphicalView=chartService.getGraphicalView();
-        chartView.addView(graphicalView);
-
-        long start_time = System.nanoTime();
-        caffeClassification=new CaffeClassification();
-        load_caffe.append("Loading caffe model...");
-        load_caffe.setMovementMethod(new ScrollingMovementMethod());
-        isLoadRes = caffeClassification.loadModel(modelFile.getPath(), weightFile.getPath());
-        long end_time = System.nanoTime();
-        double difference = (end_time - start_time)/1e6;
-        Log.d(LOG_TAG, "onCreate: loadmodel:" + isLoadRes);
-        load_caffe.append(String.valueOf(difference) + "ms\n");
-        bmp = BitmapFactory.decodeFile(imageFile.getPath());
-        classification_img.setImageBitmap(bmp);
-
-        classificationDB=new ClassificationDB(this);
-        classificationDB.open();
-
-    }
-
-
-    public void setListener(){
-        btn_begin.setOnClickListener(new View.OnClickListener() {
+        test = findViewById(R.id.classification_begin);
+        test.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!isLoadRes){
-                    Toast.makeText(ClassificationActivity.this,getString(R.string.classificaton_res_toast),Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                btn_begin.setVisibility(View.GONE);
-                btn_end.setVisibility(View.VISIBLE);
+                Log.d(LOG_TAG, "test onclick");
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        Log.d(LOG_TAG,"isTest="+isTest);
-                        while(isTest){
-                            if(CLASSIFICATION_NUM!=imageName.length){
-                                return;
-                            }
-                            for(int j=0;j<CLASSIFICATION_NUM;j++){
-                                if(!isTest){
-                                    return;
-                                }
-                                Message msg = myHandler.obtainMessage();
-                                imageFile=new File(sdCard,imageName[j]);
-                                bmp = BitmapFactory.decodeFile(imageFile.getPath());
-                                long start_time = System.nanoTime();
-                                float mean[] = {81.3f, 107.3f, 105.3f};
-                                float[] result = caffeClassification.predictImage(imageFile.getPath(), mean);
-                                long end_time = System.nanoTime();
-                                if (null != result) {
-                                    double difference = (end_time - start_time) / 1e6;
-                                    // Top 10
-                                    int topN = 10;
-                                    Cate[] cates = new Cate[result.length];
-                                    for (int i = 0; i < result.length; i++) {
-                                        cates[i] = new Cate(i, result[i]);
-                                    }
-                                    Arrays.sort(cates);
-                                    msg.obj = "Top" + topN + " Results (" + String.valueOf(difference) + "ms):\n";
-                                    for (int i = 0; i < topN; i++) {
-                                        msg.obj += "output[" + cates[i].idx + "]\t=" + cates[i].prob + "\n";
-                                    }
-                                    String fps=getFps(difference);
-                                    classificationDB.addClassification(imageName[j],String.valueOf(difference),fps,(String)msg.obj);
-                                } else {
-                                    msg.obj = "output=null (some error happens)";
-                                }
-                                myHandler.sendMessage(msg);
-                                try {
-                                    Thread.sleep(1000);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                            }
+                        if(startIndex < imageName.length){
+                            Log.d(LOG_TAG, "startIndex=" + startIndex);
+                            imageFile = new File(sdcard, imageName[startIndex]);
+                            bmp = BitmapFactory.decodeFile(imageFile.getPath());
+                            dialog = ProgressDialog.show(ClassificationActivity.this, "Predicting...", "Wait for one sec...", true);
+                            CNNTask cnnTask = new CNNTask(ClassificationActivity.this);
+                            cnnTask.execute(imageFile.getPath());
+                        }else {
+                            return;
                         }
                     }
                 }).start();
             }
         });
+        // TODO: implement a splash screen(?
+        caffeMobile = new CaffeMobile();
+        caffeMobile.setNumThreads(4);
+        caffeMobile.loadModel(modelProto, modelBinary);
 
-        btn_end.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                btn_begin.setVisibility(View.VISIBLE);
-                btn_end.setVisibility(View.GONE);
-                isTest=false;
-                if(timer!=null){
-                    timer.cancel();
-                }
+        float[] meanValues = {104, 117, 123};
+        caffeMobile.setMean(meanValues);
+
+        AssetManager am = this.getAssets();
+        try {
+            InputStream is = am.open("synset_words.txt");
+            Scanner sc = new Scanner(is);
+            List<String> lines = new ArrayList<String>();
+            while (sc.hasNextLine()) {
+                final String temp = sc.nextLine();
+                lines.add(temp.substring(temp.indexOf(" ") + 1));
             }
-        });
-    }
-
-    /**
-     * toolBar返回按钮
-     * @param item
-     * @return
-     */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case android.R.id.home:
-                finish();
-                break;
+            IMAGENET_CLASSES = lines.toArray(new String[0]);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * 设置toolbar属性
-     */
-    public void setToolbar(){
-       toolbar.setTitle(R.string.gv_text_item1);
-        toolbar.setDrawingCacheBackgroundColor(getResources().getColor(R.color.test_background));
-        setSupportActionBar(toolbar);
-        /*显示Home图标*/
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
 
-    /**
-     * 计fps值取整
-     * @param time
-     * @return
-     */
-    public String getFps(double time){
-        double resultFps=1000/time;
+    private class CNNTask extends AsyncTask<String, Void, Integer> {
+        private CNNListener listener;
+        private long startTime;
 
-        String[] args=String.valueOf(resultFps).split(".");
-        Log.d("huangyaling","time="+time+";resultfps="+resultFps);
-        return String.valueOf((int)resultFps);
+        public CNNTask(CNNListener listener) {
+            this.listener = listener;
+        }
+
+        @Override
+        protected Integer doInBackground(String... strings) {
+            startTime = SystemClock.uptimeMillis();
+            return caffeMobile.predictImage(strings[0])[0];
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            Log.i(LOG_TAG, String.format("elapsed wall time: %d ms", SystemClock.uptimeMillis() - startTime));
+            listener.onTaskCompleted(integer);
+            super.onPostExecute(integer);
+        }
     }
 
     @Override
-    protected void onDestroy() {
-        if(classificationDB!=null){
-            classificationDB.close();
+    public void onTaskCompleted(int result) {
+        Log.d(LOG_TAG, "IMAGENET_CLASSES=" + IMAGENET_CLASSES[result]);
+        ivCaptured.setImageBitmap(bmp);
+        startIndex++;
+        tvLabel.setText(IMAGENET_CLASSES[result]);
+        if (dialog != null) {
+            dialog.dismiss();
         }
-        super.onDestroy();
     }
 }
