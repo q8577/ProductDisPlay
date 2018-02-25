@@ -87,7 +87,7 @@ public class DetectionActivity extends AppCompatActivity implements CNNListener{
     //绑定监听事件
     private void setListener() {
         caffeDetection=new CaffeDetection();
-        caffeDetection.loadModel(modelProto,modelBinary);
+        //caffeDetection.loadModel(modelProto,modelBinary);
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
