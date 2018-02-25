@@ -21,29 +21,28 @@
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_weight="3"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/load_caffe"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/load_model"
                 android:textColor="@android:color/white"/>
             <TextView
                 android:layout_below="@id/load_caffe"
                 android:id="@+id/test_result"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/test_result"
                 android:textColor="@android:color/white"/>
-            <LinearLayout
-                android:id="@+id/line_chart_view"
-                android:layout_below="@id/load_caffe"
+            <TextView
+                android:layout_below="@id/test_result"
+                android:id="@+id/test_time"
                 android:layout_width="wrap_content"
-                android:layout_height="200dp"
-                android:visibility="gone"
-                android:orientation="horizontal">
-
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:text="@string/test_time"
+                android:textColor="@android:color/white"/>
             <Button
                 android:id="@+id/classification_begin"
                 android:layout_width="wrap_content"

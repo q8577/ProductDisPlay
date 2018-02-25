@@ -20,7 +20,7 @@ import java.io.File;
 
 public class TestActivity extends AppCompatActivity {
     private CaffeDetection caffeDetection;
-    private String TAG="TestActivity";
+    private String TAG = "TestActivity";
     File sdcard = Environment.getExternalStorageDirectory();
     String modelDirtest = sdcard.getAbsolutePath() + "/caffe_mobile/bvlc_reference_caffenet";
     String modelPrototest = modelDirtest + "/deploy.prototxt";
@@ -34,25 +34,25 @@ public class TestActivity extends AppCompatActivity {
 
     private ImageView detecte_iv;
     private Bitmap bitmap;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.test_layout);
-        detecte_iv=findViewById(R.id.detecte_image);
-        Log.d(TAG,"load begin");
+        detecte_iv = findViewById(R.id.detecte_image);
+        Log.d(TAG, "load begin");
         caffeDetection = new CaffeDetection();
-        Log.d(TAG,"setNumThreads begin");
+        Log.d(TAG, "setNumThreads begin");
         caffeDetection.setNumThreads(4);
-        Log.d(TAG,"setNumThreads end");
+        Log.d(TAG, "setNumThreads end");
         caffeDetection.loadModel(modelPrototest, modelBinarytest);
         //caffeDetection.loadModel(modelProto, modelBinary);
-        Log.d(TAG,"load success");
+        Log.d(TAG, "load success");
 
         float[] meanValues = {104, 117, 123};
         caffeDetection.setMean(meanValues);
-        Log.d(TAG,"set mean success");
-        //bitmap= BitmapFactory.decodeFile(testImage);
+        Log.d(TAG, "set mean success");
         //caffeDetection.detectImage(imageFile.getPath());
-        Log.d(TAG,"detectImage success");
+        Log.d(TAG, "detectImage success");
     }
 }
