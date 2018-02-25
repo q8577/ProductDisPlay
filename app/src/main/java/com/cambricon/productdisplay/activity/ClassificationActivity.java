@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -49,6 +50,9 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
     private Handler mHandler;
     public static int startIndex = 0;
 
+    private static float TARGET_WIDTH;
+    private static float TARGET_HEIGHT;
+
     File sdcard = Environment.getExternalStorageDirectory();
     String modelDir = sdcard.getAbsolutePath() + "/caffe_mobile/bvlc_reference_caffenet";
     String modelProto = modelDir + "/deploy.prototxt";
@@ -74,19 +78,19 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        if(startIndex < imageName.length){
+                        if (startIndex < imageName.length) {
                             Log.d(LOG_TAG, "startIndex=" + startIndex);
                             imageFile = new File(sdcard, imageName[startIndex]);
                             bmp = BitmapFactory.decodeFile(imageFile.getPath());
                             dialog = ProgressDialog.show(ClassificationActivity.this, "Predicting...", "Wait for one sec...", true);
                             CNNTask cnnTask = new CNNTask(ClassificationActivity.this);
-                            if(imageFile.exists()){
+                            if (imageFile.exists()) {
                                 cnnTask.execute(imageFile.getPath());
-                            }else{
-                                Toast.makeText(ClassificationActivity.this,"image File is not exists",Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(ClassificationActivity.this, "image File is not exists", Toast.LENGTH_SHORT).show();
                             }
 
-                        }else {
+                        } else {
                             return;
                         }
                     }
@@ -118,19 +122,16 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
             e.printStackTrace();
         }
     }
-    private void init(){
+
+    private void init() {
         ivCaptured = (ImageView) findViewById(R.id.classification_img);
         tvLabel = (TextView) findViewById(R.id.test_result);
-        loadCaffe=findViewById(R.id.load_caffe);
+        loadCaffe = findViewById(R.id.load_caffe);
         test = findViewById(R.id.classification_begin);
         this.toolbar = (Toolbar) findViewById(R.id.classification_toolbar);
-        if(imageFile.exists()){
-            bmp = BitmapFactory.decodeFile(imageFile.getPath());
-            ivCaptured.setImageBitmap(bmp);
-        }else{
-            Toast.makeText(ClassificationActivity.this,"image File is not exists",Toast.LENGTH_SHORT).show();
-        }
+
     }
+
     /**
      * 设置ActionBar
      */
@@ -138,6 +139,23 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
         setSupportActionBar(toolbar);
         /*显示Home图标*/
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    /**
+     * @param target
+     * @return
+     */
+    public static Bitmap zoomBitmap(Bitmap target) {
+        int width = target.getWidth();
+        int height = target.getHeight();
+        Matrix matrix = new Matrix();
+        float scaleWidth = ((float) TARGET_WIDTH) / width;
+        float scaleHeight = ((float) TARGET_HEIGHT) / height;
+        Log.d(LOG_TAG, "TARGET_WIDTH=" + TARGET_WIDTH + ";TARGET_HEIGHT=" + TARGET_HEIGHT + "width:" + width + ";height=" + height);
+        matrix.postScale(scaleWidth, scaleHeight);
+        Bitmap result = Bitmap.createBitmap(target, 0, 0, width,
+                height, matrix, true);
+        return result;
     }
 
 
@@ -157,8 +175,8 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
 
         @Override
         protected void onPostExecute(Integer integer) {
-            String loadtime=String.valueOf(SystemClock.uptimeMillis() - startTime);
-            tvLabel.setText(loadtime+"/n");
+            String loadtime = String.valueOf(SystemClock.uptimeMillis() - startTime);
+            tvLabel.setText(loadtime + "/n");
             Log.i(LOG_TAG, String.format("elapsed wall time: %d ms", SystemClock.uptimeMillis() - startTime));
             listener.onTaskCompleted(integer);
             super.onPostExecute(integer);
@@ -168,7 +186,9 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
     @Override
     public void onTaskCompleted(int result) {
         Log.d(LOG_TAG, "IMAGENET_CLASSES=" + IMAGENET_CLASSES[result]);
-        ivCaptured.setImageBitmap(bmp);
+        TARGET_WIDTH=ivCaptured.getWidth();
+        TARGET_HEIGHT=ivCaptured.getHeight();
+        ivCaptured.setImageBitmap(zoomBitmap(bmp));
         startIndex++;
         tvLabel.setText(IMAGENET_CLASSES[result]);
         if (dialog != null) {
