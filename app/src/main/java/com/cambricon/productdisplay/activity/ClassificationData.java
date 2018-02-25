@@ -88,11 +88,12 @@ public class ClassificationData extends Fragment {
         //坐标轴设置
         seriesRenderer.setAxisTitleTextSize(30);//设置坐标轴标题字体的大小
         seriesRenderer.setYAxisMin(0);//设置y轴的起始值
-        seriesRenderer.setYAxisMax(50);//设置y轴的最大值
+        seriesRenderer.setYAxisMax(200);//设置y轴的最大值
+        seriesRenderer.setYLabels(10);//设置y轴显示点数
         seriesRenderer.setXAxisMin(0.5);//设置x轴起始值
         seriesRenderer.setXAxisMax(10.5);//设置x轴最大值
-        seriesRenderer.setYTitle(getActivity().getResources().getString(R.string.classification_chart_y));//设置x轴标题
-        seriesRenderer.setXTitle(getActivity().getResources().getString(R.string.classification_chart_x));//设置y轴标题
+        seriesRenderer.setYTitle(getActivity().getResources().getString(R.string.classification_chart_y));//设置y轴标题
+        //seriesRenderer.setXTitle(getActivity().getResources().getString(R.string.classification_chart_x));//设置x轴标题
         //颜色设置
         seriesRenderer.setApplyBackgroundColor(true);//是应用设置的背景颜色
         seriesRenderer.setLabelsColor(0xFF85848D);//设置标签颜色
@@ -101,14 +102,9 @@ public class ClassificationData extends Fragment {
         seriesRenderer.setZoomButtonsVisible(false);//设置缩放按钮是否可见
         seriesRenderer.setZoomEnabled(false); //图表是否可以缩放设置
         seriesRenderer.setZoomInLimitX(7);
-//      seriesRenderer.setZoomRate(1);//缩放比例设置
         //图表移动设置
         seriesRenderer.setPanEnabled(false);//图表是否可以移动
 
-        //legend(最下面的文字说明)设置
-//      seriesRenderer.setShowLegend(true);//控制legend（说明文字 ）是否显示
-//      seriesRenderer.setLegendHeight(80);//设置说明的高度，单位px
-//      seriesRenderer.setLegendTextSize(16);//设置说明字体大小
         //坐标轴标签设置
         seriesRenderer.setLabelsTextSize(20);//设置标签字体大小
         seriesRenderer.setXLabelsAlign(Paint.Align.CENTER);
@@ -136,10 +132,12 @@ public class ClassificationData extends Fragment {
         xySeriesRenderer1.setAnnotationsTextAlign(Paint.Align.CENTER);//设置注释的位置
         xySeriesRenderer1.setAnnotationsTextSize(12);//设置注释文字的大小
         xySeriesRenderer1.setPointStyle(PointStyle.CIRCLE);//坐标点的显示风格
+        xySeriesRenderer1.setFillPoints(true);
         xySeriesRenderer1.setPointStrokeWidth(3);//坐标点的大小
         xySeriesRenderer1.setColor(0xFFF46C48);//表示该组数据的图或线的颜色
-        xySeriesRenderer1.setDisplayChartValues(false);//设置是否显示坐标点的y轴坐标值
-        xySeriesRenderer1.setChartValuesTextSize(16);//设置显示的坐标点值的字体大小
+        xySeriesRenderer1.setDisplayChartValues(true);//设置是否显示坐标点的y轴坐标值
+        xySeriesRenderer1.setChartValuesTextSize(25);//设置显示的坐标点值的字体大小
+        xySeriesRenderer1.setDisplayChartValuesDistance(30);
 
         seriesRenderer.addSeriesRenderer(xySeriesRenderer1);
         return seriesRenderer;
