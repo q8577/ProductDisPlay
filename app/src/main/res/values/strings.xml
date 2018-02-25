@@ -18,5 +18,9 @@
     <string name="test_time">测试时间：</string>
     <string name="test_result">分类结果：</string>
     <string name="load_model">加载分类模型耗时：</string>
+    <string name="classification_chart_title">最近10次图片分类fps值</string>
+    <string name="classification_chart_desc">图片分类fps值</string>
+    <string name="classification_chart_y">FPS值：张/秒</string>
+    <string name="classification_chart_x">第几次</string>
 
 </resources>
