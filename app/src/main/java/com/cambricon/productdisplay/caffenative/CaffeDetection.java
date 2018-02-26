@@ -32,9 +32,9 @@ public class CaffeDetection {
 
     public native void setScale(float scale);
     //huangyaling
-    public native void detectImage(byte[] data,int width,int height);
-    public void detectImage(String imgPath){
-        detectImage(stringToBytes(imgPath),0,0);
+    public native byte[] detectImage(byte[] data,int width,int height);
+    public byte[] detectImage(String imgPath){
+        return detectImage(stringToBytes(imgPath),0,0);
     }
     //huangyaling
 
