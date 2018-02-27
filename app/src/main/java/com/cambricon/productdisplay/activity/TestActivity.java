@@ -1,7 +1,12 @@
 package com.cambricon.productdisplay.activity;
 
+import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.ImageFormat;
+import android.graphics.Rect;
+import android.graphics.YuvImage;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -16,6 +21,7 @@ import android.widget.ImageView;
 import com.cambricon.productdisplay.R;
 import com.cambricon.productdisplay.caffenative.CaffeDetection;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 
@@ -74,30 +80,26 @@ public class TestActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case 1:
-                    BitmapFactory .Options opts = new BitmapFactory.Options();
-                    opts. inJustDecodeBounds = false ;//inJustDecodeBounds 需要设置为false，如果设置为true，那么将返回null
-                    opts. inSampleSize = 8 ;
-                    result = BitmapFactory. decodeByteArray(a, 0, a.length , opts);
-                    //detecte_iv.setImageBitmap(BitmapFactory.decodeByteArray(a, 0, a.length));
-                    detecte_iv.setImageBitmap(result);
-                    Log.d("huangyaling","bmp="+result);
+                    detecte_iv.setImageBitmap(bytes2Bmp(a));
+                    Log.d("huangyaling","bmp="+bytes2Bmp(a));
                     break;
             }
         }
     };
 
-    private void bytesToImageFile(byte[] bytes) {
-        try {
-            File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/aaa.jplsg");
-            FileOutputStream fos = new FileOutputStream(file);
-            fos.write(bytes, 0, bytes.length);
-            fos.flush();
-            fos.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    /**
+     * 将二进制数组转换成bitmap
+     * @param data
+     * @return
+     */
+    private Bitmap bytes2Bmp(byte[] data){
+        YuvImage yuvimage=new YuvImage(data, ImageFormat.NV21, 480,480, null); //20、20分别是图的宽度与高度
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        yuvimage.compressToJpeg(new Rect(0, 0,480, 480), 80, baos);//80--JPG图片的质量[0-100],100最高
+        byte[] jdata = baos.toByteArray();
+        Bitmap bytes2Bmp = BitmapFactory.decodeByteArray(jdata, 0, jdata.length);
+        return bytes2Bmp;
     }
-
 
     private void setListener(){
         detecte_begin.setOnClickListener(new View.OnClickListener() {
@@ -109,15 +111,12 @@ public class TestActivity extends AppCompatActivity {
                         Message msg = new Message();
                         msg.what = 1;
                         a=caffeDetection.detectImage(imageFile.getPath());
-                        /*for(int i=0;i<a.length;i++){
-                            Log.d("huangyaling","a="+a[i]);
-                        }*/
-                        //bytesToImageFile(a);
                         handler.sendMessage(msg);
                     }
                 }).start();
 
             }
+
         });
     }
 }
