@@ -33,15 +33,13 @@ public class TestActivity extends AppCompatActivity {
     private CaffeDetection caffeDetection;
     private String TAG = "TestActivity";
     File sdcard = Environment.getExternalStorageDirectory();
-    String modelDirtest = sdcard.getAbsolutePath() + "/caffe_mobile/bvlc_reference_caffenet";
-    String modelPrototest = modelDirtest + "/deploy.prototxt";
-    String modelBinarytest = modelDirtest + "/bvlc_reference_caffenet.caffemodel";
 
     String modelDir = sdcard.getAbsolutePath() + "/caffe_mobile/ResNet50";
     String modelProto = modelDir + "/test_agnostic.prototxt";
     String modelBinary = modelDir + "/resnet50_rfcn_final.caffemodel";
+    String modelMean = modelDir + "/imagenet_mean.binaryproto";
 
-    File imageFile = new File(modelDirtest, "001763.jpg");
+    File imageFile = new File(modelDir, "001763.jpg");
 
     private ImageView detecte_iv;
     private ImageView detecte_result;
@@ -66,6 +64,7 @@ public class TestActivity extends AppCompatActivity {
 
         float[] meanValues = {104, 117, 123};
         caffeDetection.setMean(meanValues);
+        //caffeDetection.setMean(modelMean);
         setListener();
     }
 
@@ -93,9 +92,10 @@ public class TestActivity extends AppCompatActivity {
      * @return
      */
     private Bitmap bytes2Bmp(byte[] data){
-        YuvImage yuvimage=new YuvImage(data, ImageFormat.NV21, 480,480, null); //20、20分别是图的宽度与高度
+        YuvImage yuvimage=new YuvImage(data, ImageFormat.NV21, 800,600, null); //20、20分别是图的宽度与高度
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        yuvimage.compressToJpeg(new Rect(0, 0,480, 480), 80, baos);//80--JPG图片的质量[0-100],100最高
+        yuvimage.compressToJpeg(new Rect(0, 0,800, 600), 80, baos);//80--JPG图片的质量[0-100],100最高
+        yuvimage.compressToJpeg(new Rect(0, 0,800, 600), 80, baos);//80--JPG图片的质量[0-100],100最高
         byte[] jdata = baos.toByteArray();
         Bitmap bytes2Bmp = BitmapFactory.decodeByteArray(jdata, 0, jdata.length);
         return bytes2Bmp;
@@ -114,9 +114,7 @@ public class TestActivity extends AppCompatActivity {
                         handler.sendMessage(msg);
                     }
                 }).start();
-
             }
-
         });
     }
 }
