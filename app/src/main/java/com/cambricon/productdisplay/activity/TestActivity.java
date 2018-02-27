@@ -63,8 +63,8 @@ public class TestActivity extends AppCompatActivity {
         Log.d(TAG, "load success");
 
         float[] meanValues = {104, 117, 123};
-        caffeDetection.setMean(meanValues);
-        //caffeDetection.setMean(modelMean);
+        //caffeDetection.setMean(meanValues);
+        caffeDetection.setMean(modelMean);
         setListener();
     }
 
