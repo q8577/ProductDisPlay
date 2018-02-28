@@ -5,11 +5,13 @@ import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -175,6 +177,9 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
      */
     private void setActionBar() {
         setSupportActionBar(toolbar);
+        Drawable toolDrawable= ContextCompat.getDrawable(getApplicationContext(),R.drawable.toolbar_bg);
+        toolDrawable.setAlpha(50);
+        toolbar.setBackground(toolDrawable);
         /*显示Home图标*/
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
