@@ -36,6 +36,8 @@ public class CaffeDetection {
     public byte[] detectImage(String imgPath){
         return detectImage(stringToBytes(imgPath),0,0);
     }
+    public native int getWidth();
+    public native int getHeight();
     //huangyaling
 
     public void setMean(float[] meanValues) {

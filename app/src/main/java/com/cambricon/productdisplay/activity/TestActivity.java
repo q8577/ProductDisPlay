@@ -47,6 +47,8 @@ public class TestActivity extends AppCompatActivity {
     private Bitmap bitmap;
     private Bitmap result;
     byte[] a;
+    private int resultWidth;
+    private int resultHeight;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,10 +94,10 @@ public class TestActivity extends AppCompatActivity {
      * @return
      */
     private Bitmap bytes2Bmp(byte[] data){
-        YuvImage yuvimage=new YuvImage(data, ImageFormat.NV21, 800,600, null); //20、20分别是图的宽度与高度
+        YuvImage yuvimage=new YuvImage(data, ImageFormat.NV21, resultWidth,resultHeight, null); //20、20分别是图的宽度与高度
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        yuvimage.compressToJpeg(new Rect(0, 0,800, 600), 80, baos);//80--JPG图片的质量[0-100],100最高
-        yuvimage.compressToJpeg(new Rect(0, 0,800, 600), 80, baos);//80--JPG图片的质量[0-100],100最高
+        yuvimage.compressToJpeg(new Rect(0, 0,resultWidth, resultHeight), 80, baos);//80--JPG图片的质量[0-100],100最高
+        //yuvimage.compressToJpeg(new Rect(0, 0,800, 600), 80, baos);//80--JPG图片的质量[0-100],100最高
         byte[] jdata = baos.toByteArray();
         Bitmap bytes2Bmp = BitmapFactory.decodeByteArray(jdata, 0, jdata.length);
         return bytes2Bmp;
@@ -111,6 +113,9 @@ public class TestActivity extends AppCompatActivity {
                         Message msg = new Message();
                         msg.what = 1;
                         a=caffeDetection.detectImage(imageFile.getPath());
+                        resultWidth=caffeDetection.getWidth();
+                        resultHeight=caffeDetection.getHeight();
+                        Log.d("huangyaling","resultWidth="+resultWidth+";resultHeight"+resultHeight);
                         handler.sendMessage(msg);
                     }
                 }).start();
