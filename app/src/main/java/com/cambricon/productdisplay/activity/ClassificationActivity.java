@@ -23,6 +23,7 @@ import com.cambricon.productdisplay.R;
 import com.cambricon.productdisplay.caffenative.CaffeMobile;
 import com.cambricon.productdisplay.db.ClassificationDB;
 import com.cambricon.productdisplay.task.CNNListener;
+import com.cambricon.productdisplay.utils.ConvertUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,9 +42,12 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
     private Button classification_begin;
     private Button classification_end;
     private ImageView ivCaptured;
-    private TextView tvLabel;
+    private TextView testResult;
     private TextView loadCaffe;
     private TextView testTime;
+    private TextView function_text;
+    private TextView textFps;
+    private TextView testPro;
     private ProgressDialog dialog;
     private Bitmap bmp;
     private CaffeMobile caffeMobile;
@@ -78,6 +82,11 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
         classification_begin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                function_text.setVisibility(View.GONE);
+                testPro.setText(getString(R.string.classification_begin_guide));
+                testResult.setVisibility(View.VISIBLE);
+                testTime.setVisibility(View.VISIBLE);
+                textFps.setVisibility(View.VISIBLE);
                 isExist=true;
                 startThread();
                 classification_begin.setVisibility(View.GONE);
@@ -88,6 +97,7 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
         classification_end.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                testPro.setText(getString(R.string.classification_pasue_guide));
                 isExist=false;
                 classification_begin.setVisibility(View.VISIBLE);
                 classification_end.setVisibility(View.GONE);
@@ -147,9 +157,12 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
 
     private void init() {
         ivCaptured = (ImageView) findViewById(R.id.classification_img);
-        tvLabel = (TextView) findViewById(R.id.test_result);
+        testResult = (TextView) findViewById(R.id.test_result);
         testTime=findViewById(R.id.test_time);
         loadCaffe = findViewById(R.id.load_caffe);
+        function_text=findViewById(R.id.function_describe);
+        textFps=findViewById(R.id.test_fps);
+        testPro=findViewById(R.id.test_guide);
         classification_begin = findViewById(R.id.classification_begin);
         classification_end=findViewById(R.id.classification_end);
         this.toolbar = (Toolbar) findViewById(R.id.classification_toolbar);
@@ -218,11 +231,10 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
         TARGET_WIDTH = ivCaptured.getWidth();
         TARGET_HEIGHT = ivCaptured.getHeight();
         ivCaptured.setImageBitmap(zoomBitmap(bmp));
-        //db begin
         classificationDB.addClassification(imageName[startIndex],String.valueOf(classificationTime),getFps(classificationTime),IMAGENET_CLASSES[result]);
-        //db end
         startIndex++;
-        tvLabel.setText(getResources().getString(R.string.test_result)+IMAGENET_CLASSES[result]);
+        testResult.setText(getResources().getString(R.string.test_result)+IMAGENET_CLASSES[result]);
+        textFps.setText(getResources().getString(R.string.test_fps)+ ConvertUtil.getFps(getFps(classificationTime))+getResources().getString(R.string.test_fps_units));
         if (startIndex >=imageName.length) {
             startIndex = startIndex % imageName.length;
             Log.d(LOG_TAG, "startIndex=" + startIndex);

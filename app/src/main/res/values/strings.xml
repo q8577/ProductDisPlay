@@ -9,7 +9,9 @@
     <string name="gv_text_item4">更多</string>
     <string name="begin_btn">开始测试</string>
     <string name="end_btn">停止测试</string>
-    <string name="classification_data_guide">机器识别图片分类，评测机器每秒可以处理图片的FPS值</string>
+    <string name="classification_begin_guide">图片分类进行中...</string>
+    <string name="classification_pasue_guide">图片分类暂停中...</string>
+    <string name="classification_data_guide">机器识别图片分类结果显示</string>
     <string name="classification_imge_guide">图片分类会通过特定的训练模型，分类识别图片，按照分类概率高低输出可能的结果列表</string>
     <string name="newsinfo_title">"寒武纪科技"</string>
     <string name="news_item_foot">"* * * * * * 已浏览全部内容 * * * * * *"</string>
@@ -17,6 +19,8 @@
     <string name="classificaton_res_toast">请先导入需要的资源文件</string>
     <string name="test_time">测试时间：</string>
     <string name="test_result">分类结果：</string>
+    <string name="test_fps">Fps值：</string>
+    <string name="test_fps_units">张/分钟</string>
     <string name="load_model">加载分类模型耗时：</string>
     <string name="classification_chart_title">最近10次图片分类fps值</string>
     <string name="classification_chart_desc">图片分类fps值</string>
