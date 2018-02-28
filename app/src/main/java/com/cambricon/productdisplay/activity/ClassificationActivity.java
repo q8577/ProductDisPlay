@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.cambricon.productdisplay.R;
 import com.cambricon.productdisplay.caffenative.CaffeMobile;
+import com.cambricon.productdisplay.db.ClassificationDB;
 import com.cambricon.productdisplay.task.CNNListener;
 
 import java.io.File;
@@ -50,6 +51,8 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
     public static int startIndex = 0;
     public Thread testThread;
     public static boolean isExist=true;
+    private double classificationTime;
+    private ClassificationDB classificationDB;
 
     private static float TARGET_WIDTH;
     private static float TARGET_HEIGHT;
@@ -150,6 +153,8 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
         classification_begin = findViewById(R.id.classification_begin);
         classification_end=findViewById(R.id.classification_end);
         this.toolbar = (Toolbar) findViewById(R.id.classification_toolbar);
+        classificationDB=new ClassificationDB(getApplicationContext());
+        classificationDB.open();
     }
 
     /**
@@ -177,6 +182,12 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
         return result;
     }
 
+    private String getFps(double classificationTime){
+        double fps=60*1000/classificationTime;
+        Log.d(LOG_TAG,"fps:"+fps);
+        return String.valueOf(fps);
+    }
+
 
     private class CNNTask extends AsyncTask<String, Void, Integer> {
         private CNNListener listener;
@@ -194,9 +205,8 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
 
         @Override
         protected void onPostExecute(Integer integer) {
-            String loadtime = String.valueOf(SystemClock.uptimeMillis() - startTime);
-            testTime.setText(getResources().getString(R.string.test_time)+loadtime+"ms");
-            Log.i(LOG_TAG, String.format("elapsed wall time: %d ms", SystemClock.uptimeMillis() - startTime));
+            classificationTime = SystemClock.uptimeMillis() - startTime;
+            testTime.setText(getResources().getString(R.string.test_time)+String.valueOf(classificationTime)+"ms");
             listener.onTaskCompleted(integer);
             super.onPostExecute(integer);
         }
@@ -208,9 +218,12 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
         TARGET_WIDTH = ivCaptured.getWidth();
         TARGET_HEIGHT = ivCaptured.getHeight();
         ivCaptured.setImageBitmap(zoomBitmap(bmp));
+        //db begin
+        classificationDB.addClassification(imageName[startIndex],String.valueOf(classificationTime),getFps(classificationTime),IMAGENET_CLASSES[result]);
+        //db end
         startIndex++;
         tvLabel.setText(getResources().getString(R.string.test_result)+IMAGENET_CLASSES[result]);
-        if (startIndex >= imageName.length) {
+        if (startIndex >=imageName.length) {
             startIndex = startIndex % imageName.length;
             Log.d(LOG_TAG, "startIndex=" + startIndex);
         }

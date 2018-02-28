@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cambricon.productdisplay.R;
+import com.cambricon.productdisplay.bean.ClassificationImage;
+import com.cambricon.productdisplay.db.ClassificationDB;
+import com.cambricon.productdisplay.utils.Config;
+import com.cambricon.productdisplay.utils.ConvertUtil;
 
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
@@ -23,6 +28,8 @@ import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.model.XYSeries;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
+
+import java.util.ArrayList;
 
 /**
  * Created by dell on 18-2-8.
@@ -34,6 +41,13 @@ public class ClassificationData extends Fragment {
     private String content;
     private LinearLayout linearLayout;
     private GraphicalView graphicalView;
+    private int[] points;
+    private double[] avgTimes;
+    private static double avgTimeValue=0.00;
+    private static int avgFpsValue;
+    private TextView fps_tv;
+    private TextView time_tv;
+    private ClassificationDB classificationDB;
     public ClassificationData(){
 
     }
@@ -49,11 +63,36 @@ public class ClassificationData extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.classification_data_layout, null);
         init();
+        getData();
         showChart();
         return view;
     }
     private void init(){
         linearLayout=view.findViewById(R.id.chart_line);
+        classificationDB=new ClassificationDB(getContext());
+        classificationDB.open();
+        fps_tv=view.findViewById(R.id.avg_fps);
+        time_tv=view.findViewById(R.id.avg_time);
+    }
+    private void getData(){
+        double allTime=0.00;
+        int allFps=0;
+        ArrayList<ClassificationImage> allTicketsList = new ArrayList<>();
+        allTicketsList=classificationDB.fetchAll();
+        if(allTicketsList.size()!=0){
+            avgTimes=new double[allTicketsList.size()];
+            points=new int[Config.ChartPointNum];
+            for(int i=0;i<allTicketsList.size();i++){
+                points[i]= ConvertUtil.getFps(allTicketsList.get(i).getFps());
+                avgTimes[i]=ConvertUtil.convert2Double(allTicketsList.get(i).getTime());
+                allTime=allTime+avgTimes[i];
+                allFps=allFps+points[i];
+            }
+            avgTimeValue=allTime/allTicketsList.size();
+            avgFpsValue=(int) allFps/allTicketsList.size();
+            fps_tv.append(String.valueOf(avgFpsValue)+"张/分钟");
+            time_tv.append(String.valueOf(avgTimeValue)+"ms");
+        }
     }
 
     private void showChart() {
@@ -65,16 +104,9 @@ public class ClassificationData extends Fragment {
     private XYMultipleSeriesDataset getDataSet() {
         XYMultipleSeriesDataset seriesDataset=new XYMultipleSeriesDataset();
         XYSeries xySeries1=new XYSeries(getContext().getResources().getString(R.string.classification_chart_desc));
-        xySeries1.add(1, 36);
-        xySeries1.add(2, 30);
-        xySeries1.add(3, 27);
-        xySeries1.add(4, 29);
-        xySeries1.add(5, 34);
-        xySeries1.add(6, 28);
-        xySeries1.add(7, 33);
-        xySeries1.add(8, 32);
-        xySeries1.add(9, 30);
-        xySeries1.add(10, 34);
+        for(int i=1;i<=Config.ChartPointNum;i++){
+            xySeries1.add(i,points[i-1]);
+        }
         seriesDataset.addSeries(xySeries1);
 
         return seriesDataset;
@@ -88,7 +120,7 @@ public class ClassificationData extends Fragment {
         //坐标轴设置
         seriesRenderer.setAxisTitleTextSize(30);//设置坐标轴标题字体的大小
         seriesRenderer.setYAxisMin(0);//设置y轴的起始值
-        seriesRenderer.setYAxisMax(200);//设置y轴的最大值
+        seriesRenderer.setYAxisMax(30);//设置y轴的最大值
         seriesRenderer.setYLabels(10);//设置y轴显示点数
         seriesRenderer.setXAxisMin(0.5);//设置x轴起始值
         seriesRenderer.setXAxisMax(10.5);//设置x轴最大值
@@ -110,16 +142,9 @@ public class ClassificationData extends Fragment {
         seriesRenderer.setXLabelsAlign(Paint.Align.CENTER);
         seriesRenderer.setYLabelsAlign(Paint.Align.LEFT);
         seriesRenderer.setXLabels(0);//显示的x轴标签的个数
-        seriesRenderer.addXTextLabel(1, "1");//针对特定的x轴值增加文本标签
-        seriesRenderer.addXTextLabel(2, "2");
-        seriesRenderer.addXTextLabel(3, "3");
-        seriesRenderer.addXTextLabel(4, "4");
-        seriesRenderer.addXTextLabel(5, "5");
-        seriesRenderer.addXTextLabel(6, "6");
-        seriesRenderer.addXTextLabel(7, "7");
-        seriesRenderer.addXTextLabel(8, "8");
-        seriesRenderer.addXTextLabel(9, "9");
-        seriesRenderer.addXTextLabel(10, "10");
+        for(int i=1;i<=Config.ChartPointNum;i++){
+            seriesRenderer.addXTextLabel(i, String.valueOf(i));
+        }
         seriesRenderer.setPointSize(5);//设置坐标点大小
 
         seriesRenderer.setMarginsColor(Color.WHITE);//设置外边距空间的颜色
