@@ -2,6 +2,7 @@ package com.cambricon.productdisplay.activity;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.cambricon.productdisplay.R;
@@ -33,6 +35,16 @@ public class HomeActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private RadioGroup radioGroup;
     private LinearLayout relMenu;
+    private RadioButton testbtn;
+    private RadioButton databtn;
+    private RadioButton newsbtn;
+
+    private Drawable test_on;
+    private Drawable test_off;
+    private Drawable data_on;
+    private Drawable data_off;
+    private Drawable news_on;
+    private Drawable news_off;
 
     private TestFragment testFragment;
     private DataFragment dataFragment;
@@ -50,6 +62,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.home_layout);
         initView();
         initFragment();
+        initRadioBtn();
         setActionBar();
         setListener();
         setDrawerToggle();
@@ -80,6 +93,9 @@ public class HomeActivity extends AppCompatActivity {
         this.toolbar = (Toolbar) findViewById(R.id.toolbar);
         drawerLayout = findViewById(R.id.mydrawer);
         radioGroup = findViewById(R.id.rel_navigate);
+        testbtn=findViewById(R.id.tab_test);
+        databtn=findViewById(R.id.tab_data);
+        newsbtn=findViewById(R.id.tab_adv);
         commDB=new CommDB(this);
         commDB.open();
 
@@ -91,6 +107,23 @@ public class HomeActivity extends AppCompatActivity {
         testFragment = new TestFragment();
         fragmentTransaction.add(R.id.main_content, testFragment);
         fragmentTransaction.commit();
+    }
+
+    private void initRadioBtn(){
+        test_on=getResources().getDrawable(R.mipmap.test_on);
+        test_off=getResources().getDrawable(R.mipmap.test_off);
+        data_on=getResources().getDrawable(R.mipmap.data_on);
+        data_off=getResources().getDrawable(R.mipmap.data_off);
+        news_on=getResources().getDrawable(R.mipmap.news_on);
+        news_off=getResources().getDrawable(R.mipmap.news_off);
+        test_on.setBounds(1,1,test_on.getIntrinsicWidth(),test_on.getIntrinsicHeight());
+        test_off.setBounds(1,1,test_off.getIntrinsicWidth(),test_off.getIntrinsicHeight());
+        data_on.setBounds(1,1,data_on.getIntrinsicWidth(),data_on.getIntrinsicHeight());
+        data_off.setBounds(1,1,data_off.getIntrinsicWidth(),data_off.getIntrinsicHeight());
+        news_on.setBounds(1,1,news_on.getIntrinsicWidth(),news_on.getIntrinsicHeight());
+        news_off.setBounds(1,1,news_off.getIntrinsicWidth(),news_off.getIntrinsicHeight());
+
+
     }
 
     private void hideAll(FragmentTransaction transaction) {
@@ -117,6 +150,12 @@ public class HomeActivity extends AppCompatActivity {
                 Log.d("huangyaling", "checkId:" + checkId);
                 switch (checkId) {
                     case R.id.tab_test:
+                        databtn.setCompoundDrawables(null,data_off,null,null);
+                        testbtn.setCompoundDrawables(null,test_on,null,null);
+                        newsbtn.setCompoundDrawables(null,news_off,null,null);
+                        databtn.setTextColor(getResources().getColor(R.color.home_text_color));
+                        testbtn.setTextColor(getResources().getColor(R.color.main_line));
+                        newsbtn.setTextColor(getResources().getColor(R.color.home_text_color));
 
                         FragmentTransaction testTransaction = fragmentManager.beginTransaction();
                         hideAll(testTransaction);
@@ -129,6 +168,13 @@ public class HomeActivity extends AppCompatActivity {
                         testTransaction.commit();
                         break;
                     case R.id.tab_data:
+                        databtn.setCompoundDrawables(null,data_on,null,null);
+                        testbtn.setCompoundDrawables(null,test_off,null,null);
+                        newsbtn.setCompoundDrawables(null,news_off,null,null);
+                        databtn.setTextColor(getResources().getColor(R.color.main_line));
+                        testbtn.setTextColor(getResources().getColor(R.color.home_text_color));
+                        newsbtn.setTextColor(getResources().getColor(R.color.home_text_color));
+
                         FragmentTransaction dataTransaction = fragmentManager.beginTransaction();
                         hideAll(dataTransaction);
                         if (dataFragment == null) {
@@ -140,6 +186,12 @@ public class HomeActivity extends AppCompatActivity {
                         dataTransaction.commit();
                         break;
                     case R.id.tab_adv:
+                        databtn.setCompoundDrawables(null,data_off,null,null);
+                        testbtn.setCompoundDrawables(null,test_off,null,null);
+                        newsbtn.setCompoundDrawables(null,news_on,null,null);
+                        databtn.setTextColor(getResources().getColor(R.color.home_text_color));
+                        testbtn.setTextColor(getResources().getColor(R.color.home_text_color));
+                        newsbtn.setTextColor(getResources().getColor(R.color.main_line));
                         FragmentTransaction newsTransaction = fragmentManager.beginTransaction();
                         hideAll(newsTransaction);
                         if (newsFragment == null) {
