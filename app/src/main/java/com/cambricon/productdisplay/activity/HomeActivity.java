@@ -19,6 +19,7 @@ import android.widget.RadioGroup;
 
 import com.cambricon.productdisplay.R;
 import com.cambricon.productdisplay.db.CommDB;
+import com.cambricon.productdisplay.utils.StatusBarCompat;
 
 /**
  * Created by dell on 18-2-3.
@@ -45,6 +46,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        StatusBarCompat.compat(this, ContextCompat.getColor(this, R.color.main_line));
         setContentView(R.layout.home_layout);
         initView();
         initFragment();

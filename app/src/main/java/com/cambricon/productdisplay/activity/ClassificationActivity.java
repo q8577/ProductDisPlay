@@ -4,14 +4,17 @@ import android.app.ProgressDialog;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -26,6 +29,7 @@ import com.cambricon.productdisplay.caffenative.CaffeMobile;
 import com.cambricon.productdisplay.db.ClassificationDB;
 import com.cambricon.productdisplay.task.CNNListener;
 import com.cambricon.productdisplay.utils.ConvertUtil;
+import com.cambricon.productdisplay.utils.StatusBarCompat;
 
 import java.io.File;
 import java.io.IOException;
@@ -78,6 +82,7 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        StatusBarCompat.compat(this, ContextCompat.getColor(this, R.color.colorPrimary));
         setContentView(R.layout.classification_layout);
         init();
         setActionBar();
@@ -205,7 +210,6 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
         Log.d(LOG_TAG,"fps:"+fps);
         return String.valueOf(fps);
     }
-
 
     private class CNNTask extends AsyncTask<String, Void, Integer> {
         private CNNListener listener;
