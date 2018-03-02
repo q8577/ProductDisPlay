@@ -52,7 +52,9 @@ public class TestFragment extends Fragment {
                         startActivity(new Intent(getActivity(),ClassificationActivity.class));
                         break;
                     case DETECTION:
-                        startActivity(new Intent(getActivity(),DetectionActivity.class));
+                        Intent intent = new Intent(getActivity(),DetectionActivity2.class);
+                        intent.putExtra("Detection",getActivity().getIntent().getSerializableExtra("caffeDetection"));
+                        startActivity(intent);
                         break;
                     case VOICE:
                         startActivity(new Intent(getActivity(),SemanticsActivity.class));

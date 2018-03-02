@@ -72,7 +72,9 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
     String modelProto = modelDir + "/deploy.prototxt";
     String modelBinary = modelDir + "/bvlc_reference_caffenet.caffemodel";
 
-    String[] imageName = new String[]{"test_image.jpg", "test_image2.jpg", "test_image3.jpg", "test_image4.jpg"};
+//    String[] imageName = new String[]{"test_image.jpg", "test_image2.jpg", "test_image3.jpg", "test_image4.jpg"};
+    String[] imageName = new String[]{"300.jpg", "400.jpg", "500.jpg", "600.jpg","700.jpg"};
+
     File imageFile = new File(sdcard, imageName[0]);
 
     static {
@@ -187,6 +189,12 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
         toolbar.setBackground(toolDrawable);
         /*显示Home图标*/
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     /**

@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.util.Log;
 
+import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
@@ -12,7 +13,7 @@ import java.nio.charset.StandardCharsets;
  * Created by dell on 18-2-3.
  */
 
-public class CaffeDetection {
+public class CaffeDetection implements Serializable{
     static {
         System.loadLibrary("detecte_jni");
     }

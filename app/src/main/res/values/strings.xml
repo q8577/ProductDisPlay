@@ -10,7 +10,9 @@
     <string name="begin_btn">开始测试</string>
     <string name="end_btn">停止测试</string>
     <string name="classification_begin_guide">图片分类进行中...</string>
+    <string name="detection_begin_guide">目标检测进行中...</string>
     <string name="classification_pasue_guide">图片分类暂停中...</string>
+    <string name="detection_pasue_guide">目标检测暂停中...</string>
     <string name="classification_data_guide">机器识别图片分类结果显示</string>
     <string name="classification_imge_guide">图片分类会通过特定的训练模型，分类识别图片，按照分类概率高低输出可能的结果列表</string>
     <string name="newsinfo_title">"寒武纪科技"</string>
@@ -26,5 +28,7 @@
     <string name="classification_chart_desc">图片分类fps值</string>
     <string name="classification_chart_y">FPS值：张/分钟</string>
     <string name="classification_chart_x">第几次</string>
+    <string name="Detection_toolbar_title">目标检测——CPU模式</string>
+
 
 </resources>
