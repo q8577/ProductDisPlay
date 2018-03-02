@@ -35,11 +35,21 @@ public class TestActivity extends AppCompatActivity {
     File sdcard = Environment.getExternalStorageDirectory();
 
     String modelDir = sdcard.getAbsolutePath() + "/caffe_mobile/ResNet50";
+//    String modelDir = sdcard.getAbsolutePath() + "/caffe_mobile/ResNet-101";
+
     String modelProto = modelDir + "/test_agnostic.prototxt";
+
     String modelBinary = modelDir + "/resnet50_rfcn_final.caffemodel";
+//    String modelBinary = modelDir + "/resnet101_rfcn_final.caffemodel";
+
     String modelMean = modelDir + "/imagenet_mean.binaryproto";
+//    String modelMean = modelDir + "/resnet101_imagenet_mean.binaryproto";
+
 
     File imageFile = new File(modelDir, "001763.jpg");
+    //    File imageFile = new File(sdcard.getAbsolutePath()+"/caffe_mobile/","cat.jpg");
+    //    File imageFile = new File(sdcard.getAbsolutePath()+"/caffe_mobile/","dog2.jpg");
+    //    File imageFile = new File(sdcard.getAbsolutePath()+"/caffe_mobile/re/test/","304.jpg");
 
     private ImageView detecte_iv;
     private ImageView detecte_result;
@@ -74,6 +84,14 @@ public class TestActivity extends AppCompatActivity {
         detecte_iv = findViewById(R.id.detecte_image);
         detecte_begin=findViewById(R.id.detecte_begin);
         detecte_result=findViewById(R.id.detecte_result);
+
+        Button testbutton = findViewById(R.id.test);
+        testbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                detect();
+            }
+        });
     }
 
     private Handler handler = new Handler(){
@@ -121,5 +139,23 @@ public class TestActivity extends AppCompatActivity {
                 }).start();
             }
         });
+    }
+
+    public void detect(){
+        Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getPath());
+        int w = bitmap.getWidth();
+        int h = bitmap.getHeight();
+        Log.e(TAG, "test: "+w+","+h);
+        int[] pixels = new int[w*h];
+        bitmap.getPixels(pixels,0,w,0,0,w,h);
+
+        Log.e(TAG, "test: "+pixels);
+
+
+        int[] resultInt = caffeDetection.grayPoc(pixels,w,h);
+
+        Bitmap resBitmap = Bitmap.createBitmap(resultInt,w,h,bitmap.getConfig());
+        detecte_result.setImageBitmap(resBitmap);
+
     }
 }

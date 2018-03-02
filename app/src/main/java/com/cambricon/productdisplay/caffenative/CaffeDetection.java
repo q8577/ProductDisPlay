@@ -47,4 +47,6 @@ public class CaffeDetection {
     public void setMean(String meanFile) {
         setMeanWithMeanFile(meanFile);
     }
+
+    public native int[] grayPoc(int[] pixels,int w,int h);
 }
