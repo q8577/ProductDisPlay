@@ -29,19 +29,20 @@
                 android:id="@+id/avg_fps"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="平均FPS值:" />
+                android:text="@string/classification_avg_time" />
 
             <TextView
                 android:id="@+id/avg_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="单张图片平均时间:" />
+                android:text="@string/classification_single_time" />
 
             <TextView
                 android:id="@+id/all_result"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="测试结果详情:" />
+                android:textColor="@color/menu_background"
+                android:text="@string/classification_result" />
         </LinearLayout>
     </LinearLayout>
 

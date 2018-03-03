@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.PagerAdapter;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -14,12 +15,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cambricon.productdisplay.R;
+import com.cambricon.productdisplay.adapter.UltraPagerAdapter;
 import com.cambricon.productdisplay.bean.ClassificationImage;
 import com.cambricon.productdisplay.db.ClassificationDB;
 import com.cambricon.productdisplay.utils.Config;
 import com.cambricon.productdisplay.utils.ConvertUtil;
+import com.cambricon.productdisplay.view.ResultDialog;
+import com.tmall.ultraviewpager.UltraViewPager;
+import com.tmall.ultraviewpager.transformer.UltraDepthScaleTransformer;
 
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
@@ -47,7 +53,11 @@ public class ClassificationData extends Fragment {
     private static int avgFpsValue;
     private TextView fps_tv;
     private TextView time_tv;
+    private TextView result_tv;
     private ClassificationDB classificationDB;
+    private UltraViewPager ultraViewPager_dialog;
+    private PagerAdapter adapter_dialog;
+    private ArrayList<ClassificationImage> allTicketsList;
     public ClassificationData(){
 
     }
@@ -65,6 +75,7 @@ public class ClassificationData extends Fragment {
         init();
         getData();
         showChart();
+        setListener();
         return view;
     }
     private void init(){
@@ -73,11 +84,12 @@ public class ClassificationData extends Fragment {
         classificationDB.open();
         fps_tv=view.findViewById(R.id.avg_fps);
         time_tv=view.findViewById(R.id.avg_time);
+        result_tv=view.findViewById(R.id.all_result);
     }
     private void getData(){
         double allTime=0.00;
         int allFps=0;
-        ArrayList<ClassificationImage> allTicketsList = new ArrayList<>();
+        allTicketsList = new ArrayList<>();
         allTicketsList=classificationDB.fetchAll();
         if(allTicketsList.size()!=0){
             avgTimes=new double[allTicketsList.size()];
@@ -91,8 +103,35 @@ public class ClassificationData extends Fragment {
             avgTimeValue=allTime/allTicketsList.size();
             avgFpsValue=(int) allFps/allTicketsList.size();
             fps_tv.append(String.valueOf(avgFpsValue)+"张/分钟");
-            time_tv.append(String.valueOf(avgTimeValue)+"ms");
+            time_tv.append(String.valueOf((int) avgTimeValue)+"ms");
         }
+    }
+
+    private void setListener(){
+        result_tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ResultDialog dialog=new ResultDialog(getContext());
+                View contentView1 = LayoutInflater.from(getContext()).inflate(
+                        R.layout.result_dialog, null);
+                ultraViewPager_dialog = contentView1.findViewById(R.id.ultra_viewpager_dialog);
+                ultraViewPager_dialog.setScrollMode(UltraViewPager.ScrollMode.HORIZONTAL);
+                adapter_dialog = new UltraPagerAdapter(true,allTicketsList);
+                ultraViewPager_dialog.setAdapter(adapter_dialog);
+                ultraViewPager_dialog.setMultiScreen(0.6f);
+                ultraViewPager_dialog.setItemRatio(1.0f);
+                ultraViewPager_dialog.setAutoMeasureHeight(true);
+                ultraViewPager_dialog.setPageTransformer(false, new UltraDepthScaleTransformer());
+                dialog.setContentView(contentView1);
+                dialog.setTitle("测试结果");
+                dialog.setCanceledOnTouchOutside(true);
+                if(allTicketsList.size()>0){
+                    dialog.show();
+                }else{
+                    Toast.makeText(getContext(),getString(R.string.classification_dialog_null),Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private void showChart() {
