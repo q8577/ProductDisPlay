@@ -15,7 +15,7 @@
     <string name="classification_end_guide">图片分类已停止</string>
     <string name="detection_pasue_guide">目标检测暂停中...</string>
     <string name="classification_data_guide">机器识别图片分类结果显示</string>
-    <string name="classification_imge_guide">图片分类会通过特定的训练模型，分类识别图片，按照分类概率高低输出可能的结果列表</string>
+    <string name="classification_imge_guide">图片分类:\n\t\t\t\t图片分类会通过特定的训练模型，分类识别图片，按照分类概率高低输出可能的结果列表。</string>
     <string name="newsinfo_title">"寒武纪科技"</string>
     <string name="news_item_foot">"* * * * * * 已浏览全部内容 * * * * * *"</string>
     <string name="newsinfo_recover">"重新加载"</string>
