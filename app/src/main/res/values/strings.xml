@@ -12,6 +12,7 @@
     <string name="classification_begin_guide">图片分类进行中...</string>
     <string name="detection_begin_guide">目标检测进行中...</string>
     <string name="classification_pasue_guide">图片分类暂停中...</string>
+    <string name="classification_end_guide">图片分类已停止</string>
     <string name="detection_pasue_guide">目标检测暂停中...</string>
     <string name="classification_data_guide">机器识别图片分类结果显示</string>
     <string name="classification_imge_guide">图片分类会通过特定的训练模型，分类识别图片，按照分类概率高低输出可能的结果列表</string>

@@ -1,4 +1,4 @@
-# Install script for directory: /home/gzb/gzb1/ProTest/a1/ProductDisPlay/app
+# Install script for directory: /home/dell/huangyaling/MyProject/ProductDisPlay/app
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/gzb/gzb1/ProTest/a1/ProductDisPlay/app/.externalNativeBuild/cmake/debug/armeabi/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/dell/huangyaling/MyProject/ProductDisPlay/app/.externalNativeBuild/cmake/debug/armeabi/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

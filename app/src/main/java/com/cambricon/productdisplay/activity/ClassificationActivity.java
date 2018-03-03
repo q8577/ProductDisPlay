@@ -4,19 +4,13 @@ import android.app.ProgressDialog;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -28,6 +22,7 @@ import com.cambricon.productdisplay.R;
 import com.cambricon.productdisplay.caffenative.CaffeMobile;
 import com.cambricon.productdisplay.db.ClassificationDB;
 import com.cambricon.productdisplay.task.CNNListener;
+import com.cambricon.productdisplay.utils.Config;
 import com.cambricon.productdisplay.utils.ConvertUtil;
 import com.cambricon.productdisplay.utils.StatusBarCompat;
 
@@ -54,28 +49,19 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
     private TextView function_text;
     private TextView textFps;
     private TextView testPro;
-    private ProgressDialog dialog;
     private Bitmap bmp;
     private CaffeMobile caffeMobile;
 
     public static int startIndex = 0;
     public Thread testThread;
-    public static boolean isExist=true;
+    public static boolean isExist = true;
     private double classificationTime;
     private ClassificationDB classificationDB;
 
     private static float TARGET_WIDTH;
     private static float TARGET_HEIGHT;
 
-    File sdcard = Environment.getExternalStorageDirectory();
-    String modelDir = sdcard.getAbsolutePath() + "/caffe_mobile/bvlc_reference_caffenet";
-    String modelProto = modelDir + "/deploy.prototxt";
-    String modelBinary = modelDir + "/bvlc_reference_caffenet.caffemodel";
-
-//    String[] imageName = new String[]{"test_image.jpg", "test_image2.jpg", "test_image3.jpg", "test_image4.jpg"};
-    String[] imageName = new String[]{"300.jpg", "400.jpg", "500.jpg", "600.jpg","700.jpg"};
-
-    File imageFile = new File(sdcard, imageName[0]);
+    File imageFile = new File(Config.sdcard, Config.imageName[0]);
 
     static {
         System.loadLibrary("caffe_jni");
@@ -96,7 +82,7 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
                 testResult.setVisibility(View.VISIBLE);
                 testTime.setVisibility(View.VISIBLE);
                 textFps.setVisibility(View.VISIBLE);
-                isExist=true;
+                isExist = true;
                 startThread();
                 classification_begin.setVisibility(View.GONE);
                 classification_end.setVisibility(View.VISIBLE);
@@ -107,7 +93,7 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
             @Override
             public void onClick(View view) {
                 testPro.setText(getString(R.string.classification_pasue_guide));
-                isExist=false;
+                isExist = false;
                 classification_begin.setVisibility(View.VISIBLE);
                 classification_end.setVisibility(View.GONE);
             }
@@ -116,10 +102,10 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
         caffeMobile = new CaffeMobile();
         caffeMobile.setNumThreads(4);
         long start_time = System.nanoTime();
-        caffeMobile.loadModel(modelProto, modelBinary);
+        caffeMobile.loadModel(Config.modelProto, Config.modelBinary);
         long end_time = System.nanoTime();
         loadCaffe.append(String.valueOf((end_time - start_time) / 1e6));
-        loadCaffe.setText(getResources().getString(R.string.load_model)+String.valueOf((end_time - start_time) / 1e6)+"ms");
+        loadCaffe.setText(getResources().getString(R.string.load_model) + String.valueOf((end_time - start_time) / 1e6) + "ms");
 
         float[] meanValues = {104, 117, 123};
         caffeMobile.setMean(meanValues);
@@ -142,40 +128,40 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        isExist=false;
+        isExist = false;
     }
 
     public void startThread() {
         testThread = new Thread(new Runnable() {
             @Override
             public synchronized void run() {
-                imageFile = new File(sdcard, imageName[startIndex]);
+                imageFile = new File(Config.sdcard, Config.imageName[startIndex]);
                 bmp = BitmapFactory.decodeFile(imageFile.getPath());
                 CNNTask cnnTask = new CNNTask(ClassificationActivity.this);
                 if (imageFile.exists()) {
                     cnnTask.execute(imageFile.getPath());
                 } else {
-                    Toast.makeText(ClassificationActivity.this, "image File is not exists", Toast.LENGTH_SHORT).show();
+                    Log.d(LOG_TAG,"file is not exist");
                 }
             }
         });
-        if(isExist){
+        if (isExist) {
             testThread.start();
         }
     }
 
     private void init() {
-        ivCaptured = (ImageView) findViewById(R.id.classification_img);
-        testResult = (TextView) findViewById(R.id.test_result);
-        testTime=findViewById(R.id.test_time);
+        ivCaptured = findViewById(R.id.classification_img);
+        testResult = findViewById(R.id.test_result);
+        testTime = findViewById(R.id.test_time);
         loadCaffe = findViewById(R.id.load_caffe);
-        function_text=findViewById(R.id.function_describe);
-        textFps=findViewById(R.id.test_fps);
-        testPro=findViewById(R.id.test_guide);
+        function_text = findViewById(R.id.function_describe);
+        textFps = findViewById(R.id.test_fps);
+        testPro = findViewById(R.id.test_guide);
         classification_begin = findViewById(R.id.classification_begin);
-        classification_end=findViewById(R.id.classification_end);
-        this.toolbar = (Toolbar) findViewById(R.id.classification_toolbar);
-        classificationDB=new ClassificationDB(getApplicationContext());
+        classification_end = findViewById(R.id.classification_end);
+        this.toolbar = findViewById(R.id.classification_toolbar);
+        classificationDB = new ClassificationDB(getApplicationContext());
         classificationDB.open();
     }
 
@@ -183,8 +169,9 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
      * 设置ActionBar
      */
     private void setActionBar() {
+        toolbar.setTitle(R.string.gv_text_item1);
         setSupportActionBar(toolbar);
-        Drawable toolDrawable= ContextCompat.getDrawable(getApplicationContext(),R.drawable.toolbar_bg);
+        Drawable toolDrawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.toolbar_bg);
         toolDrawable.setAlpha(50);
         toolbar.setBackground(toolDrawable);
         /*显示Home图标*/
@@ -213,9 +200,9 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
         return result;
     }
 
-    private String getFps(double classificationTime){
-        double fps=60*1000/classificationTime;
-        Log.d(LOG_TAG,"fps:"+fps);
+    private String getFps(double classificationTime) {
+        double fps = 60 * 1000 / classificationTime;
+        Log.d(LOG_TAG, "fps:" + fps);
         return String.valueOf(fps);
     }
 
@@ -236,7 +223,7 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
         @Override
         protected void onPostExecute(Integer integer) {
             classificationTime = SystemClock.uptimeMillis() - startTime;
-            testTime.setText(getResources().getString(R.string.test_time)+String.valueOf(classificationTime)+"ms");
+            testTime.setText(getResources().getString(R.string.test_time) + String.valueOf(classificationTime) + "ms");
             listener.onTaskCompleted(integer);
             super.onPostExecute(integer);
         }
@@ -248,13 +235,16 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
         TARGET_WIDTH = ivCaptured.getWidth();
         TARGET_HEIGHT = ivCaptured.getHeight();
         ivCaptured.setImageBitmap(zoomBitmap(bmp));
-        classificationDB.addClassification(imageName[startIndex],String.valueOf(classificationTime),getFps(classificationTime),IMAGENET_CLASSES[result]);
+        classificationDB.addClassification(Config.imageName[startIndex], String.valueOf(classificationTime), getFps(classificationTime), IMAGENET_CLASSES[result]);
         startIndex++;
-        testResult.setText(getResources().getString(R.string.test_result)+IMAGENET_CLASSES[result]);
-        textFps.setText(getResources().getString(R.string.test_fps)+ ConvertUtil.getFps(getFps(classificationTime))+getResources().getString(R.string.test_fps_units));
-        if (startIndex >=imageName.length) {
-            startIndex = startIndex % imageName.length;
+        testResult.setText(getResources().getString(R.string.test_result) + IMAGENET_CLASSES[result]);
+        textFps.setText(getResources().getString(R.string.test_fps) + ConvertUtil.getFps(getFps(classificationTime)) + getResources().getString(R.string.test_fps_units));
+        if (startIndex >= Config.imageName.length) {
+            startIndex = startIndex % Config.imageName.length;
             Log.d(LOG_TAG, "startIndex=" + startIndex);
+        }
+        if(!isExist){
+            testPro.setText(getString(R.string.classification_end_guide));
         }
         startThread();
     }

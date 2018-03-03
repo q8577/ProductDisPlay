@@ -28,14 +28,24 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_activity);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startActivity(new Intent(SplashActivity.this,HomeActivity.class));
+                finish();
+            }
+        },1500);
+        //逻辑需要重新做
 
-        new Thread(new Runnable() {
+        /*new Thread(new Runnable() {
             @Override
             public void run() {
                 loadDectionModel();
             }
-        }).start();
+        }).start();*/
     }
+
+
 
     private void loadDectionModel() {
         caffeDetection = new CaffeDetection();
