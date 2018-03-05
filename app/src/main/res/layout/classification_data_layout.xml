@@ -29,6 +29,7 @@
                 android:id="@+id/avg_fps"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/text_padding"
                 android:text="@string/classification_avg_time" />
 
             <TextView
@@ -37,11 +38,12 @@
                 android:layout_height="wrap_content"
                 android:text="@string/classification_single_time" />
 
-            <TextView
+            <Button
                 android:id="@+id/all_result"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/menu_background"
+                android:background="@android:color/transparent"
                 android:text="@string/classification_result" />
         </LinearLayout>
     </LinearLayout>

@@ -8,11 +8,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,7 +52,7 @@ public class ClassificationData extends Fragment {
     private static int avgFpsValue;
     private TextView fps_tv;
     private TextView time_tv;
-    private TextView result_tv;
+    private Button result_btn;
     private ClassificationDB classificationDB;
     private UltraViewPager ultraViewPager_dialog;
     private PagerAdapter adapter_dialog;
@@ -84,7 +83,7 @@ public class ClassificationData extends Fragment {
         classificationDB.open();
         fps_tv=view.findViewById(R.id.avg_fps);
         time_tv=view.findViewById(R.id.avg_time);
-        result_tv=view.findViewById(R.id.all_result);
+        result_btn=view.findViewById(R.id.all_result);
     }
     private void getData(){
         double allTime=0.00;
@@ -108,7 +107,7 @@ public class ClassificationData extends Fragment {
     }
 
     private void setListener(){
-        result_tv.setOnClickListener(new View.OnClickListener() {
+        result_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ResultDialog dialog=new ResultDialog(getContext());

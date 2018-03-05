@@ -39,5 +39,6 @@ dependencies {
     compile 'com.android.support:design:26.1.0'
     implementation files('libs/achartengine.jar')
     compile 'com.android.support:recyclerview-v7:26.1.0'
-    compile 'com.alibaba.android:ultraviewpager:1.0.4@aar'
+    compile "com.alibaba.android:ultraviewpager:1.0.4@aar"
+    compile 'com.kyleduo.switchbutton:library:2.0.0'
 }

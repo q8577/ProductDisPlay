@@ -1,11 +1,11 @@
 package com.cambricon.productdisplay.activity;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -17,15 +17,15 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.KeyEvent;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import com.cambricon.productdisplay.R;
 import com.cambricon.productdisplay.db.CommDB;
 import com.cambricon.productdisplay.utils.StatusBarCompat;
+import com.kyleduo.switchbutton.SwitchButton;
 
 /**
  * Created by dell on 18-2-3.
@@ -57,8 +57,14 @@ public class HomeActivity extends AppCompatActivity {
     private FragmentTransaction fragmentTransaction;
     final int PERMISSION_REQUST_CODE = 0x001;
 
+    private SwitchButton cpu_mode_btn;
+    private SwitchButton ipu_mode_btn;
+
+    private SharedPreferences mSharedPreferences;
+    private SharedPreferences.Editor editor;
+
+
     private CommDB commDB;
-    private Boolean isExit = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -95,13 +101,22 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        this.toolbar = (Toolbar) findViewById(R.id.toolbar);
+        this.toolbar = findViewById(R.id.toolbar);
         drawerLayout = findViewById(R.id.mydrawer);
         radioGroup = findViewById(R.id.rel_navigate);
-        testbtn=findViewById(R.id.tab_test);
-        databtn=findViewById(R.id.tab_data);
-        newsbtn=findViewById(R.id.tab_adv);
-        commDB=new CommDB(this);
+        testbtn = findViewById(R.id.tab_test);
+        databtn = findViewById(R.id.tab_data);
+        newsbtn = findViewById(R.id.tab_adv);
+        cpu_mode_btn = findViewById(R.id.cpu_mode_switchbtn);
+        ipu_mode_btn = findViewById(R.id.ipu_mode_switchbtn);
+
+        mSharedPreferences = getSharedPreferences("Cambricon_mode", Context.MODE_PRIVATE);
+        editor = mSharedPreferences.edit();
+
+        ipu_mode_btn.setChecked(mSharedPreferences.getBoolean("IPU_mode", false));
+        cpu_mode_btn.setChecked(mSharedPreferences.getBoolean("CPU_mode", true));
+
+        commDB = new CommDB(this);
         commDB.open();
 
     }
@@ -114,21 +129,19 @@ public class HomeActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    private void initRadioBtn(){
-        test_on=getResources().getDrawable(R.mipmap.test_on);
-        test_off=getResources().getDrawable(R.mipmap.test_off);
-        data_on=getResources().getDrawable(R.mipmap.data_on);
-        data_off=getResources().getDrawable(R.mipmap.data_off);
-        news_on=getResources().getDrawable(R.mipmap.news_on);
-        news_off=getResources().getDrawable(R.mipmap.news_off);
-        test_on.setBounds(1,1,test_on.getIntrinsicWidth(),test_on.getIntrinsicHeight());
-        test_off.setBounds(1,1,test_off.getIntrinsicWidth(),test_off.getIntrinsicHeight());
-        data_on.setBounds(1,1,data_on.getIntrinsicWidth(),data_on.getIntrinsicHeight());
-        data_off.setBounds(1,1,data_off.getIntrinsicWidth(),data_off.getIntrinsicHeight());
-        news_on.setBounds(1,1,news_on.getIntrinsicWidth(),news_on.getIntrinsicHeight());
-        news_off.setBounds(1,1,news_off.getIntrinsicWidth(),news_off.getIntrinsicHeight());
-
-
+    private void initRadioBtn() {
+        test_on = getResources().getDrawable(R.mipmap.test_on);
+        test_off = getResources().getDrawable(R.mipmap.test_off);
+        data_on = getResources().getDrawable(R.mipmap.data_on);
+        data_off = getResources().getDrawable(R.mipmap.data_off);
+        news_on = getResources().getDrawable(R.mipmap.news_on);
+        news_off = getResources().getDrawable(R.mipmap.news_off);
+        test_on.setBounds(1, 1, test_on.getIntrinsicWidth(), test_on.getIntrinsicHeight());
+        test_off.setBounds(1, 1, test_off.getIntrinsicWidth(), test_off.getIntrinsicHeight());
+        data_on.setBounds(1, 1, data_on.getIntrinsicWidth(), data_on.getIntrinsicHeight());
+        data_off.setBounds(1, 1, data_off.getIntrinsicWidth(), data_off.getIntrinsicHeight());
+        news_on.setBounds(1, 1, news_on.getIntrinsicWidth(), news_on.getIntrinsicHeight());
+        news_off.setBounds(1, 1, news_off.getIntrinsicWidth(), news_off.getIntrinsicHeight());
     }
 
     private void hideAll(FragmentTransaction transaction) {
@@ -155,9 +168,9 @@ public class HomeActivity extends AppCompatActivity {
                 Log.d("huangyaling", "checkId:" + checkId);
                 switch (checkId) {
                     case R.id.tab_test:
-                        databtn.setCompoundDrawables(null,data_off,null,null);
-                        testbtn.setCompoundDrawables(null,test_on,null,null);
-                        newsbtn.setCompoundDrawables(null,news_off,null,null);
+                        databtn.setCompoundDrawables(null, data_off, null, null);
+                        testbtn.setCompoundDrawables(null, test_on, null, null);
+                        newsbtn.setCompoundDrawables(null, news_off, null, null);
                         databtn.setTextColor(getResources().getColor(R.color.home_text_color));
                         testbtn.setTextColor(getResources().getColor(R.color.main_line));
                         newsbtn.setTextColor(getResources().getColor(R.color.home_text_color));
@@ -173,9 +186,9 @@ public class HomeActivity extends AppCompatActivity {
                         testTransaction.commit();
                         break;
                     case R.id.tab_data:
-                        databtn.setCompoundDrawables(null,data_on,null,null);
-                        testbtn.setCompoundDrawables(null,test_off,null,null);
-                        newsbtn.setCompoundDrawables(null,news_off,null,null);
+                        databtn.setCompoundDrawables(null, data_on, null, null);
+                        testbtn.setCompoundDrawables(null, test_off, null, null);
+                        newsbtn.setCompoundDrawables(null, news_off, null, null);
                         databtn.setTextColor(getResources().getColor(R.color.main_line));
                         testbtn.setTextColor(getResources().getColor(R.color.home_text_color));
                         newsbtn.setTextColor(getResources().getColor(R.color.home_text_color));
@@ -191,9 +204,9 @@ public class HomeActivity extends AppCompatActivity {
                         dataTransaction.commit();
                         break;
                     case R.id.tab_adv:
-                        databtn.setCompoundDrawables(null,data_off,null,null);
-                        testbtn.setCompoundDrawables(null,test_off,null,null);
-                        newsbtn.setCompoundDrawables(null,news_on,null,null);
+                        databtn.setCompoundDrawables(null, data_off, null, null);
+                        testbtn.setCompoundDrawables(null, test_off, null, null);
+                        newsbtn.setCompoundDrawables(null, news_on, null, null);
                         databtn.setTextColor(getResources().getColor(R.color.home_text_color));
                         testbtn.setTextColor(getResources().getColor(R.color.home_text_color));
                         newsbtn.setTextColor(getResources().getColor(R.color.main_line));
@@ -210,6 +223,40 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+        cpu_mode_btn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (cpu_mode_btn.isChecked()) {
+                    editor.putBoolean("CPU_mode", true);
+                    editor.putBoolean("IPU_mode", false);
+                    editor.commit();
+                    ipu_mode_btn.setChecked(false);
+                } else {
+                    editor.putBoolean("CPU_mode", false);
+                    editor.putBoolean("IPU_mode", true);
+                    editor.commit();
+                    ipu_mode_btn.setChecked(true);
+                }
+            }
+        });
+        ipu_mode_btn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (ipu_mode_btn.isChecked()) {
+                    editor.putBoolean("IPU_mode", true);
+                    editor.putBoolean("CPU_mode", false);
+                    editor.commit();
+                    cpu_mode_btn.setChecked(false);
+                } else {
+                    editor.putBoolean("IPU_mode", false);
+                    editor.putBoolean("CPU_mode", true);
+                    editor.commit();
+                    cpu_mode_btn.setChecked(true);
+                }
+            }
+        });
     }
 
     /**
@@ -223,38 +270,10 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        if(commDB!=null){
+        if (commDB != null) {
             commDB.close();
         }
         super.onDestroy();
-        System.exit(0);
     }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        switch (keyCode){
-            case KeyEvent.KEYCODE_BACK:
-                if(isExit==false){
-                    isExit = true;
-                    Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
-                    mHandler.sendEmptyMessageDelayed(0, 2000);
-                }else{
-                    finish();
-                }
-                break;
-            default:
-                break;
-        }
-        return false;
-    }
-
-    Handler mHandler = new Handler() {
-
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            isExit = false;
-        }
-
-    };
+    
 }

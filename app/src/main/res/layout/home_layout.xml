@@ -109,12 +109,16 @@
                     android:layout_marginLeft="70dp"
                     android:textColor="@color/news_item"
                     android:text="CPU模式"/>
-                <com.cambricon.productdisplay.view.SwitchButton
+                <com.kyleduo.switchbutton.SwitchButton
+                    android:id="@+id/cpu_mode_switchbtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:paddingRight="39.5dp">
-                </com.cambricon.productdisplay.view.SwitchButton>
+                    app:kswThumbWidth="@dimen/switch_btn_width"
+                    app:kswThumbHeight="@dimen/switch_btn_height"
+                    app:kswTintColor="@android:color/white"
+                    app:kswBackColor="@color/news_item_line"
+                    android:paddingRight="@dimen/switch_btn_paddingright"/>
             </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/ipu_mode"
@@ -136,12 +140,16 @@
                     android:layout_marginLeft="70dp"
                     android:textColor="@color/news_item"
                     android:text="IPU模式"/>
-                <com.cambricon.productdisplay.view.SwitchButton
+                <com.kyleduo.switchbutton.SwitchButton
+                    android:id="@+id/ipu_mode_switchbtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:paddingRight="39.5dp">
-                </com.cambricon.productdisplay.view.SwitchButton>
+                    app:kswThumbWidth="@dimen/switch_btn_width"
+                    app:kswThumbHeight="@dimen/switch_btn_height"
+                    app:kswTintColor="@android:color/white"
+                    app:kswBackColor="@color/news_item_line"
+                    android:paddingRight="@dimen/switch_btn_paddingright"/>
             </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/about"
