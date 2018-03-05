@@ -31,7 +31,7 @@ import com.kyleduo.switchbutton.SwitchButton;
  * Created by dell on 18-2-3.
  */
 
-public class HomeActivity extends AppCompatActivity{
+public class HomeActivity extends AppCompatActivity {
     private android.support.v7.widget.Toolbar toolbar;
     /*创建一个Drawerlayout和Toolbar联动的开关*/
     private ActionBarDrawerToggle toggle;
@@ -60,7 +60,7 @@ public class HomeActivity extends AppCompatActivity{
     private SwitchButton cpu_mode_btn;
     private SwitchButton ipu_mode_btn;
 
-    private SharedPreferences mSharedPreferences ;
+    private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor editor;
 
 
@@ -101,22 +101,22 @@ public class HomeActivity extends AppCompatActivity{
     }
 
     private void initView() {
-        this.toolbar = (Toolbar) findViewById(R.id.toolbar);
+        this.toolbar = findViewById(R.id.toolbar);
         drawerLayout = findViewById(R.id.mydrawer);
         radioGroup = findViewById(R.id.rel_navigate);
-        testbtn=findViewById(R.id.tab_test);
-        databtn=findViewById(R.id.tab_data);
-        newsbtn=findViewById(R.id.tab_adv);
-        cpu_mode_btn=findViewById(R.id.cpu_mode_switchbtn);
-        ipu_mode_btn=findViewById(R.id.ipu_mode_switchbtn);
+        testbtn = findViewById(R.id.tab_test);
+        databtn = findViewById(R.id.tab_data);
+        newsbtn = findViewById(R.id.tab_adv);
+        cpu_mode_btn = findViewById(R.id.cpu_mode_switchbtn);
+        ipu_mode_btn = findViewById(R.id.ipu_mode_switchbtn);
 
         mSharedPreferences = getSharedPreferences("Cambricon_mode", Context.MODE_PRIVATE);
         editor = mSharedPreferences.edit();
 
-        ipu_mode_btn.setChecked(mSharedPreferences.getBoolean("IPU_mode",false));
-        cpu_mode_btn.setChecked(mSharedPreferences.getBoolean("CPU_mode",true));
+        ipu_mode_btn.setChecked(mSharedPreferences.getBoolean("IPU_mode", false));
+        cpu_mode_btn.setChecked(mSharedPreferences.getBoolean("CPU_mode", true));
 
-        commDB=new CommDB(this);
+        commDB = new CommDB(this);
         commDB.open();
 
     }
@@ -129,21 +129,19 @@ public class HomeActivity extends AppCompatActivity{
         fragmentTransaction.commit();
     }
 
-    private void initRadioBtn(){
-        test_on=getResources().getDrawable(R.mipmap.test_on);
-        test_off=getResources().getDrawable(R.mipmap.test_off);
-        data_on=getResources().getDrawable(R.mipmap.data_on);
-        data_off=getResources().getDrawable(R.mipmap.data_off);
-        news_on=getResources().getDrawable(R.mipmap.news_on);
-        news_off=getResources().getDrawable(R.mipmap.news_off);
-        test_on.setBounds(1,1,test_on.getIntrinsicWidth(),test_on.getIntrinsicHeight());
-        test_off.setBounds(1,1,test_off.getIntrinsicWidth(),test_off.getIntrinsicHeight());
-        data_on.setBounds(1,1,data_on.getIntrinsicWidth(),data_on.getIntrinsicHeight());
-        data_off.setBounds(1,1,data_off.getIntrinsicWidth(),data_off.getIntrinsicHeight());
-        news_on.setBounds(1,1,news_on.getIntrinsicWidth(),news_on.getIntrinsicHeight());
-        news_off.setBounds(1,1,news_off.getIntrinsicWidth(),news_off.getIntrinsicHeight());
-
-
+    private void initRadioBtn() {
+        test_on = getResources().getDrawable(R.mipmap.test_on);
+        test_off = getResources().getDrawable(R.mipmap.test_off);
+        data_on = getResources().getDrawable(R.mipmap.data_on);
+        data_off = getResources().getDrawable(R.mipmap.data_off);
+        news_on = getResources().getDrawable(R.mipmap.news_on);
+        news_off = getResources().getDrawable(R.mipmap.news_off);
+        test_on.setBounds(1, 1, test_on.getIntrinsicWidth(), test_on.getIntrinsicHeight());
+        test_off.setBounds(1, 1, test_off.getIntrinsicWidth(), test_off.getIntrinsicHeight());
+        data_on.setBounds(1, 1, data_on.getIntrinsicWidth(), data_on.getIntrinsicHeight());
+        data_off.setBounds(1, 1, data_off.getIntrinsicWidth(), data_off.getIntrinsicHeight());
+        news_on.setBounds(1, 1, news_on.getIntrinsicWidth(), news_on.getIntrinsicHeight());
+        news_off.setBounds(1, 1, news_off.getIntrinsicWidth(), news_off.getIntrinsicHeight());
     }
 
     private void hideAll(FragmentTransaction transaction) {
@@ -170,9 +168,9 @@ public class HomeActivity extends AppCompatActivity{
                 Log.d("huangyaling", "checkId:" + checkId);
                 switch (checkId) {
                     case R.id.tab_test:
-                        databtn.setCompoundDrawables(null,data_off,null,null);
-                        testbtn.setCompoundDrawables(null,test_on,null,null);
-                        newsbtn.setCompoundDrawables(null,news_off,null,null);
+                        databtn.setCompoundDrawables(null, data_off, null, null);
+                        testbtn.setCompoundDrawables(null, test_on, null, null);
+                        newsbtn.setCompoundDrawables(null, news_off, null, null);
                         databtn.setTextColor(getResources().getColor(R.color.home_text_color));
                         testbtn.setTextColor(getResources().getColor(R.color.main_line));
                         newsbtn.setTextColor(getResources().getColor(R.color.home_text_color));
@@ -188,9 +186,9 @@ public class HomeActivity extends AppCompatActivity{
                         testTransaction.commit();
                         break;
                     case R.id.tab_data:
-                        databtn.setCompoundDrawables(null,data_on,null,null);
-                        testbtn.setCompoundDrawables(null,test_off,null,null);
-                        newsbtn.setCompoundDrawables(null,news_off,null,null);
+                        databtn.setCompoundDrawables(null, data_on, null, null);
+                        testbtn.setCompoundDrawables(null, test_off, null, null);
+                        newsbtn.setCompoundDrawables(null, news_off, null, null);
                         databtn.setTextColor(getResources().getColor(R.color.main_line));
                         testbtn.setTextColor(getResources().getColor(R.color.home_text_color));
                         newsbtn.setTextColor(getResources().getColor(R.color.home_text_color));
@@ -206,9 +204,9 @@ public class HomeActivity extends AppCompatActivity{
                         dataTransaction.commit();
                         break;
                     case R.id.tab_adv:
-                        databtn.setCompoundDrawables(null,data_off,null,null);
-                        testbtn.setCompoundDrawables(null,test_off,null,null);
-                        newsbtn.setCompoundDrawables(null,news_on,null,null);
+                        databtn.setCompoundDrawables(null, data_off, null, null);
+                        testbtn.setCompoundDrawables(null, test_off, null, null);
+                        newsbtn.setCompoundDrawables(null, news_on, null, null);
                         databtn.setTextColor(getResources().getColor(R.color.home_text_color));
                         testbtn.setTextColor(getResources().getColor(R.color.home_text_color));
                         newsbtn.setTextColor(getResources().getColor(R.color.main_line));
@@ -230,14 +228,14 @@ public class HomeActivity extends AppCompatActivity{
         cpu_mode_btn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(cpu_mode_btn.isChecked()){
-                    editor.putBoolean("CPU_mode",true);
-                    editor.putBoolean("IPU_mode",false);
+                if (cpu_mode_btn.isChecked()) {
+                    editor.putBoolean("CPU_mode", true);
+                    editor.putBoolean("IPU_mode", false);
                     editor.commit();
                     ipu_mode_btn.setChecked(false);
-                }else {
-                    editor.putBoolean("CPU_mode",false);
-                    editor.putBoolean("IPU_mode",true);
+                } else {
+                    editor.putBoolean("CPU_mode", false);
+                    editor.putBoolean("IPU_mode", true);
                     editor.commit();
                     ipu_mode_btn.setChecked(true);
                 }
@@ -246,20 +244,19 @@ public class HomeActivity extends AppCompatActivity{
         ipu_mode_btn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(ipu_mode_btn.isChecked()){
-                    editor.putBoolean("IPU_mode",true);
-                    editor.putBoolean("CPU_mode",false);
+                if (ipu_mode_btn.isChecked()) {
+                    editor.putBoolean("IPU_mode", true);
+                    editor.putBoolean("CPU_mode", false);
                     editor.commit();
                     cpu_mode_btn.setChecked(false);
-                }else {
-                    editor.putBoolean("IPU_mode",false);
-                    editor.putBoolean("CPU_mode",true);
+                } else {
+                    editor.putBoolean("IPU_mode", false);
+                    editor.putBoolean("CPU_mode", true);
                     editor.commit();
                     cpu_mode_btn.setChecked(true);
                 }
             }
         });
-        //ipu_mode_btn.setChecked(mSharedPreferences.getBoolean("IPU_mode",false));
     }
 
     /**
@@ -273,7 +270,7 @@ public class HomeActivity extends AppCompatActivity{
 
     @Override
     protected void onDestroy() {
-        if(commDB!=null){
+        if (commDB != null) {
             commDB.close();
         }
         super.onDestroy();
