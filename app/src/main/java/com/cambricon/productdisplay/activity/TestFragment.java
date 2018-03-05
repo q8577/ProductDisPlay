@@ -54,6 +54,7 @@ public class TestFragment extends Fragment {
                     case DETECTION:
                         Intent intent = new Intent(getActivity(),DetectionActivity2.class);
                         intent.putExtra("Detection",getActivity().getIntent().getSerializableExtra("caffeDetection"));
+                        intent.putExtra("loadDTime",getActivity().getIntent().getSerializableExtra("loadDTime"));
                         startActivity(intent);
                         break;
                     case VOICE:
