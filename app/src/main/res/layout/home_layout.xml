@@ -114,9 +114,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    app:kswThumbWidth="22dp"
-                    app:kswTintColor="@color/gridview_bg"
-                    android:paddingRight="39.5dp"/>
+                    app:kswThumbWidth="@dimen/switch_btn_width"
+                    app:kswThumbHeight="@dimen/switch_btn_height"
+                    app:kswTintColor="@android:color/white"
+                    app:kswBackColor="@color/news_item_line"
+                    android:paddingRight="@dimen/switch_btn_paddingright"/>
             </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/ipu_mode"
@@ -143,9 +145,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    app:kswThumbWidth="22dp"
-                    app:kswTintColor="@color/gridview_bg"
-                    android:paddingRight="39.5dp"/>
+                    app:kswThumbWidth="@dimen/switch_btn_width"
+                    app:kswThumbHeight="@dimen/switch_btn_height"
+                    app:kswTintColor="@android:color/white"
+                    app:kswBackColor="@color/news_item_line"
+                    android:paddingRight="@dimen/switch_btn_paddingright"/>
             </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/about"

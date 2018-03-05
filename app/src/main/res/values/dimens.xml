@@ -9,4 +9,7 @@
     <dimen name="img_padding_top">10dp</dimen>
     <dimen name="img_padding_bottom">10dp</dimen>
     <dimen name="guide_width">200dp</dimen>
+    <dimen name="switch_btn_width">20dp</dimen>
+    <dimen name="switch_btn_height">18dp</dimen>
+    <dimen name="switch_btn_paddingright">30dp</dimen>
 </resources>
