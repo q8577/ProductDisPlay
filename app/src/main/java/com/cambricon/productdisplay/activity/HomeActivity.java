@@ -1,6 +1,8 @@
 package com.cambricon.productdisplay.activity;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -22,12 +25,13 @@ import android.widget.RadioGroup;
 import com.cambricon.productdisplay.R;
 import com.cambricon.productdisplay.db.CommDB;
 import com.cambricon.productdisplay.utils.StatusBarCompat;
+import com.kyleduo.switchbutton.SwitchButton;
 
 /**
  * Created by dell on 18-2-3.
  */
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity{
     private android.support.v7.widget.Toolbar toolbar;
     /*创建一个Drawerlayout和Toolbar联动的开关*/
     private ActionBarDrawerToggle toggle;
@@ -52,6 +56,13 @@ public class HomeActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     final int PERMISSION_REQUST_CODE = 0x001;
+
+    private SwitchButton cpu_mode_btn;
+    private SwitchButton ipu_mode_btn;
+
+    private SharedPreferences mSharedPreferences ;
+    private SharedPreferences.Editor editor;
+
 
     private CommDB commDB;
 
@@ -96,6 +107,15 @@ public class HomeActivity extends AppCompatActivity {
         testbtn=findViewById(R.id.tab_test);
         databtn=findViewById(R.id.tab_data);
         newsbtn=findViewById(R.id.tab_adv);
+        cpu_mode_btn=findViewById(R.id.cpu_mode_switchbtn);
+        ipu_mode_btn=findViewById(R.id.ipu_mode_switchbtn);
+
+        mSharedPreferences = getSharedPreferences("Cambricon_mode", Context.MODE_PRIVATE);
+        editor = mSharedPreferences.edit();
+
+        ipu_mode_btn.setChecked(mSharedPreferences.getBoolean("IPU_mode",false));
+        cpu_mode_btn.setChecked(mSharedPreferences.getBoolean("CPU_mode",true));
+
         commDB=new CommDB(this);
         commDB.open();
 
@@ -205,6 +225,41 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+        cpu_mode_btn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(cpu_mode_btn.isChecked()){
+                    editor.putBoolean("CPU_mode",true);
+                    editor.putBoolean("IPU_mode",false);
+                    editor.commit();
+                    ipu_mode_btn.setChecked(false);
+                }else {
+                    editor.putBoolean("CPU_mode",false);
+                    editor.putBoolean("IPU_mode",true);
+                    editor.commit();
+                    ipu_mode_btn.setChecked(true);
+                }
+            }
+        });
+        ipu_mode_btn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(ipu_mode_btn.isChecked()){
+                    editor.putBoolean("IPU_mode",true);
+                    editor.putBoolean("CPU_mode",false);
+                    editor.commit();
+                    cpu_mode_btn.setChecked(false);
+                }else {
+                    editor.putBoolean("IPU_mode",false);
+                    editor.putBoolean("CPU_mode",true);
+                    editor.commit();
+                    cpu_mode_btn.setChecked(true);
+                }
+            }
+        });
+        //ipu_mode_btn.setChecked(mSharedPreferences.getBoolean("IPU_mode",false));
     }
 
     /**

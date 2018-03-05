@@ -109,12 +109,14 @@
                     android:layout_marginLeft="70dp"
                     android:textColor="@color/news_item"
                     android:text="CPU模式"/>
-                <com.cambricon.productdisplay.view.SwitchButton
+                <com.kyleduo.switchbutton.SwitchButton
+                    android:id="@+id/cpu_mode_switchbtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:paddingRight="39.5dp">
-                </com.cambricon.productdisplay.view.SwitchButton>
+                    app:kswThumbWidth="22dp"
+                    app:kswTintColor="@color/gridview_bg"
+                    android:paddingRight="39.5dp"/>
             </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/ipu_mode"
@@ -136,12 +138,14 @@
                     android:layout_marginLeft="70dp"
                     android:textColor="@color/news_item"
                     android:text="IPU模式"/>
-                <com.cambricon.productdisplay.view.SwitchButton
+                <com.kyleduo.switchbutton.SwitchButton
+                    android:id="@+id/ipu_mode_switchbtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:paddingRight="39.5dp">
-                </com.cambricon.productdisplay.view.SwitchButton>
+                    app:kswThumbWidth="22dp"
+                    app:kswTintColor="@color/gridview_bg"
+                    android:paddingRight="39.5dp"/>
             </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/about"
