@@ -29,12 +29,14 @@
                 android:id="@+id/avg_fps"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/text_padding"
                 android:text="@string/classification_avg_time" />
 
             <TextView
                 android:id="@+id/avg_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/text_padding"
                 android:text="@string/classification_single_time" />
 
             <TextView

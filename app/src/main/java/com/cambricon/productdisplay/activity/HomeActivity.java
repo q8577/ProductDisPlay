@@ -275,4 +275,5 @@ public class HomeActivity extends AppCompatActivity {
         }
         super.onDestroy();
     }
+    
 }
