@@ -20,6 +20,8 @@ import android.widget.TextView;
 
 import com.cambricon.productdisplay.R;
 import com.cambricon.productdisplay.caffenative.CaffeDetection;
+import com.cambricon.productdisplay.db.ClassificationDB;
+import com.cambricon.productdisplay.db.DetectionDB;
 import com.cambricon.productdisplay.task.CNNListener;
 import com.cambricon.productdisplay.utils.Config;
 import com.cambricon.productdisplay.utils.ConvertUtil;
@@ -63,6 +65,8 @@ public class DetectionActivity2 extends AppCompatActivity implements View.OnClic
 
     private double detectionTime;
 
+    private DetectionDB detectionDB;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +78,8 @@ public class DetectionActivity2 extends AppCompatActivity implements View.OnClic
     }
 
     private void init() {
+
+
         caffeDetection = (CaffeDetection) getIntent().getSerializableExtra("Detection");
 
         filePath = Environment.getExternalStorageDirectory() + "/caffe_mobile/ResNet50";
@@ -98,6 +104,15 @@ public class DetectionActivity2 extends AppCompatActivity implements View.OnClic
 
         detection_begin.setOnClickListener(this);
         detection_end.setOnClickListener(this);
+
+        detectionDB = new DetectionDB(getApplicationContext());
+        detectionDB.open();
+//        detectionDB.deleteTable();
+
+       /* detectionDB.addDetection(Config.dImageArray[0], "3", "3");
+        detectionDB.addDetection(Config.dImageArray[1], "3", "3");
+        detectionDB.addDetection(Config.dImageArray[2], "3", "3");
+        detectionDB.addDetection(Config.dImageArray[3], "3", "3");*/
 
     }
 
@@ -137,6 +152,7 @@ public class DetectionActivity2 extends AppCompatActivity implements View.OnClic
                 break;
             case R.id.classification_end:
                 testPro.setText(getString(R.string.detection_pasue_guide));
+
                 isExist = false;
                 detection_begin.setVisibility(View.VISIBLE);
                 detection_end.setVisibility(View.GONE);
@@ -215,6 +231,7 @@ public class DetectionActivity2 extends AppCompatActivity implements View.OnClic
         if (isExist) {
             ivCaptured.setScaleType(ImageView.ScaleType.FIT_XY);
             ivCaptured.setImageBitmap(resBitmap);
+            detectionDB.addDetection(Config.dImageArray[index], String.valueOf((int)detectionTime), getFps(detectionTime));
             index++;
             testTime.setText(getResources().getString(R.string.test_time) + String.valueOf(detectionTime) + "ms");
             textFps.setText(getResources().getString(R.string.test_fps) + ConvertUtil.getFps(getFps(detectionTime)) + getResources().getString(R.string.test_fps_units));
@@ -231,7 +248,7 @@ public class DetectionActivity2 extends AppCompatActivity implements View.OnClic
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        finish();
         /**
          * 结束线程
          *

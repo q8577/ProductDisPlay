@@ -18,6 +18,7 @@ import java.util.ArrayList;
  */
 
 public class ClassificationDB {
+    private final String TAG = "ClassificationDB";
     public static final String KEY_ROWID = "_id";
     public static final String KEY_NAME = "name";
     public static final String KEY_TIME = "time";
@@ -132,6 +133,11 @@ public class ClassificationDB {
         Cursor mCursor = null;
         mCursor = db.query(SQLITE_TABLE, new String[]{KEY_ROWID, KEY_NAME,KEY_TIME, KEY_FPS, KEY_RESULT},
                 null, null, null, null, null);
+        /*Log.e(TAG, "fetchAll: "+mCursor.getColumnName(0));
+        Log.e(TAG, "fetchAll: "+mCursor.getColumnName(1));
+        Log.e(TAG, "fetchAll: "+mCursor.getColumnName(2));
+        Log.e(TAG, "fetchAll: "+mCursor.getColumnName(3));*/
+
         if (mCursor.moveToFirst()) {
             do {
                 ClassificationImage cfimage = new ClassificationImage();

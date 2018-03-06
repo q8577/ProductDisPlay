@@ -4,14 +4,16 @@ import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * Created by dell on 18-2-5.
  */
 
 public class CommDB {
+
     public static final String DATABASE_NAME="BenchMarkDB";
-    public static final int DATABASE_VERSION=1;
+    public static final int DATABASE_VERSION=4;
     //创建图片分类表
     private static final String CREATE_TABLE_Classification="CREATE TABLE if not exists " + ClassificationDB.SQLITE_TABLE + " (" +
             ClassificationDB.KEY_ROWID + " integer PRIMARY KEY autoincrement," +
@@ -27,8 +29,6 @@ public class CommDB {
             DetectionDB.KEY_NAME + "," +
             DetectionDB.KEY_TIME + "," +
             DetectionDB.KEY_FPS + "," +
-            DetectionDB.KEY_RESULT + "," +
-            DetectionDB.KEY_NETTYPE + "," +
             " UNIQUE (" + DetectionDB.KEY_NAME +")"+"ON CONFLICT REPLACE"+");";
 
     private final Context context;
@@ -40,8 +40,8 @@ public class CommDB {
         this.dataBaseHelper=new DataBaseHelper(this.context);
     }
 
-    private static class DataBaseHelper extends SQLiteOpenHelper {
-
+    private class DataBaseHelper extends SQLiteOpenHelper {
+        private final String TAG = "DataBaseHelper";
         DataBaseHelper(Context context) {
             super(context,DATABASE_NAME,null,DATABASE_VERSION);
         }

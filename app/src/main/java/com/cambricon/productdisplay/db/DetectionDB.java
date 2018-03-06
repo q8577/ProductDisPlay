@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 
 import com.cambricon.productdisplay.bean.DetectionImage;
@@ -17,22 +18,22 @@ import java.util.ArrayList;
  */
 
 public class DetectionDB {
-    public static final String LOG_TAG="DetectionDB";
-    public static final String KEY_ROWID="_id";
-    public static final String KEY_NAME="name";
-    public static final String KEY_FPS="fps";
-    public static final String KEY_TIME="time";
-    public static final String KEY_NETTYPE="netType";
-    public static final String KEY_RESULT="result";
+    public static final String TAG = "DetectionDB";
+    public static final String KEY_ROWID = "_id";
+    public static final String KEY_NAME = "name";
+    public static final String KEY_TIME = "time";
+    public static final String KEY_FPS = "fps";
+//    public static final String KEY_NETTYPE = "netType";
+//    public static final String KEY_RESULT = "result";
     static final String SQLITE_TABLE = "DetectionTable";
     private final Context mContext;
 
     private DatabaseHelper databaseHelper;
     private SQLiteDatabase db;
-    public DetectionDB(Context context){
-        this.mContext=context;
-    }
 
+    public DetectionDB(Context context) {
+        this.mContext = context;
+    }
 
 
     private static class DatabaseHelper extends SQLiteOpenHelper {
@@ -52,7 +53,7 @@ public class DetectionDB {
         }
     }
 
-    public DetectionDB open()throws SQLException {
+    public DetectionDB open() throws SQLException {
         databaseHelper = new DetectionDB.DatabaseHelper(mContext);
         db = databaseHelper.getWritableDatabase();
         return this;
@@ -71,18 +72,15 @@ public class DetectionDB {
      * @param name
      * @param time
      * @param fps
-     * @param result
      * @return
      */
 
-    public long addDetection(String name, String time, String fps, String result,String netType) {
+    public long addDetection(String name, String time, String fps) {
         long createResult = 0;
         ContentValues initialValues = new ContentValues();
         initialValues.put(KEY_NAME, name);
         initialValues.put(KEY_TIME, time);
         initialValues.put(KEY_FPS, fps);
-        initialValues.put(KEY_RESULT, result);
-        initialValues.put(KEY_RESULT, netType);
         try {
             createResult = db.insert(SQLITE_TABLE, null, initialValues);
         } catch (Exception e) {
@@ -130,23 +128,29 @@ public class DetectionDB {
     public ArrayList<DetectionImage> fetchAll() {
         ArrayList<DetectionImage> allTicketsList = new ArrayList<>();
         Cursor mCursor = null;
-        mCursor = db.query(SQLITE_TABLE, new String[]{KEY_ROWID, KEY_NAME, KEY_FPS, KEY_TIME, KEY_RESULT,KEY_NETTYPE},
+        mCursor = db.query(SQLITE_TABLE, new String[]{KEY_ROWID, KEY_NAME, KEY_FPS, KEY_TIME},
                 null, null, null, null, null);
+        /*Log.e(TAG, "fetchAll: "+mCursor.getColumnName(0));
+        Log.e(TAG, "fetchAll: "+mCursor.getColumnName(1));
+        Log.e(TAG, "fetchAll: "+mCursor.getColumnName(2));
+        Log.e(TAG, "fetchAll: "+mCursor.getColumnName(3));*/
         if (mCursor.moveToFirst()) {
             do {
                 DetectionImage dtimage = new DetectionImage();
                 dtimage.setName(mCursor.getString(mCursor.getColumnIndexOrThrow(KEY_NAME)));
                 dtimage.setFps(mCursor.getString(mCursor.getColumnIndexOrThrow(KEY_FPS)));
-                dtimage.setResult(mCursor.getString(mCursor.getColumnIndexOrThrow(KEY_RESULT)));
                 dtimage.setTime(mCursor.getString(mCursor.getColumnIndexOrThrow(KEY_TIME)));
-                dtimage.setNetType(mCursor.getString(mCursor.getColumnIndexOrThrow(KEY_TIME)));
                 allTicketsList.add(dtimage);
             } while (mCursor.moveToNext());
         }
-        if(mCursor!=null||!mCursor.isClosed()){
+        if (mCursor != null || !mCursor.isClosed()) {
             mCursor.close();
         }
         return allTicketsList;
     }
+
+
+
+
 
 }

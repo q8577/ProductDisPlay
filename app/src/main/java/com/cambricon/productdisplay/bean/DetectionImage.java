@@ -51,6 +51,8 @@ public class DetectionImage {
         this.netType = netType;
     }
 
-
-
+    @Override
+    public String toString() {
+        return name+";"+fps+";"+time;
+    }
 }

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,8 @@ import android.widget.Toast;
 import com.cambricon.productdisplay.R;
 import com.cambricon.productdisplay.adapter.UltraPagerAdapter;
 import com.cambricon.productdisplay.bean.ClassificationImage;
+import com.cambricon.productdisplay.bean.DetectionImage;
+import com.cambricon.productdisplay.caffenative.CaffeDetection;
 import com.cambricon.productdisplay.db.ClassificationDB;
 import com.cambricon.productdisplay.utils.Config;
 import com.cambricon.productdisplay.utils.ConvertUtil;
@@ -41,6 +44,7 @@ import java.util.ArrayList;
  */
 
 public class ClassificationData extends Fragment {
+    private final String TAG = "ClassificationData";
     private View view;
     private Context context;
     private String content;
@@ -90,6 +94,9 @@ public class ClassificationData extends Fragment {
         int allFps=0;
         allTicketsList = new ArrayList<>();
         allTicketsList=classificationDB.fetchAll();
+        for(ClassificationImage image : allTicketsList){
+            Log.e(TAG, "getData: "+image.toString());
+        }
         if(allTicketsList.size()!=0){
             avgTimes=new double[allTicketsList.size()];
             points=new int[Config.ChartPointNum];

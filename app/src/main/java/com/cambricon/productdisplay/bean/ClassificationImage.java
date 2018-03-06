@@ -41,4 +41,8 @@ public class ClassificationImage {
     public void setResult(String result) {
         this.result = result;
     }
+
+    public String toString(){
+        return name+";"+fps+";"+time+";"+result;
+    }
 }
