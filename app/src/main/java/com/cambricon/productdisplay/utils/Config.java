@@ -1,6 +1,9 @@
 package com.cambricon.productdisplay.utils;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Environment;
+import android.util.Log;
 
 import java.io.File;
 
@@ -37,5 +40,19 @@ public class Config {
     public static String[] dImageArray = new String[]{
          "001763.jpg", "cat.jpg", "300.jpg", "dog2.jpg"
     };
+
+    public static boolean getIsCPUMode(Context context) {
+        SharedPreferences mSharedPreferences= context.getSharedPreferences("Cambricon_mode", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        Config.isCPUMode=mSharedPreferences.getBoolean("CPU_mode", true);
+        Log.d("huangyaling","isCPUMode="+Config.isCPUMode);
+        return isCPUMode;
+    }
+
+    /**
+     * test mode
+     */
+    public static boolean isCPUMode=true;
+
 
 }
