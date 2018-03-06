@@ -169,7 +169,8 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
      * 设置ActionBar
      */
     private void setActionBar() {
-        toolbar.setTitle(R.string.gv_text_item1);
+        String mode=Config.getIsCPUMode(ClassificationActivity.this)?getString(R.string.cpu_mode):getString(R.string.ipu_mode);
+        toolbar.setTitle(getString(R.string.gv_text_item1)+"--"+mode);
         setSupportActionBar(toolbar);
         Drawable toolDrawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.toolbar_bg);
         toolDrawable.setAlpha(50);
