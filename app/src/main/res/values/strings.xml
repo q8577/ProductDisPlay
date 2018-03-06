@@ -32,7 +32,7 @@
     <string name="detection_title_cpu">目标检测——CPU模式</string>
     <string name="detection_title_ipu">目标检测——IPU模式</string>
     <string name="detection_end_guide">目标检测已停止</string>
-    <string name="detection_load_model">加载分类模型耗时：</string>
+    <string name="detection_load_model">加载检测模型耗时：</string>
     <string name="classification_avg_time">平均FPS值：</string>
     <string name="classification_single_time">单张图片平均时间：</string>
     <string name="classification_result">测试结果详情:点击查看</string>
