@@ -97,9 +97,9 @@ public class ClassificationData extends Fragment {
         for(ClassificationImage image : allTicketsList){
             Log.e(TAG, "getData: "+image.toString());
         }
+        points=new int[Config.ChartPointNum];
         if(allTicketsList.size()!=0){
             avgTimes=new double[allTicketsList.size()];
-            points=new int[Config.ChartPointNum];
             for(int i=0;i<allTicketsList.size();i++){
                 points[i]= ConvertUtil.getFps(allTicketsList.get(i).getFps());
                 avgTimes[i]=ConvertUtil.convert2Double(allTicketsList.get(i).getTime());
@@ -165,7 +165,7 @@ public class ClassificationData extends Fragment {
         //坐标轴设置
         seriesRenderer.setAxisTitleTextSize(30);//设置坐标轴标题字体的大小
         seriesRenderer.setYAxisMin(0);//设置y轴的起始值
-        seriesRenderer.setYAxisMax(30);//设置y轴的最大值
+        seriesRenderer.setYAxisMax(300);//设置y轴的最大值
         seriesRenderer.setYLabels(10);//设置y轴显示点数
         seriesRenderer.setXAxisMin(0.5);//设置x轴起始值
         seriesRenderer.setXAxisMax(10.5);//设置x轴最大值
