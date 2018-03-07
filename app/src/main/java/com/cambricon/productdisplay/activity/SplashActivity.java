@@ -1,4 +1,5 @@
 package com.cambricon.productdisplay.activity;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
@@ -6,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Message;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -32,7 +34,21 @@ public class SplashActivity extends AppCompatActivity {
     private CaffeDetection caffeDetection;
     private long loadDTime;
     private TextView load_data;
+    private final int PERMISSION = 1;
     //...
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case PERMISSION:
+                    loadModel();
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,12 +56,12 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.splash_activity);
         load_data = findViewById(R.id.load_data);
         verifyPermission();
-//        load();
+        //        load();
         //逻辑需要重新做
-//        loadModel();
+        //        loadModel();
     }
 
-    public void verifyPermission(){
+    public void verifyPermission() {
         if (ContextCompat.checkSelfPermission(SplashActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(SplashActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
         } else {
@@ -53,18 +69,18 @@ public class SplashActivity extends AppCompatActivity {
         }
     }
 
-    private void load(){
+    private void load() {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(SplashActivity.this,HomeActivity.class));
+                startActivity(new Intent(SplashActivity.this, HomeActivity.class));
                 finish();
             }
-        },1500);
+        }, 1500);
     }
 
 
-    private void loadModel(){
+    private void loadModel() {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -88,20 +104,24 @@ public class SplashActivity extends AppCompatActivity {
         long start_time = System.nanoTime();
         caffeDetection.loadModel(Config.dModelProto, Config.dModelBinary);
         long end_time = System.nanoTime();
-        double paste_time = (end_time-start_time)/ 1e6;
+        double paste_time = (end_time - start_time) / 1e6;
 
         float[] meanValues = {104, 117, 123};
         caffeDetection.setMean(Config.dModelMean);
-        loadDTime = SystemClock.uptimeMillis()-startTime;
+        loadDTime = SystemClock.uptimeMillis() - startTime;
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case 1:
-                if(grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    loadModel();
-                }else{
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // loadModel();
+                    Message msg = new Message();
+                    msg.what = PERMISSION;
+                    handler.sendMessage(msg);
+
+                } else {
                     Toast.makeText(this, "You denied the permission", Toast.LENGTH_SHORT).show();
                     finish();
                 }
@@ -111,11 +131,11 @@ public class SplashActivity extends AppCompatActivity {
         }
     }
 
-    private void forward(){
-        Intent intent = new Intent(SplashActivity.this,HomeActivity.class);
+    private void forward() {
+        Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
         //detect
-        intent.putExtra("caffeDetection",caffeDetection);
-        intent.putExtra("loadDTime",loadDTime);
+        intent.putExtra("caffeDetection", caffeDetection);
+        intent.putExtra("loadDTime", loadDTime);
         //...
         startActivity(intent);
         finish();

@@ -92,6 +92,8 @@ public class DetectionData extends Fragment {
         time_tv=view.findViewById(R.id.avg_time);
         result_btn=view.findViewById(R.id.all_result);
 
+
+
     }
     private void getData(){
         double allTime = 0.0;
@@ -103,9 +105,9 @@ public class DetectionData extends Fragment {
             Log.e(TAG, "getData: "+image.toString());
         }
 
+        points=new int[Config.ChartPointNum];
         if(allTicketsList.size()!=0){
             avgTimes=new double[allTicketsList.size()];
-            points=new int[Config.ChartPointNum];
             for(int i=0;i<allTicketsList.size();i++){
                 points[i]= ConvertUtil.getFps(allTicketsList.get(i).getFps());
                 avgTimes[i]=ConvertUtil.convert2Double(allTicketsList.get(i).getTime());
@@ -125,9 +127,9 @@ public class DetectionData extends Fragment {
 
     @Override
     public void onResume() {
-        Log.e(TAG, "onResume: ");
         getData();
-            showChart();
+        Log.e(TAG, "onResume: ");
+        showChart();
         super.onResume();
     }
 

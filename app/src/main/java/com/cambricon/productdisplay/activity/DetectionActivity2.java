@@ -152,11 +152,11 @@ public class DetectionActivity2 extends AppCompatActivity implements View.OnClic
                 break;
             case R.id.classification_end:
                 testPro.setText(getString(R.string.detection_pasue_guide));
-                try {
+               /* try {
                     testThread.sleep(1000000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                }
+                }*/
                 isExist = false;
                 detection_begin.setVisibility(View.VISIBLE);
                 detection_end.setVisibility(View.GONE);
