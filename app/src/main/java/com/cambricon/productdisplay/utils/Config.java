@@ -11,7 +11,16 @@ import java.io.File;
  * Created by dell on 18-2-28.
  */
 
-public class Config {
+public class
+
+
+
+
+
+
+
+
+Config {
     public static final int ChartPointNum = 10;
 
     /**
@@ -26,9 +35,18 @@ public class Config {
     public static String modelDir = modelPath + "/bvlc_reference_caffenet";
     public static String modelProto = modelDir + "/deploy.prototxt";
     public static String modelBinary = modelDir + "/bvlc_reference_caffenet.caffemodel";
-    public static String[] imageName = new String[]{
+    /*public static String[] imageName = new String[]{
          "test_image.jpg", "test_image2.jpg", "test_image3.jpg", "test_image4.jpg"
+    };*/
+    public static String imagePath = modelPath+"/re/test";
+    public static String[] imageName = new String[]{
+            "300.jpg","400.jpg","500.jpg","600.jpg","700.jpg",
+            "301.jpg","401.jpg","501.jpg","601.jpg","701.jpg",
+//            "302.jpg","402.jpg","502.jpg","602.jpg","702.jpg",
+//            "303.jpg","403.jpg","503.jpg","603.jpg","703.jpg",
+//            "304.jpg","404.jpg","504.jpg","604.jpg","704.jpg",
     };
+
 
     /**
      * detection source
@@ -37,8 +55,16 @@ public class Config {
     public static String dModelProto = dModelDir + "/test_agnostic.prototxt";
     public static String dModelBinary = dModelDir + "/resnet50_rfcn_final.caffemodel";
     public static String dModelMean = dModelDir + "/imagenet_mean.binaryproto";
-    public static String[] dImageArray = new String[]{
+
+    /*public static String[] dImageArray = new String[]{
          "001763.jpg", "cat.jpg", "300.jpg", "dog2.jpg"
+    };*/
+
+    public static String[] dImageArray = new String[]{
+            "300.jpg","301.jpg","302.jpg","303.jpg","304.jpg",
+            "305.jpg","306.jpg","307.jpg","308.jpg","309.jpg",
+            /*"310.jpg","311.jpg","312.jpg","313.jpg","314.jpg",
+            "315.jpg","316.jpg","317.jpg","318.jpg","319.jpg",*/
     };
 
     public static boolean getIsCPUMode(Context context) {
@@ -53,6 +79,8 @@ public class Config {
      * test mode
      */
     public static boolean isCPUMode=true;
+
+
 
 
 }

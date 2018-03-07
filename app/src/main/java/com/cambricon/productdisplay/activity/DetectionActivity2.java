@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cambricon.productdisplay.R;
 import com.cambricon.productdisplay.caffenative.CaffeDetection;
@@ -84,6 +85,7 @@ public class DetectionActivity2 extends AppCompatActivity implements View.OnClic
 
         filePath = Environment.getExternalStorageDirectory() + "/caffe_mobile/ResNet50";
 
+
         toolbar = findViewById(R.id.classification_toolbar);
         ivCaptured = (ImageView) findViewById(R.id.classification_img);
         testResult = (TextView) findViewById(R.id.test_result);
@@ -107,13 +109,10 @@ public class DetectionActivity2 extends AppCompatActivity implements View.OnClic
 
         detectionDB = new DetectionDB(getApplicationContext());
         detectionDB.open();
-//        detectionDB.deleteTable();
 
-       /* detectionDB.addDetection(Config.dImageArray[0], "3", "3");
-        detectionDB.addDetection(Config.dImageArray[1], "3", "3");
-        detectionDB.addDetection(Config.dImageArray[2], "3", "3");
-        detectionDB.addDetection(Config.dImageArray[3], "3", "3");*/
 
+
+        //16.19.15.16
     }
 
 
@@ -145,6 +144,9 @@ public class DetectionActivity2 extends AppCompatActivity implements View.OnClic
                 testPro.setText(getString(R.string.detection_begin_guide));
                 testTime.setVisibility(View.VISIBLE);
                 textFps.setVisibility(View.VISIBLE);
+                //
+                detectionDB.deleteAllClassification();
+                index = 0;
                 isExist = true;
                 startDetect();
                 detection_begin.setVisibility(View.GONE);
@@ -174,7 +176,7 @@ public class DetectionActivity2 extends AppCompatActivity implements View.OnClic
             @Override
             public synchronized void run() {
 
-                imageFile = new File(filePath, Config.dImageArray[index]);
+                imageFile = new File(Config.imagePath, Config.dImageArray[index]);
                 bitmap = BitmapFactory.decodeFile(imageFile.getPath());
                 CNNTask cnnTask = new CNNTask(DetectionActivity2.this);
                 if (imageFile.exists()) {
@@ -239,10 +241,19 @@ public class DetectionActivity2 extends AppCompatActivity implements View.OnClic
             index++;
             testTime.setText(getResources().getString(R.string.test_time) + String.valueOf(detectionTime) + "ms");
             textFps.setText(getResources().getString(R.string.test_fps) + ConvertUtil.getFps(getFps(detectionTime)) + getResources().getString(R.string.test_fps_units));
-            if (index >= Config.dImageArray.length) {
+            /*if (index >= Config.dImageArray.length) {
                 index = index % Config.dImageArray.length;
+            }*/
+            Log.e(TAG, "startIndex: "+index);
+            if(index<Config.imageName.length){
+                startDetect();
+            }else{
+                Toast.makeText(this, "检测结束", Toast.LENGTH_SHORT).show();
+                testPro.setText(getString(R.string.detection_end_guide));
+                isExist = false;
+                detection_begin.setVisibility(View.VISIBLE);
+                detection_end.setVisibility(View.GONE);
             }
-            startDetect();
         }else{
             testPro.setText(getString(R.string.detection_end_guide));
         }
@@ -252,11 +263,7 @@ public class DetectionActivity2 extends AppCompatActivity implements View.OnClic
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        finish();
-        /**
-         * 结束线程
-         *
-         */
+        isExist = false;
     }
 }
 

@@ -52,7 +52,7 @@ public class ClassificationData extends Fragment {
     private GraphicalView graphicalView;
     private int[] points;
     private double[] avgTimes;
-    private static double avgTimeValue=0.00;
+    private static double avgTimeValue = 0.00;
     private static int avgFpsValue;
     private TextView fps_tv;
     private TextView time_tv;
@@ -61,7 +61,8 @@ public class ClassificationData extends Fragment {
     private UltraViewPager ultraViewPager_dialog;
     private PagerAdapter adapter_dialog;
     private ArrayList<ClassificationImage> allTicketsList;
-    public ClassificationData(){
+
+    public ClassificationData() {
 
     }
 
@@ -76,53 +77,72 @@ public class ClassificationData extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.classification_data_layout, null);
         init();
-        getData();
-        showChart();
+//        getData();
+//        showChart();
         setListener();
         return view;
     }
-    private void init(){
-        linearLayout=view.findViewById(R.id.chart_line);
-        classificationDB=new ClassificationDB(getContext());
-        classificationDB.open();
-        fps_tv=view.findViewById(R.id.avg_fps);
-        time_tv=view.findViewById(R.id.avg_time);
-        result_btn=view.findViewById(R.id.all_result);
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getData();
+        showChart();
     }
-    private void getData(){
-        double allTime=0.00;
-        int allFps=0;
+
+    private void init() {
+        linearLayout = view.findViewById(R.id.chart_line);
+        classificationDB = new ClassificationDB(getContext());
+        classificationDB.open();
+        fps_tv = view.findViewById(R.id.avg_fps);
+        time_tv = view.findViewById(R.id.avg_time);
+        result_btn = view.findViewById(R.id.all_result);
+    }
+
+    private void getData() {
+        double allTime = 0.00;
+        int allFps = 0;
         allTicketsList = new ArrayList<>();
-        allTicketsList=classificationDB.fetchAll();
-        for(ClassificationImage image : allTicketsList){
-            Log.e(TAG, "getData: "+image.toString());
+        allTicketsList = classificationDB.fetchAll();
+        for (ClassificationImage image : allTicketsList) {
+            Log.e(TAG, "getData: " + image.toString());
         }
-        points=new int[Config.ChartPointNum];
-        if(allTicketsList.size()!=0){
-            avgTimes=new double[allTicketsList.size()];
-            for(int i=0;i<allTicketsList.size();i++){
-                points[i]= ConvertUtil.getFps(allTicketsList.get(i).getFps());
-                avgTimes[i]=ConvertUtil.convert2Double(allTicketsList.get(i).getTime());
-                allTime=allTime+avgTimes[i];
-                allFps=allFps+points[i];
+        points = new int[Config.ChartPointNum];
+        if (allTicketsList.size() != 0) {
+            avgTimes = new double[allTicketsList.size()];
+            //            for(int i=0;i<allTicketsList.size();i++){
+            int dataSum;
+            if (Config.ChartPointNum > allTicketsList.size()) {
+                dataSum = allTicketsList.size();
+            } else {
+                dataSum = Config.ChartPointNum;
             }
-            avgTimeValue=allTime/allTicketsList.size();
-            avgFpsValue=(int) allFps/allTicketsList.size();
-            fps_tv.append(String.valueOf(avgFpsValue)+"张/分钟");
-            time_tv.append(String.valueOf((int) avgTimeValue)+"ms");
+            for (int i = 0; i < dataSum; i++) {
+
+                points[i] = ConvertUtil.getFps(allTicketsList.get(allTicketsList.size()-i-1).getFps());
+                avgTimes[i] = ConvertUtil.convert2Double(allTicketsList.get(allTicketsList.size()-i-1).getTime());
+                allTime = allTime + avgTimes[i];
+                allFps = allFps + points[i];
+            }
+            avgTimeValue = allTime / dataSum;
+            avgFpsValue = (int) allFps / dataSum;
+            fps_tv.setText("平均FPS值：");
+            time_tv.setText("单张图片平均时间：");
+            fps_tv.append(String.valueOf(avgFpsValue) + "张/分钟");
+            time_tv.append(String.valueOf((int) avgTimeValue) + "ms");
         }
     }
 
-    private void setListener(){
+    private void setListener() {
         result_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ResultDialog dialog=new ResultDialog(getContext());
+                ResultDialog dialog = new ResultDialog(getContext());
                 View contentView1 = LayoutInflater.from(getContext()).inflate(
                         R.layout.result_dialog, null);
                 ultraViewPager_dialog = contentView1.findViewById(R.id.ultra_viewpager_dialog);
                 ultraViewPager_dialog.setScrollMode(UltraViewPager.ScrollMode.HORIZONTAL);
-                adapter_dialog = new UltraPagerAdapter(true,allTicketsList);
+                adapter_dialog = new UltraPagerAdapter(true, allTicketsList);
                 ultraViewPager_dialog.setAdapter(adapter_dialog);
                 ultraViewPager_dialog.setMultiScreen(0.6f);
                 ultraViewPager_dialog.setItemRatio(1.0f);
@@ -131,37 +151,40 @@ public class ClassificationData extends Fragment {
                 dialog.setContentView(contentView1);
                 dialog.setTitle("测试结果");
                 dialog.setCanceledOnTouchOutside(true);
-                if(allTicketsList.size()>0){
+                if (allTicketsList.size() > 0) {
                     dialog.show();
-                }else{
-                    Toast.makeText(getContext(),getString(R.string.classification_dialog_null),Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), getString(R.string.classification_dialog_null), Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
     private void showChart() {
-        XYMultipleSeriesDataset mDataSet=getDataSet();
-        XYMultipleSeriesRenderer mRefender=getRefender();
-        graphicalView= ChartFactory.getLineChartView(getContext(), mDataSet, mRefender);
+        XYMultipleSeriesDataset mDataSet = getDataSet();
+        XYMultipleSeriesRenderer mRefender = getRefender();
+        graphicalView = ChartFactory.getLineChartView(getContext(), mDataSet, mRefender);
+        linearLayout.removeAllViews();
         linearLayout.addView(graphicalView);
     }
+
     private XYMultipleSeriesDataset getDataSet() {
-        XYMultipleSeriesDataset seriesDataset=new XYMultipleSeriesDataset();
-        XYSeries xySeries1=new XYSeries(getContext().getResources().getString(R.string.classification_chart_desc));
-        for(int i=1;i<=Config.ChartPointNum;i++){
-            xySeries1.add(i,points[i-1]);
+        XYMultipleSeriesDataset seriesDataset = new XYMultipleSeriesDataset();
+        XYSeries xySeries1 = new XYSeries(getContext().getResources().getString(R.string.classification_chart_desc));
+        for (int i = 1; i <= Config.ChartPointNum; i++) {
+            xySeries1.add(i, points[i - 1]);
         }
         seriesDataset.addSeries(xySeries1);
 
         return seriesDataset;
     }
+
     private XYMultipleSeriesRenderer getRefender() {
         /*描绘器，设置图表整体效果，比如x,y轴效果，缩放比例，颜色设置*/
-        XYMultipleSeriesRenderer seriesRenderer=new XYMultipleSeriesRenderer();
+        XYMultipleSeriesRenderer seriesRenderer = new XYMultipleSeriesRenderer();
 
         seriesRenderer.setChartTitleTextSize(50);//设置图表标题的字体大小(图的最上面文字)
-        seriesRenderer.setMargins(new int[] { 60, 40, 40, 40 });//设置外边距，顺序为：上左下右
+        seriesRenderer.setMargins(new int[]{60, 40, 40, 40});//设置外边距，顺序为：上左下右
         //坐标轴设置
         seriesRenderer.setAxisTitleTextSize(30);//设置坐标轴标题字体的大小
         seriesRenderer.setYAxisMin(0);//设置y轴的起始值
@@ -187,7 +210,7 @@ public class ClassificationData extends Fragment {
         seriesRenderer.setXLabelsAlign(Paint.Align.CENTER);
         seriesRenderer.setYLabelsAlign(Paint.Align.LEFT);
         seriesRenderer.setXLabels(0);//显示的x轴标签的个数
-        for(int i=1;i<=Config.ChartPointNum;i++){
+        for (int i = 1; i <= Config.ChartPointNum; i++) {
             seriesRenderer.addXTextLabel(i, String.valueOf(i));
         }
         seriesRenderer.setPointSize(5);//设置坐标点大小
@@ -197,7 +220,7 @@ public class ClassificationData extends Fragment {
         seriesRenderer.setChartTitle(getContext().getResources().getString(R.string.classification_chart_title));
 
         /*某一组数据的描绘器，描绘该组数据的个性化显示效果，主要是字体跟颜色的效果*/
-        XYSeriesRenderer xySeriesRenderer1=new XYSeriesRenderer();
+        XYSeriesRenderer xySeriesRenderer1 = new XYSeriesRenderer();
         xySeriesRenderer1.setAnnotationsColor(0xFFFF0000);//设置注释（注释可以着重标注某一坐标）的颜色
         xySeriesRenderer1.setAnnotationsTextAlign(Paint.Align.CENTER);//设置注释的位置
         xySeriesRenderer1.setAnnotationsTextSize(12);//设置注释文字的大小
@@ -208,6 +231,7 @@ public class ClassificationData extends Fragment {
         xySeriesRenderer1.setDisplayChartValues(true);//设置是否显示坐标点的y轴坐标值
         xySeriesRenderer1.setChartValuesTextSize(25);//设置显示的坐标点值的字体大小
         xySeriesRenderer1.setDisplayChartValuesDistance(30);
+
 
         seriesRenderer.addSeriesRenderer(xySeriesRenderer1);
         return seriesRenderer;

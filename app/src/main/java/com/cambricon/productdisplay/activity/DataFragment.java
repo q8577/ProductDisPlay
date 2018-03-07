@@ -51,4 +51,9 @@ public class DataFragment extends Fragment{
         float density = getResources().getDisplayMetrics().density;
         return (int) (dip * density + 0.5);
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
 }

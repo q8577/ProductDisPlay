@@ -49,14 +49,14 @@ public class DetectPagerAdapter extends PagerAdapter {
         TextView textView = linearLayout.findViewById(R.id.pager_result_tv);
         TextView timeTV=linearLayout.findViewById(R.id.pager_time_tv);
         ImageView imageView=linearLayout.findViewById(R.id.pager_image);
-        File file = new File(Config.dModelDir,Config.dImageArray[position]);
+        File file = new File(Config.imagePath,Config.dImageArray[position]);
         sdBitmap=BitmapFactory.decodeFile(file.getPath());
         imageView.setImageBitmap(sdBitmap);
-        textView.setText(getResult(position));
+        textView.setText("目标检测用时：");
         timeTV.setText(getTime(position)+"ms");
         linearLayout.setId(R.id.item_id);
         imageView.setId(R.id.item_id);
-        switch (position) {
+        switch (position%4) {
             case 0:
                 linearLayout.setBackgroundColor(Color.parseColor("#2196F3"));
                 break;

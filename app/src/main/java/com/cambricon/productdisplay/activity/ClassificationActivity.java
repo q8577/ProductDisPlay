@@ -82,6 +82,8 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
                 testResult.setVisibility(View.VISIBLE);
                 testTime.setVisibility(View.VISIBLE);
                 textFps.setVisibility(View.VISIBLE);
+                classificationDB.deleteAllClassification();
+                startIndex = 0;
                 isExist = true;
                 startThread();
                 classification_begin.setVisibility(View.GONE);
@@ -135,7 +137,9 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
         testThread = new Thread(new Runnable() {
             @Override
             public synchronized void run() {
-                imageFile = new File(Config.sdcard, Config.imageName[startIndex]);
+//                imageFile = new File(Config.sdcard, Config.imageName[startIndex]);
+                imageFile = new File(Config.imagePath, Config.imageName[startIndex]);
+
                 bmp = BitmapFactory.decodeFile(imageFile.getPath());
                 CNNTask cnnTask = new CNNTask(ClassificationActivity.this);
                 if (imageFile.exists()) {
@@ -163,6 +167,7 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
         this.toolbar = findViewById(R.id.classification_toolbar);
         classificationDB = new ClassificationDB(getApplicationContext());
         classificationDB.open();
+
     }
 
     /**
@@ -231,22 +236,43 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
 
     @Override
     public void onTaskCompleted(int result) {
-        Log.d(LOG_TAG, "IMAGENET_CLASSES=" + IMAGENET_CLASSES[result]);
-        TARGET_WIDTH = ivCaptured.getWidth();
-        TARGET_HEIGHT = ivCaptured.getHeight();
-        ivCaptured.setImageBitmap(zoomBitmap(bmp));
-        classificationDB.addClassification(Config.imageName[startIndex], String.valueOf((int)classificationTime), getFps(classificationTime), IMAGENET_CLASSES[result]);
-        startIndex++;
-        testResult.setText(getResources().getString(R.string.test_result) + IMAGENET_CLASSES[result]);
-        testTime.setText(getResources().getString(R.string.test_time) + String.valueOf((int)classificationTime) + "ms");
-        textFps.setText(getResources().getString(R.string.test_fps) + ConvertUtil.getFps(getFps(classificationTime)) + getResources().getString(R.string.test_fps_units));
-        if (startIndex >= Config.imageName.length) {
+        if(isExist) {
+            Log.d(LOG_TAG, "IMAGENET_CLASSES=" + IMAGENET_CLASSES[result]);
+            TARGET_WIDTH = ivCaptured.getWidth();
+            TARGET_HEIGHT = ivCaptured.getHeight();
+            ivCaptured.setImageBitmap(zoomBitmap(bmp));
+            classificationDB.addClassification(Config.imageName[startIndex], String.valueOf((int) classificationTime), getFps(classificationTime), IMAGENET_CLASSES[result]);
+            startIndex++;
+            testResult.setText(getResources().getString(R.string.test_result) + IMAGENET_CLASSES[result]);
+            testTime.setText(getResources().getString(R.string.test_time) + String.valueOf((int) classificationTime) + "ms");
+            textFps.setText(getResources().getString(R.string.test_fps) + ConvertUtil.getFps(getFps(classificationTime)) + getResources().getString(R.string.test_fps_units));
+        /*if (startIndex >= Config.imageName.length) {
             startIndex = startIndex % Config.imageName.length;
             Log.d(LOG_TAG, "startIndex=" + startIndex);
-        }
-        if(!isExist){
+        }*/
+
+            Log.e(LOG_TAG, "startIndex: "+startIndex);
+            if(startIndex<Config.imageName.length){
+                startThread();
+            }else{
+                Toast.makeText(this, "检测结束", Toast.LENGTH_SHORT).show();
+                testPro.setText(getString(R.string.classification_end_guide));
+                isExist = false;
+                classification_begin.setVisibility(View.VISIBLE);
+                classification_end.setVisibility(View.GONE);
+            }
+
+
+        }else{
             testPro.setText(getString(R.string.classification_end_guide));
         }
-        startThread();
+
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isExist = false;
     }
 }

@@ -50,13 +50,13 @@ public class UltraPagerAdapter extends PagerAdapter {
         TextView textView = linearLayout.findViewById(R.id.pager_result_tv);
         TextView timeTV=linearLayout.findViewById(R.id.pager_time_tv);
         ImageView imageView=linearLayout.findViewById(R.id.pager_image);
-        sdBitmap=BitmapFactory.decodeFile(Config.sdcard+"/"+ getImage(position));
+        sdBitmap=BitmapFactory.decodeFile(Config.imagePath+"/"+ getImage(position));
         imageView.setImageBitmap(sdBitmap);
         textView.setText(getResult(position));
         timeTV.setText(getTime(position)+"ms");
         linearLayout.setId(R.id.item_id);
         imageView.setId(R.id.item_id);
-        switch (position) {
+        switch (position%4) {
             case 0:
                 linearLayout.setBackgroundColor(Color.parseColor("#2196F3"));
                 break;

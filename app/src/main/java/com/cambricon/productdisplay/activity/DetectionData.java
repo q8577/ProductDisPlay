@@ -79,6 +79,7 @@ public class DetectionData extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.classification_data_layout, null);
         init();
+//        detectionDB.deleteAllClassification();
 //        getData();
 //        showChart();
         setListener();
@@ -86,16 +87,17 @@ public class DetectionData extends Fragment {
     }
     private void init(){
         linearLayout=view.findViewById(R.id.chart_line);
-        detectionDB=new DetectionDB(getContext());
-        detectionDB.open();
+
         fps_tv=view.findViewById(R.id.avg_fps);
         time_tv=view.findViewById(R.id.avg_time);
         result_btn=view.findViewById(R.id.all_result);
 
-
+        detectionDB=new DetectionDB(getContext());
+        detectionDB.open();
 
     }
     private void getData(){
+
         double allTime = 0.0;
         int allFps = 0;
         allTicketsList = new ArrayList<>();
@@ -108,14 +110,21 @@ public class DetectionData extends Fragment {
         points=new int[Config.ChartPointNum];
         if(allTicketsList.size()!=0){
             avgTimes=new double[allTicketsList.size()];
-            for(int i=0;i<allTicketsList.size();i++){
+            int dataSum;
+            if (Config.ChartPointNum > allTicketsList.size()) {
+                dataSum = allTicketsList.size();
+            } else {
+                dataSum = Config.ChartPointNum;
+            }
+
+            for(int i=0;i<dataSum;i++){
                 points[i]= ConvertUtil.getFps(allTicketsList.get(i).getFps());
                 avgTimes[i]=ConvertUtil.convert2Double(allTicketsList.get(i).getTime());
                 allTime=allTime+avgTimes[i];
                 allFps=allFps+points[i];
             }
-            avgTimeValue=allTime/allTicketsList.size();
-            avgFpsValue=(int) allFps/allTicketsList.size();
+            avgTimeValue=allTime/dataSum;
+            avgFpsValue=(int) allFps/dataSum;
             fps_tv.setText("平均FPS值：");
             time_tv.setText("单张图片平均时间：");
             fps_tv.append(String.valueOf(avgFpsValue)+"张/分钟");
@@ -127,12 +136,18 @@ public class DetectionData extends Fragment {
 
     @Override
     public void onResume() {
+
+        super.onResume();
         getData();
         Log.e(TAG, "onResume: ");
         showChart();
-        super.onResume();
+
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
 
     private void setListener(){
         result_btn.setOnClickListener(new View.OnClickListener() {
@@ -162,10 +177,12 @@ public class DetectionData extends Fragment {
 
     private void showChart() {
 //        XYMultipleSeriesDataset mDataSet=getDataSet();
+        Log.e(TAG, "showChart: "+points.length);
         XYMultipleSeriesDataset mDataSet = DataUtil.getDataSet(getContext(),points);
 //        XYMultipleSeriesRenderer mRefender=getRefender();
         XYMultipleSeriesRenderer mRefender= DataUtil.getRefender(getContext());
         graphicalView= ChartFactory.getLineChartView(getContext(), mDataSet, mRefender);
+        linearLayout.removeAllViews();
         linearLayout.addView(graphicalView);
     }
     /*private XYMultipleSeriesDataset getDataSet() {
