@@ -127,7 +127,7 @@ public class DetectionData extends Fragment {
     public void onResume() {
         Log.e(TAG, "onResume: ");
         getData();
-        showChart();
+            showChart();
         super.onResume();
     }
 
