@@ -35,6 +35,8 @@ public class SplashActivity extends AppCompatActivity {
     private long loadDTime;
     private TextView load_data;
     private final int PERMISSION = 1;
+    private final int START_LOAD_DETECT = 2;
+
     //...
 
     Handler handler = new Handler() {
@@ -43,6 +45,9 @@ public class SplashActivity extends AppCompatActivity {
             switch (msg.what) {
                 case PERMISSION:
                     loadModel();
+                    break;
+                case START_LOAD_DETECT:
+                    load_data.setText(R.string.load_data_detection);
                     break;
                 default:
                     break;
@@ -97,7 +102,11 @@ public class SplashActivity extends AppCompatActivity {
 
 
     private void loadDectionModel() {
-        load_data.setText(R.string.load_data_detection);
+//        load_data.setText(R.string.load_data_detection);
+        Message msg = new Message();
+        msg.what = START_LOAD_DETECT;
+        handler.sendMessage(msg);
+
         long startTime = SystemClock.uptimeMillis();
         caffeDetection = new CaffeDetection();
         caffeDetection.setNumThreads(4);
