@@ -1,3 +1,0 @@
-/home/gzb/gzb1/ProTest/a1/ProductDisPlay/app/.externalNativeBuild/cmake/release/armeabi/CMakeFiles/rebuild_cache.dir
-/home/gzb/gzb1/ProTest/a1/ProductDisPlay/app/.externalNativeBuild/cmake/release/armeabi/CMakeFiles/edit_cache.dir
-/home/gzb/gzb1/ProTest/a1/ProductDisPlay/app/.externalNativeBuild/cmake/release/armeabi/CMakeFiles/native-lib.dir
