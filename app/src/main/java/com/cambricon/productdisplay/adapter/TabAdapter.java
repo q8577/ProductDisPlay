@@ -26,6 +26,7 @@ public class TabAdapter extends FragmentPagerAdapter {
         tabs.add(context.getString(R.string.gv_text_item2));
         fragments.add(new ClassificationData(context,tabs.get(0)));
         fragments.add(new DetectionData(context,tabs.get(1)));
+        notifyDataSetChanged();
     }
 
     @Override
