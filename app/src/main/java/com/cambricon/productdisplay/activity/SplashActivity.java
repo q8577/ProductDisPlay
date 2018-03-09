@@ -68,7 +68,7 @@ public class SplashActivity extends AppCompatActivity {
 
     public void verifyPermission() {
         if (ContextCompat.checkSelfPermission(SplashActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(SplashActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+            ActivityCompat.requestPermissions(SplashActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         } else {
             loadModel();
         }
@@ -111,6 +111,9 @@ public class SplashActivity extends AppCompatActivity {
         caffeDetection = new CaffeDetection();
         caffeDetection.setNumThreads(4);
         long start_time = System.nanoTime();
+        Log.e("load", "loadDectionModel: "+Config.dModelProto);
+        Log.e("load", "loadDectionModel: "+Config.dModelBinary);
+
         caffeDetection.loadModel(Config.dModelProto, Config.dModelBinary);
         long end_time = System.nanoTime();
         double paste_time = (end_time - start_time) / 1e6;

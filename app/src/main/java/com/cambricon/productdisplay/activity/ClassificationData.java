@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,6 +62,8 @@ public class ClassificationData extends Fragment {
     private UltraViewPager ultraViewPager_dialog;
     private PagerAdapter adapter_dialog;
     private ArrayList<ClassificationImage> allTicketsList;
+    private int max = 0;
+    private int min = 10000;
 
     public ClassificationData() {
 
@@ -120,6 +123,12 @@ public class ClassificationData extends Fragment {
             for (int i = 0; i < dataSum; i++) {
 
                 points[i] = ConvertUtil.getFps(allTicketsList.get(allTicketsList.size()-i-1).getFps());
+                if(points[i]>max){
+                    max = points[i];
+                }
+                if(points[i]<min){
+                    min = points[i];
+                }
                 avgTimes[i] = ConvertUtil.convert2Double(allTicketsList.get(allTicketsList.size()-i-1).getTime());
                 allTime = allTime + avgTimes[i];
                 allFps = allFps + points[i];
@@ -161,18 +170,29 @@ public class ClassificationData extends Fragment {
     }
 
     private void showChart() {
-        XYMultipleSeriesDataset mDataSet = getDataSet();
-        XYMultipleSeriesRenderer mRefender = getRefender();
-        graphicalView = ChartFactory.getLineChartView(getContext(), mDataSet, mRefender);
-        linearLayout.removeAllViews();
-        linearLayout.addView(graphicalView);
+        if(allTicketsList.size()>0){
+            XYMultipleSeriesDataset mDataSet = getDataSet();
+            XYMultipleSeriesRenderer mRefender = getRefender();
+            graphicalView = ChartFactory.getLineChartView(getContext(), mDataSet, mRefender);
+            linearLayout.removeAllViews();
+            linearLayout.addView(graphicalView);
+        }else{
+            linearLayout.removeAllViews();
+            TextView nullDate = new TextView(getContext());
+            nullDate.setText("暂无功能测评数据");
+            nullDate.setGravity(Gravity.CENTER_HORIZONTAL);
+            nullDate.setPadding(0,300,0,0);
+            linearLayout.addView(nullDate);
+        }
     }
 
     private XYMultipleSeriesDataset getDataSet() {
         XYMultipleSeriesDataset seriesDataset = new XYMultipleSeriesDataset();
         XYSeries xySeries1 = new XYSeries(getContext().getResources().getString(R.string.classification_chart_desc));
         for (int i = 1; i <= Config.ChartPointNum; i++) {
-            xySeries1.add(i, points[i - 1]);
+            if(points[i-1]!=0){
+                xySeries1.add(i, points[i - 1]);
+            }
         }
         seriesDataset.addSeries(xySeries1);
 
@@ -187,8 +207,8 @@ public class ClassificationData extends Fragment {
         seriesRenderer.setMargins(new int[]{60, 40, 40, 40});//设置外边距，顺序为：上左下右
         //坐标轴设置
         seriesRenderer.setAxisTitleTextSize(30);//设置坐标轴标题字体的大小
-        seriesRenderer.setYAxisMin(0);//设置y轴的起始值
-        seriesRenderer.setYAxisMax(300);//设置y轴的最大值
+        seriesRenderer.setYAxisMin(min-20);//设置y轴的起始值
+        seriesRenderer.setYAxisMax(max+15);//设置y轴的最大值
         seriesRenderer.setYLabels(10);//设置y轴显示点数
         seriesRenderer.setXAxisMin(0.5);//设置x轴起始值
         seriesRenderer.setXAxisMax(10.5);//设置x轴最大值

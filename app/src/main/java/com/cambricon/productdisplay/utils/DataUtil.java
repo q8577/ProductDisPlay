@@ -19,7 +19,7 @@ import org.achartengine.renderer.XYSeriesRenderer;
 
 public class DataUtil {
 
-    public static XYMultipleSeriesRenderer getRefender(Context context) {
+    public static XYMultipleSeriesRenderer getRefender(Context context,int max, int min) {
         /*描绘器，设置图表整体效果，比如x,y轴效果，缩放比例，颜色设置*/
         XYMultipleSeriesRenderer seriesRenderer=new XYMultipleSeriesRenderer();
 
@@ -27,8 +27,8 @@ public class DataUtil {
         seriesRenderer.setMargins(new int[] { 60, 40, 40, 40 });//设置外边距，顺序为：上左下右
         //坐标轴设置
         seriesRenderer.setAxisTitleTextSize(30);//设置坐标轴标题字体的大小
-        seriesRenderer.setYAxisMin(0);//设置y轴的起始值
-        seriesRenderer.setYAxisMax(30);//设置y轴的最大值
+        seriesRenderer.setYAxisMin(min-15);//设置y轴的起始值
+        seriesRenderer.setYAxisMax(max+10);//设置y轴的最大值
         seriesRenderer.setYLabels(10);//设置y轴显示点数
         seriesRenderer.setXAxisMin(0.5);//设置x轴起始值
         seriesRenderer.setXAxisMax(10.5);//设置x轴最大值
@@ -80,7 +80,9 @@ public class DataUtil {
         XYMultipleSeriesDataset seriesDataset=new XYMultipleSeriesDataset();
         XYSeries xySeries1=new XYSeries(context.getResources().getString(R.string.classification_chart_desc));
         for(int i=1;i<=Config.ChartPointNum;i++){
-            xySeries1.add(i,points[i-1]);
+            if(points[i-1]!=0){
+                xySeries1.add(i,points[i-1]);
+            }
         }
         seriesDataset.addSeries(xySeries1);
 

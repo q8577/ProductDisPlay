@@ -11,16 +11,7 @@ import java.io.File;
  * Created by dell on 18-2-28.
  */
 
-public class
-
-
-
-
-
-
-
-
-Config {
+public class Config {
     public static final int ChartPointNum = 10;
 
     /**
@@ -55,6 +46,7 @@ Config {
     public static String dModelProto = dModelDir + "/test_agnostic.prototxt";
     public static String dModelBinary = dModelDir + "/resnet50_rfcn_final.caffemodel";
     public static String dModelMean = dModelDir + "/imagenet_mean.binaryproto";
+    public static String dImagePath = modelPath+"/re/detec";
 
     /*public static String[] dImageArray = new String[]{
          "001763.jpg", "cat.jpg", "300.jpg", "dog2.jpg"

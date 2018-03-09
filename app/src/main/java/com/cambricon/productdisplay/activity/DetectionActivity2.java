@@ -29,6 +29,8 @@ import com.cambricon.productdisplay.utils.ConvertUtil;
 import com.cambricon.productdisplay.utils.StatusBarCompat;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  *
@@ -238,6 +240,7 @@ public class DetectionActivity2 extends AppCompatActivity implements View.OnClic
             ivCaptured.setScaleType(ImageView.ScaleType.FIT_XY);
             ivCaptured.setImageBitmap(resBitmap);
             detectionDB.addDetection(Config.dImageArray[index], String.valueOf((int)detectionTime), getFps(detectionTime));
+            storeImage(resBitmap);
             index++;
             testTime.setText(getResources().getString(R.string.test_time) + String.valueOf(detectionTime) + "ms");
             textFps.setText(getResources().getString(R.string.test_fps) + ConvertUtil.getFps(getFps(detectionTime)) + getResources().getString(R.string.test_fps_units));
@@ -265,6 +268,27 @@ public class DetectionActivity2 extends AppCompatActivity implements View.OnClic
         super.onDestroy();
         isExist = false;
     }
+
+    public void storeImage(Bitmap bitmap){
+        File file = new File(Config.dImagePath,"detec-"+index+".jpg");
+        Log.e(TAG, "storeImage: "+file.exists());
+        if (!file.exists()){
+            file.mkdirs();
+        }
+        if(file.exists()){
+            file.delete();
+        }
+        try {
+            file.createNewFile();
+            FileOutputStream fos = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
 
 
