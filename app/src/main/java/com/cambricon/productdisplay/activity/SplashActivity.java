@@ -131,6 +131,7 @@ public class SplashActivity extends AppCompatActivity {
         Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
         intent.putExtra("caffeDetection", caffeDetection);
         intent.putExtra("loadDTime", loadDTime);
+        intent.putExtra("netType","ResNet50");
         startActivity(intent);
         finish();
     }

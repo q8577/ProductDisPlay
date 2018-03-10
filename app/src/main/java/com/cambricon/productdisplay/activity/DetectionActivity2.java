@@ -83,6 +83,7 @@ public class DetectionActivity2 extends AppCompatActivity implements View.OnClic
         detection_end = findViewById(R.id.classification_end);
 
         loadCaffe.setText(getResources().getString(R.string.detection_load_model) + String.valueOf(getIntent().getSerializableExtra("loadDTime")) + "ms");
+        testNet.setText(getString(R.string.decete_type)+String.valueOf(getIntent().getSerializableExtra("netType")));
         testPro.setText("图片目标检测结果显示");
         function_text.setText("目标检测：\n\t\t\t\t通过特定的训练模型，不仅仅要识别出来是什么物体，而且还要预测物体的位置，位置用边框标记。");
         testNet.setText(R.string.decete_type);
@@ -223,11 +224,6 @@ public class DetectionActivity2 extends AppCompatActivity implements View.OnClic
             Log.e(TAG, "startIndex: " + index);
             if (index < Config.imageName.length) {
                 startDetect();
-                if(!Config.isResNet101){
-                    testNet.setText(getString(R.string.decete_type)+"ResNet50");
-                }else{
-                    testNet.setText(getString(R.string.decete_type)+"ResNet101");
-                }
             } else {
                 Toast.makeText(this, "检测结束", Toast.LENGTH_SHORT).show();
                 testPro.setText(getString(R.string.detection_end_guide));
@@ -248,6 +244,7 @@ public class DetectionActivity2 extends AppCompatActivity implements View.OnClic
         caffeDetection.setMean(Config.dModelMean_101);
         loadDTime = SystemClock.uptimeMillis() - startTime;
         loadCaffe.setText(getResources().getString(R.string.detection_load_model)+loadDTime+"ms");
+        testNet.setText(getString(R.string.decete_type)+"ResNet101");
         Log.e("huangyaling","resnet101");
     }
 
