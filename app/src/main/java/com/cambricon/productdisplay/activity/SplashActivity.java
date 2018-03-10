@@ -101,15 +101,9 @@ public class SplashActivity extends AppCompatActivity {
         long startTime = SystemClock.uptimeMillis();
         caffeDetection = new CaffeDetection();
         caffeDetection.setNumThreads(4);
-        long start_time = System.nanoTime();
         Log.e("load", "loadDectionModel: " + Config.dModelProto);
         Log.e("load", "loadDectionModel: " + Config.dModelBinary);
-
         caffeDetection.loadModel(Config.dModelProto, Config.dModelBinary);
-        long end_time = System.nanoTime();
-        double paste_time = (end_time - start_time) / 1e6;
-
-        float[] meanValues = {104, 117, 123};
         caffeDetection.setMean(Config.dModelMean);
         loadDTime = SystemClock.uptimeMillis() - startTime;
     }

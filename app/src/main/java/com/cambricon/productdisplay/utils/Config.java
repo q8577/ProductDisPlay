@@ -37,13 +37,22 @@ public class Config {
 
 
     /**
-     * detection source
+     * detection source-ResNet50
      */
     public static String dModelDir = modelPath + "/ResNet50";
     public static String dModelProto = dModelDir + "/test_agnostic.prototxt";
     public static String dModelBinary = dModelDir + "/resnet50_rfcn_final.caffemodel";
     public static String dModelMean = dModelDir + "/imagenet_mean.binaryproto";
     public static String dImagePath = modelPath+"/re/detec";
+
+
+    public static String dModelDir_101 = modelPath + "/ResNet101";
+    public static String dModelProto_101 = dModelDir_101 + "/test_agnostic.prototxt";
+    public static String dModelBinary_101 = dModelDir_101 + "/resnet101_rfcn_final.caffemodel";
+    public static String dModelMean_101 = dModelDir_101 + "/resnet101_imagenet_mean.binaryproto";
+
+    public static boolean isResNet101=false;
+
 
     public static String[] dImageArray = new String[]{
             "300.jpg","301.jpg","302.jpg","303.jpg","304.jpg",

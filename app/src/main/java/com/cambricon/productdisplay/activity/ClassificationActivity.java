@@ -103,12 +103,10 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
         // TODO: implement a splash screen(?
         caffeMobile = new CaffeMobile();
         caffeMobile.setNumThreads(4);
-        long start_time = System.nanoTime();
+        long start_time = SystemClock.uptimeMillis();
         caffeMobile.loadModel(Config.modelProto, Config.modelBinary);
-        long end_time = System.nanoTime();
-        loadCaffe.append(String.valueOf((end_time - start_time) / 1e6));
-        loadCaffe.setText(getResources().getString(R.string.load_model) + String.valueOf((end_time - start_time) / 1e6) + "ms");
-
+        long end_time = SystemClock.uptimeMillis()-start_time;
+        loadCaffe.setText(getResources().getString(R.string.load_model) + end_time + "ms");
         float[] meanValues = {104, 117, 123};
         caffeMobile.setMean(meanValues);
 
@@ -137,9 +135,7 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
         testThread = new Thread(new Runnable() {
             @Override
             public synchronized void run() {
-//                imageFile = new File(Config.sdcard, Config.imageName[startIndex]);
                 imageFile = new File(Config.imagePath, Config.imageName[startIndex]);
-
                 bmp = BitmapFactory.decodeFile(imageFile.getPath());
                 CNNTask cnnTask = new CNNTask(ClassificationActivity.this);
                 if (imageFile.exists()) {
