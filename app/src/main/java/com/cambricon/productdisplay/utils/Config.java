@@ -26,9 +26,6 @@ public class Config {
     public static String modelDir = modelPath + "/bvlc_reference_caffenet";
     public static String modelProto = modelDir + "/deploy.prototxt";
     public static String modelBinary = modelDir + "/bvlc_reference_caffenet.caffemodel";
-    /*public static String[] imageName = new String[]{
-         "test_image.jpg", "test_image2.jpg", "test_image3.jpg", "test_image4.jpg"
-    };*/
     public static String imagePath = modelPath+"/re/test";
     public static String[] imageName = new String[]{
             "300.jpg","400.jpg","500.jpg","600.jpg","700.jpg",
@@ -47,10 +44,6 @@ public class Config {
     public static String dModelBinary = dModelDir + "/resnet50_rfcn_final.caffemodel";
     public static String dModelMean = dModelDir + "/imagenet_mean.binaryproto";
     public static String dImagePath = modelPath+"/re/detec";
-
-    /*public static String[] dImageArray = new String[]{
-         "001763.jpg", "cat.jpg", "300.jpg", "dog2.jpg"
-    };*/
 
     public static String[] dImageArray = new String[]{
             "300.jpg","301.jpg","302.jpg","303.jpg","304.jpg",
@@ -71,8 +64,5 @@ public class Config {
      * test mode
      */
     public static boolean isCPUMode=true;
-
-
-
 
 }

@@ -65,12 +65,6 @@ public class DetectionActivity extends AppCompatActivity implements CNNListener{
     private CameraCaptureSession mCaptureSession;
     private CameraDevice mCameraDevice;
 
-    final File modelFile = new File(Environment.getExternalStorageDirectory(), "resnet101_train_agnostic.prototxt");
-    final File weightFile = new File(Environment.getExternalStorageDirectory(), "resnet101_rfcn_final.caffemodel");
-    File sdcard = Environment.getExternalStorageDirectory();
-    String modelProto = sdcard + "/resnet101_train_agnostic.prototxt";
-    String modelBinary = sdcard + "/resnet101_rfcn_final.caffemodel";
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,9 +74,6 @@ public class DetectionActivity extends AppCompatActivity implements CNNListener{
         setListener();
         setToolbar();
         openCamera();
-
-//        initData();
-
     }
     //绑定监听事件
     private void setListener() {
@@ -158,7 +149,6 @@ public class DetectionActivity extends AppCompatActivity implements CNNListener{
         @Override
         protected Integer doInBackground(String... strings) {
             startTime = SystemClock.uptimeMillis();
-            //return caffeDetection.detectImage(strings[0])[0];
             return null;
         }
 

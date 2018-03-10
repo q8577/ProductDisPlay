@@ -37,8 +37,6 @@ public class SplashActivity extends AppCompatActivity {
     private final int PERMISSION = 1;
     private final int START_LOAD_DETECT = 2;
 
-    //...
-
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -61,14 +59,11 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.splash_activity);
         load_data = findViewById(R.id.load_data);
         verifyPermission();
-        //        load();
-        //逻辑需要重新做
-        //        loadModel();
     }
 
     public void verifyPermission() {
         if (ContextCompat.checkSelfPermission(SplashActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(SplashActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+            ActivityCompat.requestPermissions(SplashActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         } else {
             loadModel();
         }
@@ -89,10 +84,7 @@ public class SplashActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                //
                 loadDectionModel();
-                //...
-                //object
                 forward();
 
             }
@@ -102,7 +94,6 @@ public class SplashActivity extends AppCompatActivity {
 
 
     private void loadDectionModel() {
-//        load_data.setText(R.string.load_data_detection);
         Message msg = new Message();
         msg.what = START_LOAD_DETECT;
         handler.sendMessage(msg);
@@ -111,8 +102,8 @@ public class SplashActivity extends AppCompatActivity {
         caffeDetection = new CaffeDetection();
         caffeDetection.setNumThreads(4);
         long start_time = System.nanoTime();
-        Log.e("load", "loadDectionModel: "+Config.dModelProto);
-        Log.e("load", "loadDectionModel: "+Config.dModelBinary);
+        Log.e("load", "loadDectionModel: " + Config.dModelProto);
+        Log.e("load", "loadDectionModel: " + Config.dModelBinary);
 
         caffeDetection.loadModel(Config.dModelProto, Config.dModelBinary);
         long end_time = System.nanoTime();
@@ -128,7 +119,6 @@ public class SplashActivity extends AppCompatActivity {
         switch (requestCode) {
             case 1:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // loadModel();
                     Message msg = new Message();
                     msg.what = PERMISSION;
                     handler.sendMessage(msg);
@@ -145,10 +135,8 @@ public class SplashActivity extends AppCompatActivity {
 
     private void forward() {
         Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
-        //detect
         intent.putExtra("caffeDetection", caffeDetection);
         intent.putExtra("loadDTime", loadDTime);
-        //...
         startActivity(intent);
         finish();
     }
