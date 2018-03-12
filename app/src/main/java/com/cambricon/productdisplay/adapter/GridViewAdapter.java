@@ -28,7 +28,7 @@ public class GridViewAdapter extends BaseAdapter{
     public GridViewAdapter(Context context){
         this.mContext=context;
         //this.listItem=listItem;
-        gv_image=new int[]{R.mipmap.classifi,R.mipmap.detect,R.mipmap.voice,R.mipmap.more};
+        gv_image=new int[]{R.mipmap.classifi,R.mipmap.detect,R.mipmap.face_detecte,R.mipmap.more};
         gv_text=context.getResources().getStringArray(R.array.grid_view_text);
         for(int i=0;i<gv_text.length;i++){
             Map<String,Object> map=new HashMap<String,Object>();

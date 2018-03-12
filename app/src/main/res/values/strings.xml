@@ -5,7 +5,7 @@
     <string name="home_tab_adv">资讯</string>
     <string name="gv_text_item1">图片分类</string>
     <string name="gv_text_item2">目标检测</string>
-    <string name="gv_text_item3">语音语义分析</string>
+    <string name="gv_text_item3">人脸检测</string>
     <string name="gv_text_item4">更多</string>
     <string name="begin_btn">开始测试</string>
     <string name="end_btn">停止测试</string>
