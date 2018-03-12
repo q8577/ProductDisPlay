@@ -221,7 +221,7 @@ public class ClassificationData extends Fragment {
         XYMultipleSeriesRenderer seriesRenderer = new XYMultipleSeriesRenderer();
 
         seriesRenderer.setChartTitleTextSize(50);//设置图表标题的字体大小(图的最上面文字)
-        seriesRenderer.setMargins(new int[]{60, 40, 40, 40});//设置外边距，顺序为：上左下右
+        seriesRenderer.setMargins(new int[]{20, 40, 40, 40});//设置外边距，顺序为：上左下右
         //坐标轴设置
         seriesRenderer.setAxisTitleTextSize(30);//设置坐标轴标题字体的大小
         seriesRenderer.setYAxisMin(0);//设置y轴的起始值
@@ -230,11 +230,14 @@ public class ClassificationData extends Fragment {
         seriesRenderer.setXAxisMin(0.5);//设置x轴起始值
         seriesRenderer.setXAxisMax(10.5);//设置x轴最大值
         seriesRenderer.setYTitle(getActivity().getResources().getString(R.string.classification_chart_y));//设置y轴标题
+        seriesRenderer.setYLabelsColor(0,Color.BLACK);
+        seriesRenderer.setXLabelsColor(Color.BLACK);
         //seriesRenderer.setXTitle(getActivity().getResources().getString(R.string.classification_chart_x));//设置x轴标题
         //颜色设置
-        seriesRenderer.setApplyBackgroundColor(true);//是应用设置的背景颜色
+        //seriesRenderer.setApplyBackgroundColor(true);//是应用设置的背景颜色
         seriesRenderer.setLabelsColor(0xFF85848D);//设置标签颜色
-        seriesRenderer.setBackgroundColor(Color.argb(100, 255, 231, 224));//设置图表的背景颜色
+        //seriesRenderer.setBackgroundColor(Color.argb(100, 255, 231, 224));//设置图表的背景颜色
+        seriesRenderer.setBackgroundColor(R.color.gridview_bg);//设置图表的背景颜色
         //缩放设置
         seriesRenderer.setZoomButtonsVisible(false);//设置缩放按钮是否可见
         seriesRenderer.setZoomEnabled(false); //图表是否可以缩放设置
@@ -243,7 +246,7 @@ public class ClassificationData extends Fragment {
         seriesRenderer.setPanEnabled(false);//图表是否可以移动
 
         //坐标轴标签设置
-        seriesRenderer.setLabelsTextSize(20);//设置标签字体大小
+        seriesRenderer.setLabelsTextSize(25);//设置标签字体大小
         seriesRenderer.setXLabelsAlign(Paint.Align.CENTER);
         seriesRenderer.setYLabelsAlign(Paint.Align.LEFT);
         seriesRenderer.setXLabels(0);//显示的x轴标签的个数
@@ -254,13 +257,13 @@ public class ClassificationData extends Fragment {
 
         seriesRenderer.setMarginsColor(Color.WHITE);//设置外边距空间的颜色
         seriesRenderer.setClickEnabled(false);
-        seriesRenderer.setChartTitle(getContext().getResources().getString(R.string.classification_chart_title));
+        //seriesRenderer.setChartTitle(getContext().getResources().getString(R.string.classification_chart_title));
 
         /*某一组数据的描绘器，描绘该组数据的个性化显示效果，主要是字体跟颜色的效果*/
         XYSeriesRenderer xySeriesRenderer1 = new XYSeriesRenderer();
         xySeriesRenderer1.setAnnotationsColor(0xFFFF0000);//设置注释（注释可以着重标注某一坐标）的颜色
         xySeriesRenderer1.setAnnotationsTextAlign(Paint.Align.CENTER);//设置注释的位置
-        xySeriesRenderer1.setAnnotationsTextSize(12);//设置注释文字的大小
+        xySeriesRenderer1.setAnnotationsTextSize(20);//设置注释文字的大小
         xySeriesRenderer1.setPointStyle(PointStyle.CIRCLE);//坐标点的显示风格
         xySeriesRenderer1.setFillPoints(true);
         xySeriesRenderer1.setPointStrokeWidth(3);//坐标点的大小
@@ -274,7 +277,7 @@ public class ClassificationData extends Fragment {
         XYSeriesRenderer xySeriesRenderer2 = new XYSeriesRenderer();
         xySeriesRenderer2.setAnnotationsColor(R.color.main_line);//设置注释（注释可以着重标注某一坐标）的颜色
         xySeriesRenderer2.setAnnotationsTextAlign(Paint.Align.CENTER);//设置注释的位置
-        xySeriesRenderer2.setAnnotationsTextSize(12);//设置注释文字的大小
+        xySeriesRenderer2.setAnnotationsTextSize(20);//设置注释文字的大小
         xySeriesRenderer2.setPointStyle(PointStyle.CIRCLE);//坐标点的显示风格
         xySeriesRenderer2.setFillPoints(true);
         xySeriesRenderer2.setPointStrokeWidth(3);//坐标点的大小

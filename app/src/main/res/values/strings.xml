@@ -33,9 +33,9 @@
     <string name="detection_title">目标检测</string>
     <string name="detection_end_guide">目标检测已停止</string>
     <string name="detection_load_model">加载检测模型耗时：</string>
-    <string name="classification_avg_time">平均FPS值：</string>
-    <string name="classification_single_time">单张图片平均时间：</string>
-    <string name="classification_result">测试结果详情:点击查看</string>
+    <string name="classification_avg_time">平均速率：</string>
+    <string name="classification_single_time">平均时间：</string>
+    <string name="classification_result">结果详情:点击查看</string>
     <string name="classification_dialog_null">不存在已经分类的图片</string>
     <string name="load_data_detection">加载目标检测模型...</string>
     <string name="load_data_over">加载模型完毕。</string>

@@ -13,4 +13,5 @@
     <dimen name="switch_btn_height">18dp</dimen>
     <dimen name="switch_btn_paddingright">30dp</dimen>
     <dimen name="text_padding">15dp</dimen>
+    <dimen name="text_chart_title">18sp</dimen>
 </resources>

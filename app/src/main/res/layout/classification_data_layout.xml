@@ -2,22 +2,48 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:orientation="vertical"
-    android:paddingTop="60dp">
+    android:paddingTop="52dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:background="@color/main_line"
         android:divider="@drawable/divider_line"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <ImageView
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@mipmap/logo" />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/avg_ipu_fps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:paddingBottom="@dimen/text_padding"
+                android:text="@string/classification_avg_time" />
+
+            <TextView
+                android:id="@+id/avg_ipu_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:text="@string/classification_single_time" />
+
+            <Button
+                android:id="@+id/all_ipu_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:background="@android:color/transparent"
+                android:text="@string/classification_result" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
@@ -29,6 +55,7 @@
                 android:id="@+id/avg_fps"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
                 android:paddingBottom="@dimen/text_padding"
                 android:text="@string/classification_avg_time" />
 
@@ -36,13 +63,14 @@
                 android:id="@+id/avg_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
                 android:text="@string/classification_single_time" />
 
             <Button
                 android:id="@+id/all_result"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/menu_background"
+                android:textColor="@android:color/white"
                 android:background="@android:color/transparent"
                 android:text="@string/classification_result" />
         </LinearLayout>
@@ -52,6 +80,13 @@
         android:layout_width="fill_parent"
         android:layout_height="1px"
         android:background="#000000" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:gravity="center_vertical"
+        android:textColor="@color/main_line"
+        android:textSize="@dimen/text_chart_title"
+        android:text="@string/classification_chart_title"/>
 
     <LinearLayout
         android:id="@+id/chart_line"
@@ -59,8 +94,6 @@
         android:layout_height="0dp"
         android:layout_weight="2"
         android:orientation="vertical">
-
-
     </LinearLayout>
 
 </LinearLayout>
