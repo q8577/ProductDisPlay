@@ -90,7 +90,6 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
                 classification_end.setVisibility(View.VISIBLE);
             }
         });
-
         classification_end.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -100,16 +99,7 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
                 classification_end.setVisibility(View.GONE);
             }
         });
-        // TODO: implement a splash screen(?
-        caffeMobile = new CaffeMobile();
-        caffeMobile.setNumThreads(4);
-        long start_time = SystemClock.uptimeMillis();
-        caffeMobile.loadModel(Config.modelProto, Config.modelBinary);
-        long end_time = SystemClock.uptimeMillis()-start_time;
-        loadCaffe.setText(getResources().getString(R.string.load_model) + end_time + "ms");
-        float[] meanValues = {104, 117, 123};
-        caffeMobile.setMean(meanValues);
-
+        load();
         AssetManager am = this.getAssets();
         try {
             InputStream is = am.open("synset_words.txt");
@@ -123,6 +113,17 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    //加载模型
+    private void load(){
+        caffeMobile = new CaffeMobile();
+        caffeMobile.setNumThreads(4);
+        long start_time = SystemClock.uptimeMillis();
+        caffeMobile.loadModel(Config.modelProto, Config.modelBinary,Config.getIsCPUMode(ClassificationActivity.this));
+        long end_time = SystemClock.uptimeMillis()-start_time;
+        loadCaffe.setText(getResources().getString(R.string.load_model) + end_time + "ms");
+        float[] meanValues = {104, 117, 123};
+        caffeMobile.setMean(meanValues);
     }
 
     @Override

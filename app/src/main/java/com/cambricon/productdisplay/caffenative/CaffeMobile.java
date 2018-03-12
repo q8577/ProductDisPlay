@@ -11,7 +11,7 @@ public class CaffeMobile {
 
     public native void enableLog(boolean enabled);  // currently nonfunctional
 
-    public native int loadModel(String modelPath, String weightsPath);  // required
+    public native int loadModel(String modelPath, String weightsPath,boolean mode);  // required
 
     private native void setMeanWithMeanFile(String meanFile);
 

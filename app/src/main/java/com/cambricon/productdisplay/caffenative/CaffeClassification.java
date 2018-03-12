@@ -19,7 +19,7 @@ public class CaffeClassification {
     }
 
     private static String TAG = "CaffeClassification";
-    public native boolean loadModel(String modelPath, String weightPath);
+    public native boolean loadModel(String modelPath, String weightPath,boolean mode);
     public native void setBlasThreadNum(int numThreads);
     public native int inputChannels();
     public native int inputWidth();
