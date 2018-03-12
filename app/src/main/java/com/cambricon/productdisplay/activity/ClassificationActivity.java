@@ -82,7 +82,7 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
                 testResult.setVisibility(View.VISIBLE);
                 testTime.setVisibility(View.VISIBLE);
                 textFps.setVisibility(View.VISIBLE);
-                classificationDB.deleteAllClassification();
+                //classificationDB.deleteAllClassification();
                 startIndex = 0;
                 isExist = true;
                 startThread();

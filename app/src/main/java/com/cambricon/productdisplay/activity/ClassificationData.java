@@ -62,6 +62,8 @@ public class ClassificationData extends Fragment {
     private UltraViewPager ultraViewPager_dialog;
     private PagerAdapter adapter_dialog;
     private ArrayList<ClassificationImage> allTicketsList;
+    private ArrayList<ClassificationImage> allIPUTicketsList;
+    private int[] ipu_points;
     private int max = 0;
     private int min = 10000;
 
@@ -80,8 +82,6 @@ public class ClassificationData extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.classification_data_layout, null);
         init();
-//        getData();
-//        showChart();
         setListener();
         return view;
     }
@@ -107,13 +107,25 @@ public class ClassificationData extends Fragment {
         int allFps = 0;
         allTicketsList = new ArrayList<>();
         allTicketsList = classificationDB.fetchAll();
-        for (ClassificationImage image : allTicketsList) {
-            Log.e(TAG, "getData: " + image.toString());
-        }
         points = new int[Config.ChartPointNum];
+
+        allIPUTicketsList=new ArrayList<>();
+        allIPUTicketsList=classificationDB.fetchIPUAll();
+        ipu_points=new int[Config.ChartPointNum];
+        if(allIPUTicketsList.size()!=0){
+            int ipuCount=0;
+            if(Config.ChartPointNum>allIPUTicketsList.size()){
+                ipuCount=allIPUTicketsList.size();
+            }else{
+                ipuCount=Config.ChartPointNum;
+            }
+
+            for(int j=0;j<ipuCount;j++){
+                ipu_points[j]=ConvertUtil.getFps(allIPUTicketsList.get(allIPUTicketsList.size()-j-1).getFps());
+            }
+        }
         if (allTicketsList.size() != 0) {
             avgTimes = new double[allTicketsList.size()];
-            //            for(int i=0;i<allTicketsList.size();i++){
             int dataSum;
             if (Config.ChartPointNum > allTicketsList.size()) {
                 dataSum = allTicketsList.size();
@@ -170,7 +182,7 @@ public class ClassificationData extends Fragment {
     }
 
     private void showChart() {
-        if(allTicketsList.size()>0){
+        if(allTicketsList.size()>0||allIPUTicketsList.size()>0){
             XYMultipleSeriesDataset mDataSet = getDataSet();
             XYMultipleSeriesRenderer mRefender = getRefender();
             graphicalView = ChartFactory.getLineChartView(getContext(), mDataSet, mRefender);
@@ -189,12 +201,17 @@ public class ClassificationData extends Fragment {
     private XYMultipleSeriesDataset getDataSet() {
         XYMultipleSeriesDataset seriesDataset = new XYMultipleSeriesDataset();
         XYSeries xySeries1 = new XYSeries(getContext().getResources().getString(R.string.classification_chart_desc));
+        XYSeries xySeries2 = new XYSeries(getContext().getResources().getString(R.string.classification_chart_ipu_desc));
         for (int i = 1; i <= Config.ChartPointNum; i++) {
             if(points[i-1]!=0){
                 xySeries1.add(i, points[i - 1]);
             }
+            if(ipu_points[i-1]!=0){
+                xySeries2.add(i,ipu_points[i-1]);
+            }
         }
         seriesDataset.addSeries(xySeries1);
+        seriesDataset.addSeries(xySeries2);
 
         return seriesDataset;
     }
@@ -207,8 +224,8 @@ public class ClassificationData extends Fragment {
         seriesRenderer.setMargins(new int[]{60, 40, 40, 40});//设置外边距，顺序为：上左下右
         //坐标轴设置
         seriesRenderer.setAxisTitleTextSize(30);//设置坐标轴标题字体的大小
-        seriesRenderer.setYAxisMin(min-20);//设置y轴的起始值
-        seriesRenderer.setYAxisMax(max+15);//设置y轴的最大值
+        seriesRenderer.setYAxisMin(0);//设置y轴的起始值
+        seriesRenderer.setYAxisMax(300);//设置y轴的最大值
         seriesRenderer.setYLabels(10);//设置y轴显示点数
         seriesRenderer.setXAxisMin(0.5);//设置x轴起始值
         seriesRenderer.setXAxisMax(10.5);//设置x轴最大值
@@ -253,7 +270,21 @@ public class ClassificationData extends Fragment {
         xySeriesRenderer1.setDisplayChartValuesDistance(30);
 
 
+         /*某一组数据的描绘器，描绘该组数据的个性化显示效果，主要是字体跟颜色的效果*/
+        XYSeriesRenderer xySeriesRenderer2 = new XYSeriesRenderer();
+        xySeriesRenderer2.setAnnotationsColor(R.color.main_line);//设置注释（注释可以着重标注某一坐标）的颜色
+        xySeriesRenderer2.setAnnotationsTextAlign(Paint.Align.CENTER);//设置注释的位置
+        xySeriesRenderer2.setAnnotationsTextSize(12);//设置注释文字的大小
+        xySeriesRenderer2.setPointStyle(PointStyle.CIRCLE);//坐标点的显示风格
+        xySeriesRenderer2.setFillPoints(true);
+        xySeriesRenderer2.setPointStrokeWidth(3);//坐标点的大小
+        xySeriesRenderer2.setColor(R.color.main_line);//表示该组数据的图或线的颜色
+        xySeriesRenderer2.setDisplayChartValues(true);//设置是否显示坐标点的y轴坐标值
+        xySeriesRenderer2.setChartValuesTextSize(25);//设置显示的坐标点值的字体大小
+        xySeriesRenderer2.setDisplayChartValuesDistance(30);
+
         seriesRenderer.addSeriesRenderer(xySeriesRenderer1);
+        seriesRenderer.addSeriesRenderer(xySeriesRenderer2);
         return seriesRenderer;
     }
 }

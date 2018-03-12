@@ -26,7 +26,8 @@
     <string name="test_fps_units">张/分钟</string>
     <string name="load_model">加载分类模型耗时：</string>
     <string name="classification_chart_title">最近10次图片分类fps值</string>
-    <string name="classification_chart_desc">图片分类fps值</string>
+    <string name="classification_chart_desc">CPU模式图片分类fps值</string>
+    <string name="classification_chart_ipu_desc">IPU模式图片分类fps值</string>
     <string name="classification_chart_y">FPS值：张/分钟</string>
     <string name="classification_chart_x">第几次</string>
     <string name="detection_title">目标检测</string>
