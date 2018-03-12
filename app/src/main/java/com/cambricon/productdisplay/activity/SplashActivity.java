@@ -35,17 +35,13 @@ public class SplashActivity extends AppCompatActivity {
     private long loadDTime;
     private TextView load_data;
     private final int PERMISSION = 1;
-    private final int START_LOAD_DETECT = 2;
 
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case PERMISSION:
-                    loadModel();
-                    break;
-                case START_LOAD_DETECT:
-                    load_data.setText(R.string.load_data_detection);
+                    load();
                     break;
                 default:
                     break;
@@ -65,7 +61,7 @@ public class SplashActivity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(SplashActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(SplashActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         } else {
-            loadModel();
+            load();
         }
     }
 
@@ -77,35 +73,6 @@ public class SplashActivity extends AppCompatActivity {
                 finish();
             }
         }, 1500);
-    }
-
-
-    private void loadModel() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                loadDectionModel();
-                forward();
-
-            }
-        }).start();
-
-    }
-
-
-    private void loadDectionModel() {
-        Message msg = new Message();
-        msg.what = START_LOAD_DETECT;
-        handler.sendMessage(msg);
-
-        long startTime = SystemClock.uptimeMillis();
-        caffeDetection = new CaffeDetection();
-        caffeDetection.setNumThreads(4);
-        Log.e("load", "loadDectionModel: " + Config.dModelProto);
-        Log.e("load", "loadDectionModel: " + Config.dModelBinary);
-        caffeDetection.loadModel(Config.dModelProto, Config.dModelBinary);
-        caffeDetection.setMean(Config.dModelMean);
-        loadDTime = SystemClock.uptimeMillis() - startTime;
     }
 
     @Override
@@ -125,15 +92,6 @@ public class SplashActivity extends AppCompatActivity {
             default:
                 break;
         }
-    }
-
-    private void forward() {
-        Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
-        intent.putExtra("caffeDetection", caffeDetection);
-        intent.putExtra("loadDTime", loadDTime);
-        intent.putExtra("netType","ResNet50");
-        startActivity(intent);
-        finish();
     }
 
 }

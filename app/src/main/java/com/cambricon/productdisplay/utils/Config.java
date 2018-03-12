@@ -52,6 +52,7 @@ public class Config {
     public static String dModelMean_101 = dModelDir_101 + "/resnet101_imagenet_mean.binaryproto";
 
     public static boolean isResNet101=false;
+    public static boolean isResNet50=false;
 
 
     public static String[] dImageArray = new String[]{

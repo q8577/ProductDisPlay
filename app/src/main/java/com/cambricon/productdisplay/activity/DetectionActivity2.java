@@ -54,10 +54,15 @@ public class DetectionActivity2 extends AppCompatActivity implements View.OnClic
     File imageFile;
     private Bitmap bitmap;
     public static int index = 0;
-    CaffeDetection caffeDetection;
+    private CaffeDetection caffeDetection;
     private double detectionTime;
     private DetectionDB detectionDB;
     private long loadDTime;
+    private final int START_LOAD_DETECT = 2;
+    private final int LOED_DETECT_END = 3;
+    private final int LOED_DETECT_101 = 4;
+    private final int LOED_DETECT_101_END = 5;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +75,6 @@ public class DetectionActivity2 extends AppCompatActivity implements View.OnClic
     }
 
     private void init() {
-        caffeDetection = (CaffeDetection) getIntent().getSerializableExtra("Detection");
         toolbar = findViewById(R.id.classification_toolbar);
         ivCaptured = findViewById(R.id.classification_img);
         testNet = findViewById(R.id.test_result);
@@ -82,7 +86,7 @@ public class DetectionActivity2 extends AppCompatActivity implements View.OnClic
         detection_begin = findViewById(R.id.classification_begin);
         detection_end = findViewById(R.id.classification_end);
 
-        loadCaffe.setText(getResources().getString(R.string.detection_load_model) + String.valueOf(getIntent().getSerializableExtra("loadDTime")) + "ms");
+        loadCaffe.setText("");
         testNet.setText(getString(R.string.decete_type)+String.valueOf(getIntent().getSerializableExtra("netType")));
         testPro.setText("图片目标检测结果显示");
         function_text.setText("目标检测：\n\t\t\t\t通过特定的训练模型，不仅仅要识别出来是什么物体，而且还要预测物体的位置，位置用边框标记。");
@@ -93,6 +97,8 @@ public class DetectionActivity2 extends AppCompatActivity implements View.OnClic
 
         detectionDB = new DetectionDB(getApplicationContext());
         detectionDB.open();
+
+        caffeDetection = new CaffeDetection();
     }
 
 
@@ -128,8 +134,9 @@ public class DetectionActivity2 extends AppCompatActivity implements View.OnClic
                 testNet.setVisibility(View.VISIBLE);
                 detectionDB.deleteAllClassification();
                 index = 0;
-                isExist = true;
                 Config.isResNet101=false;
+                isExist = true;
+
                 startDetect();
                 detection_begin.setVisibility(View.GONE);
                 detection_end.setVisibility(View.VISIBLE);
@@ -145,30 +152,74 @@ public class DetectionActivity2 extends AppCompatActivity implements View.OnClic
         }
     }
 
+
+
+    public void loadModel(){
+        Message msg = new Message();
+        msg.what = START_LOAD_DETECT;
+        handler.sendMessage(msg);
+        Log.e(TAG, "loadModel: start");
+
+        long startTime = SystemClock.uptimeMillis();
+
+        caffeDetection.setNumThreads(4);
+        caffeDetection.loadModel(Config.dModelProto, Config.dModelBinary);
+        caffeDetection.setMean(Config.dModelMean);
+
+        loadDTime = SystemClock.uptimeMillis() - startTime;
+
+        Config.isResNet101 = false;
+
+        Log.e(TAG, "loadModel: end");
+        Message msg_end = new Message();
+        msg_end.what = LOED_DETECT_END;
+        handler.sendMessage(msg_end);
+
+    }
+
+
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case START_LOAD_DETECT:
+                    loadCaffe.setText(R.string.load_data_detection);
+                    testNet.setText(getString(R.string.decete_type)+"ResNet50");
+                    break;
+                case LOED_DETECT_END:
+                    loadCaffe.setText(getResources().getString(R.string.detection_load_model) + loadDTime + "ms");
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+
     private void startDetect() {
-        /**
-         * 线程
-         */
         testThread = new Thread(new Runnable() {
             @Override
             public synchronized void run() {
-                imageFile = new File(Config.imagePath, Config.dImageArray[index]);
-                bitmap = BitmapFactory.decodeFile(imageFile.getPath());
-                CNNTask cnnTask = new CNNTask(DetectionActivity2.this);
-                if (imageFile.exists()) {
-                    cnnTask.execute();
-                } else {
-                    Log.e(TAG, "file is not exist");
-                }
-
+                loadModel();
+                executeImg();
             }
         });
-
         if (isExist) {
             testThread.start();
         }
     }
 
+    public void executeImg(){
+        imageFile = new File(Config.imagePath, Config.dImageArray[index]);
+        bitmap = BitmapFactory.decodeFile(imageFile.getPath());
+        CNNTask cnnTask = new CNNTask(DetectionActivity2.this);
+        if (imageFile.exists()) {
+            cnnTask.execute();
+        } else {
+            Log.e(TAG, "file is not exist");
+        }
+
+    }
 
     private class CNNTask extends AsyncTask<Void, Void, Void> {
         private CNNListener listener;
@@ -184,8 +235,8 @@ public class DetectionActivity2 extends AppCompatActivity implements View.OnClic
             int w = bitmap.getWidth();
             int h = bitmap.getHeight();
             int[] pixels = new int[w * h];
+            Log.e(TAG, "doInBackground: "+pixels.toString()+w+h);
             bitmap.getPixels(pixels, 0, bitmap.getWidth(), 0, 0, w, h);
-            CaffeDetection caffeDetection = (CaffeDetection) getIntent().getSerializableExtra("Detection");
             int[] resultInt = caffeDetection.grayPoc(pixels, w, h);
             resBitmap = Bitmap.createBitmap(resultInt, w, h, bitmap.getConfig());
             return null;
@@ -214,6 +265,7 @@ public class DetectionActivity2 extends AppCompatActivity implements View.OnClic
             detectionDB.addDetection(Config.dImageArray[index], String.valueOf((int) detectionTime), getFps(detectionTime));
             storeImage(resBitmap);
             index++;
+
             testTime.setText(getResources().getString(R.string.test_time) + String.valueOf(detectionTime) + "ms");
             textFps.setText(getResources().getString(R.string.test_fps) + ConvertUtil.getFps(getFps(detectionTime)) + getResources().getString(R.string.test_fps_units));
             if ((index > Config.dImageArray.length-1) && !Config.isResNet101) {
@@ -223,7 +275,7 @@ public class DetectionActivity2 extends AppCompatActivity implements View.OnClic
             }
             Log.e(TAG, "startIndex: " + index);
             if (index < Config.imageName.length) {
-                startDetect();
+                executeImg();
             } else {
                 Toast.makeText(this, "检测结束", Toast.LENGTH_SHORT).show();
                 testPro.setText(getString(R.string.detection_end_guide));
@@ -237,13 +289,14 @@ public class DetectionActivity2 extends AppCompatActivity implements View.OnClic
     }
 
     protected void loadResNet(){
-        loadCaffe.setText(R.string.decete_type_change);
         long startTime = SystemClock.uptimeMillis();
         caffeDetection.setNumThreads(4);
         caffeDetection.loadModel(Config.dModelProto_101, Config.dModelBinary_101);
         caffeDetection.setMean(Config.dModelMean_101);
+
+        Config.isResNet50 = false;
         loadDTime = SystemClock.uptimeMillis() - startTime;
-        loadCaffe.setText(getResources().getString(R.string.detection_load_model)+loadDTime+"ms");
+        loadCaffe.setText(getResources().getString(R.string.detection_change_model)+loadDTime+"ms");
         testNet.setText(getString(R.string.decete_type)+"ResNet101");
         Log.e("huangyaling","resnet101");
     }
@@ -274,6 +327,10 @@ public class DetectionActivity2 extends AppCompatActivity implements View.OnClic
         }
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
 }
 
 
