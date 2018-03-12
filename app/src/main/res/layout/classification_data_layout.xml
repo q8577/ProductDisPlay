@@ -13,19 +13,28 @@
         android:background="@color/main_line"
         android:divider="@drawable/divider_line"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingLeft="10dp">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:gravity="center"
             android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:paddingBottom="@dimen/text_padding"
+                android:text="@string/ipu_mode"/>
 
             <TextView
                 android:id="@+id/avg_ipu_fps"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
+                android:layout_gravity="center_vertical"
                 android:paddingBottom="@dimen/text_padding"
                 android:text="@string/classification_avg_time" />
 
@@ -34,6 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
+                android:layout_gravity="center_vertical"
                 android:text="@string/classification_single_time" />
 
             <Button
@@ -41,21 +51,34 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
+                android:layout_gravity="center_vertical"
                 android:background="@android:color/transparent"
                 android:text="@string/classification_result" />
         </LinearLayout>
-
+        <View
+            android:layout_width="2px"
+            android:layout_height="match_parent"
+            android:background="@android:color/white" />
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:gravity="center"
+            android:paddingLeft="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:paddingBottom="@dimen/text_padding"
+                android:text="@string/cpu_mode"/>
 
             <TextView
                 android:id="@+id/avg_fps"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
+                android:layout_gravity="center_vertical"
                 android:paddingBottom="@dimen/text_padding"
                 android:text="@string/classification_avg_time" />
 
@@ -64,6 +87,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
+                android:layout_gravity="center_vertical"
                 android:text="@string/classification_single_time" />
 
             <Button
@@ -71,6 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
+                android:layout_gravity="center_vertical"
                 android:background="@android:color/transparent"
                 android:text="@string/classification_result" />
         </LinearLayout>
