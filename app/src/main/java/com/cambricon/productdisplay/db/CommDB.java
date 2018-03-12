@@ -13,7 +13,7 @@ import android.util.Log;
 public class CommDB {
 
     public static final String DATABASE_NAME="BenchMarkDB";
-    public static final int DATABASE_VERSION=4;
+    public static final int DATABASE_VERSION=5;
     //创建图片分类表
     private static final String CREATE_TABLE_Classification="CREATE TABLE if not exists " + ClassificationDB.SQLITE_TABLE + " (" +
             ClassificationDB.KEY_ROWID + " integer PRIMARY KEY autoincrement," +
@@ -22,6 +22,14 @@ public class CommDB {
             ClassificationDB.KEY_FPS + "," +
             ClassificationDB.KEY_RESULT + "," +
            " UNIQUE (" + ClassificationDB.KEY_NAME +")"+"ON CONFLICT REPLACE"+");";
+
+    private static final String CREATE_TABLE_IPU_Classification="CREATE TABLE if not exists " + ClassificationDB.SQLITE_TABLE_IPU + " (" +
+            ClassificationDB.KEY_ROWID_IPU + " integer PRIMARY KEY autoincrement," +
+            ClassificationDB.KEY_NAME_IPU + "," +
+            ClassificationDB.KEY_TIME_IPU + "," +
+            ClassificationDB.KEY_FPS_IPU + "," +
+            ClassificationDB.KEY_RESULT_IPU + "," +
+            " UNIQUE (" + ClassificationDB.KEY_NAME_IPU +")"+"ON CONFLICT REPLACE"+");";
 
     //创建目标检测分类表
     private static final String CREATE_TABLE_Detection="CREATE TABLE if not exists " + DetectionDB.SQLITE_TABLE + " (" +
@@ -50,7 +58,7 @@ public class CommDB {
         public void onCreate(SQLiteDatabase sqLiteDatabase) {
             sqLiteDatabase.execSQL(CREATE_TABLE_Classification);
             sqLiteDatabase.execSQL(CREATE_TABLE_Detection);
-
+            sqLiteDatabase.execSQL(CREATE_TABLE_IPU_Classification);
         }
 
         @Override

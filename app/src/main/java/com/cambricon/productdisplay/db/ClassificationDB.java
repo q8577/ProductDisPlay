@@ -29,8 +29,19 @@ public class ClassificationDB {
     private DatabaseHelper databaseHelper;
     private SQLiteDatabase db;
 
-    static final String SQLITE_TABLE = "ClassificationTable";
+    public static final String SQLITE_TABLE = "ClassificationTable";
     private final Context mContext;
+
+
+    //ipu mode
+    public static final String KEY_ROWID_IPU="_id_ipu";
+    public static final String KEY_NAME_IPU = "name_ipu";
+    public static final String KEY_TIME_IPU = "time_ipu";
+    public static final String KEY_FPS_IPU = "fps_ipu";
+    public static final String KEY_RESULT_IPU = "result_ipu";
+    public static final String SQLITE_TABLE_IPU = "ClassificationIPUTable";
+
+
 
     public ClassificationDB(Context context) {
         this.mContext = context;
@@ -133,10 +144,6 @@ public class ClassificationDB {
         Cursor mCursor = null;
         mCursor = db.query(SQLITE_TABLE, new String[]{KEY_ROWID, KEY_NAME,KEY_TIME, KEY_FPS, KEY_RESULT},
                 null, null, null, null, null);
-        /*Log.e(TAG, "fetchAll: "+mCursor.getColumnName(0));
-        Log.e(TAG, "fetchAll: "+mCursor.getColumnName(1));
-        Log.e(TAG, "fetchAll: "+mCursor.getColumnName(2));
-        Log.e(TAG, "fetchAll: "+mCursor.getColumnName(3));*/
 
         if (mCursor.moveToFirst()) {
             do {
@@ -157,4 +164,83 @@ public class ClassificationDB {
         }
         return allTicketsList;
     }
+
+    //ipu table
+    public long addIPUClassification(String name, String time, String fps, String result) {
+        long createResult = 0;
+        ContentValues initialValues = new ContentValues();
+        initialValues.put(KEY_NAME_IPU, name);
+        initialValues.put(KEY_TIME_IPU, time);
+        initialValues.put(KEY_FPS_IPU, fps);
+        initialValues.put(KEY_RESULT_IPU, result);
+        try {
+            createResult = db.insert(SQLITE_TABLE_IPU, null, initialValues);
+        } catch (Exception e) {
+            //handle exception
+        }
+        return createResult;
+    }
+
+    /**
+     * 删除所有字段
+     *
+     * @return
+     */
+
+    public boolean deleteAllIPUClassification() {
+        int doneDelete = 0;
+        try {
+            doneDelete = db.delete(SQLITE_TABLE_IPU, null, null);
+        } catch (Exception e) {
+
+        }
+        return doneDelete > 0;
+    }
+
+    /**
+     * 删除表中字段
+     *
+     * @param name
+     * @return
+     */
+
+    public boolean deleteTicketIPUByName(String name) {
+        int isDelete;
+        String[] tname;
+        tname = new String[]{name};
+        isDelete = db.delete(SQLITE_TABLE_IPU, KEY_NAME_IPU + "=?", tname);
+        return isDelete > 0;
+    }
+
+    /**
+     * 获取表中所有
+     *
+     * @return
+     */
+    public ArrayList<ClassificationImage> fetchIPUAll() {
+        ArrayList<ClassificationImage> allTicketsList = new ArrayList<>();
+        Cursor mCursor = null;
+        mCursor = db.query(SQLITE_TABLE_IPU, new String[]{KEY_ROWID_IPU, KEY_NAME_IPU,KEY_TIME_IPU, KEY_FPS_IPU, KEY_RESULT_IPU},
+                null, null, null, null, null);
+
+        if (mCursor.moveToFirst()) {
+            do {
+                ClassificationImage cfimage = new ClassificationImage();
+                cfimage.setName(mCursor.getString(mCursor.getColumnIndexOrThrow(KEY_NAME_IPU)));
+                cfimage.setFps(mCursor.getString(mCursor.getColumnIndexOrThrow(KEY_FPS_IPU)));
+                cfimage.setResult(mCursor.getString(mCursor.getColumnIndexOrThrow(KEY_RESULT_IPU)));
+                cfimage.setTime(mCursor.getString(mCursor.getColumnIndexOrThrow(KEY_TIME_IPU)));
+                allTicketsList.add(cfimage);
+            } while (mCursor.moveToNext());
+        }
+
+        if(mCursor!=null||!mCursor.isClosed()){
+            mCursor.close();
+        }
+        for(int i=0;i<allTicketsList.size();i++){
+            Log.d("huangyaling","allTicketsList="+allTicketsList.get(i).getName());
+        }
+        return allTicketsList;
+    }
+
 }

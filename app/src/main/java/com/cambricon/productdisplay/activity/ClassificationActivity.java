@@ -238,7 +238,14 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
             TARGET_WIDTH = ivCaptured.getWidth();
             TARGET_HEIGHT = ivCaptured.getHeight();
             ivCaptured.setImageBitmap(zoomBitmap(bmp));
-            classificationDB.addClassification(Config.imageName[startIndex], String.valueOf((int) classificationTime), getFps(classificationTime), IMAGENET_CLASSES[result]);
+            if(Config.getIsCPUMode(ClassificationActivity.this)){
+                Log.e(LOG_TAG, "CPU modeIMAGENET_CLASSES=" + IMAGENET_CLASSES[result]);
+                classificationDB.addClassification(Config.imageName[startIndex], String.valueOf((int) classificationTime), getFps(classificationTime), IMAGENET_CLASSES[result]);
+            }else{
+                Log.e(LOG_TAG, "IPU mode IMAGENET_CLASSES=" + IMAGENET_CLASSES[result]);
+                classificationDB.addIPUClassification(Config.imageName[startIndex], String.valueOf((int) classificationTime), getFps(classificationTime), IMAGENET_CLASSES[result]);
+            }
+
             startIndex++;
             testResult.setText(getResources().getString(R.string.test_result) + IMAGENET_CLASSES[result]);
             testTime.setText(getResources().getString(R.string.test_time) + String.valueOf((int) classificationTime) + "ms");
