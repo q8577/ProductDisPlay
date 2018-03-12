@@ -44,4 +44,6 @@
     <string name="ipu_mode">IPU模式</string>
     <string name="decete_type">网络类型：</string>
     <string name="decete_type_change">切换网络中...</string>
+    <string name="face_detection_title_cpu">人脸检测——CPU模式</string><string name="face_detection_title_ipu">人脸检测——IPU模式</string><string name="face_detector_guide">MTCNN方法识别人脸</string><string name="face_detection_begin_guide">人脸检测进行中...</string><string name="face_detection_pasue_guide">人脸检测暂停中...</string><string name="face_detection_end_guide">人脸检测已结束</string><string name="face_detector_function">"人脸检测：\n\t\t\t\t通过MTCNN，不仅仅要识别出人脸，而且还要用边框标记人脸。"</string>
+
 </resources>

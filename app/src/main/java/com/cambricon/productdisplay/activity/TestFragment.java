@@ -26,7 +26,8 @@ public class TestFragment extends Fragment {
     final int CLASSIFICATION = 0;
     final int DETECTION = 1;
     final int VOICE = 2;
-    final int MOREFUNCTIONS=3;
+    final int MOREFUNCTIONS = 3;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -36,40 +37,39 @@ public class TestFragment extends Fragment {
         return view;
     }
 
-    private void initView(){
+    private void initView() {
         mGridView = view.findViewById(R.id.functions_gv);
         mGridViewAdapter = new GridViewAdapter(getContext());
         mGridView.setAdapter(mGridViewAdapter);
     }
 
-    private void setListener(){
+    private void setListener() {
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 switch (position) {
                     case CLASSIFICATION:
                         Log.i("huangyaling", "classification");
-                        startActivity(new Intent(getActivity(),ClassificationActivity.class));
+                        startActivity(new Intent(getActivity(), ClassificationActivity.class));
                         break;
                     case DETECTION:
-                        Intent intent = new Intent(getActivity(),DetectionActivity2.class);
-                        intent.putExtra("Detection",getActivity().getIntent().getSerializableExtra("caffeDetection"));
-                        intent.putExtra("loadDTime",getActivity().getIntent().getSerializableExtra("loadDTime"));
+                        Intent intent = new Intent(getActivity(), DetectionActivity2.class);
+                        intent.putExtra("Detection", getActivity().getIntent().getSerializableExtra("caffeDetection"));
+                        intent.putExtra("loadDTime", getActivity().getIntent().getSerializableExtra("loadDTime"));
                         startActivity(intent);
                         break;
                     case VOICE:
-                        startActivity(new Intent(getActivity(),SemanticsActivity.class));
+                        intent = new Intent(getActivity(), FaceDetectorActivity.class);
+                        intent.putExtra("loadDTime", getActivity().getIntent().getSerializableExtra("loadDTime"));
+                        startActivity(intent);
                         break;
                     case MOREFUNCTIONS:
-                        startActivity(new Intent(getActivity(),TestActivity.class));
+                        startActivity(new Intent(getActivity(), TestActivity.class));
                         break;
                 }
             }
         });
     }
-
-
-
 
 
 }

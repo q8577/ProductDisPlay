@@ -75,4 +75,10 @@ public class Config {
      */
     public static boolean isCPUMode=true;
 
+    /**
+     * Face Detector source
+     */
+    public static String faceModelDir = Config.modelPath + "/face_detector";
+    public static String faceModelImg = faceModelDir + "/test.jpg";
+
 }

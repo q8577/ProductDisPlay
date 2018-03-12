@@ -26,4 +26,20 @@ if(ANDROID)
   # install
   install(TARGETS detecte_jni DESTINATION lib)
   #huangyaling
+
+  add_library(face_jni SHARED face_jni.cpp face_detector.cpp)
+  #add_executable(face_jni face_jni.cpp face_detector.cpp)
+  target_link_libraries(face_jni ${Caffe_LINK} ${OpenCV_LIBS})
+  caffe_default_properties(face_jni)
+
+  # set back RUNTIME_OUTPUT_DIRECTORY
+  set_target_properties(face_jni PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/android")
+
+  caffe_set_solution_folder(face_jni android)
+
+  # install
+  install(TARGETS face_jni DESTINATION lib)
+  #Chengyu Yang
+
 endif()
