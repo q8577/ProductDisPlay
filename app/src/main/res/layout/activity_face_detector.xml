@@ -32,7 +32,8 @@
                 android:paddingBottom="@dimen/param_padding_bottom"
                 android:paddingTop="@dimen/param_padding_top"
                 android:text="@string/load_model"
-                android:textColor="@android:color/white"/>
+                android:textColor="@android:color/white"
+                android:visibility="invisible"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -57,6 +58,15 @@
                     android:text="@string/test_time"
                     android:textColor="@color/test_text_color"
                     android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/tv_face_detector_fps"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/test_fps"
+                    android:textColor="@color/test_text_color"
+                    android:visibility="gone"/>
+
 
             </LinearLayout>
 

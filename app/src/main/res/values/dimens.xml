@@ -14,4 +14,5 @@
     <dimen name="switch_btn_paddingright">30dp</dimen>
     <dimen name="text_padding">15dp</dimen>
     <dimen name="text_chart_title">15sp</dimen>
+    <dimen name="action_bar_padding_top">52dp</dimen>
 </resources>

@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.cambricon.productdisplay.R;
 import com.cambricon.productdisplay.activity.ClassificationData;
 import com.cambricon.productdisplay.activity.DetectionData;
+import com.cambricon.productdisplay.activity.FaceDetectorData;
 import com.cambricon.productdisplay.activity.TabFragment;
 
 import java.util.ArrayList;
@@ -24,8 +25,11 @@ public class TabAdapter extends FragmentPagerAdapter {
         super(fm);
         tabs.add(context.getString(R.string.gv_text_item1));
         tabs.add(context.getString(R.string.gv_text_item2));
+        tabs.add(context.getString(R.string.gv_text_item3));
         fragments.add(new ClassificationData(context,tabs.get(0)));
         fragments.add(new DetectionData(context,tabs.get(1)));
+        fragments.add(new FaceDetectorData(context,tabs.get(2)));
+
         notifyDataSetChanged();
     }
 

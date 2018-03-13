@@ -57,10 +57,23 @@ set_target_properties(
     )
 #huangyaling add 2018.01.31 end
 
+add_library(
+    face_jni
+    SHARED
+    IMPORTED
+    )
+set_target_properties(
+    face_jni
+    PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_CURRENT_LIST_DIR}/src/main/jniLibs/${ANDROID_ABI}/libdetecte_jni.so
+    )
+#add by Chengyu Yang 2018.03.12
+
 target_link_libraries( # Specifies the target library.
                        native-lib
                        caffe_jni
                        detecte_jni
+                       face_jni
                        # Links the target library to the log library
                        # included in the NDK.
                        ${log-lib} )
