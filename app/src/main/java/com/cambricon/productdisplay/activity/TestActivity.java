@@ -71,7 +71,7 @@ public class TestActivity extends AppCompatActivity {
         caffeDetection.setNumThreads(4);
         Log.d(TAG, "setNumThreads end");
         //caffeDetection.loadModel(modelPrototest, modelBinarytest);
-        caffeDetection.loadModel(modelProto, modelBinary);
+        caffeDetection.loadModel(modelProto, modelBinary,false);
         Log.d(TAG, "load success");
 
         float[] meanValues = {104, 117, 123};

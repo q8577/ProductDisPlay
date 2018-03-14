@@ -53,6 +53,6 @@ public class DetectionImage {
 
     @Override
     public String toString() {
-        return name+";"+fps+";"+time;
+        return name+";"+fps+";"+time+";"+netType;
     }
 }

@@ -27,6 +27,7 @@ namespace caffe{
 Detection *Detection::caffe_detection_ = 0;
 string Detection::model_path_ = "";
 string Detection::weights_path_ = "";
+bool Detection::mode_=1;
 
 
 
@@ -36,21 +37,30 @@ Detection *Detection::Get() {
 }
 
 Detection *Detection::Get(const string &model_path,
-                              const string &weights_path) {
+                              const string &weights_path, const bool &mode) {
   if (!caffe_detection_ || model_path != model_path_ ||
-      weights_path != weights_path_) {
-    caffe_detection_ = new Detection(model_path, weights_path);
+      weights_path != weights_path_|| mode!= mode_) {
+    caffe_detection_ = new Detection(model_path, weights_path, mode);
     model_path_ = model_path;
     weights_path_ = weights_path;
   }
   return caffe_detection_;
 }
 Detection::~Detection() { net_.reset(); }
-Detection::Detection(const string &model_path, const string &weights_path) {
+Detection::Detection(const string &model_path, const string &weights_path,const bool &mode) {
   CHECK_GT(model_path.size(), 0) << "Need a model definition to score.";
   CHECK_GT(weights_path.size(), 0) << "Need model weights to score.";
-  Caffe::set_mode(Caffe::CPU);
+  LOG(INFO) << "mode";
+  LOG(INFO) << "mode" <<mode;
   
+  //Caffe::set_mode(Caffe::CPU);
+  if(mode){
+	 LOG(ERROR)<<"is cpu mode";
+	 Caffe::set_mode(Caffe::CPU);
+  }else{
+     LOG(ERROR)<<"is ipu mode";
+     Caffe::set_mode(Caffe::CPU);
+  }
   
   scales=0.0;
   

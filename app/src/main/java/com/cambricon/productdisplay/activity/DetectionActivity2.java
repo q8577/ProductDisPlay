@@ -132,7 +132,7 @@ public class DetectionActivity2 extends AppCompatActivity implements View.OnClic
                 testTime.setVisibility(View.VISIBLE);
                 textFps.setVisibility(View.VISIBLE);
                 testNet.setVisibility(View.VISIBLE);
-                detectionDB.deleteAllClassification();
+//                detectionDB.deleteAllClassification();
                 index = 0;
                 Config.isResNet101=false;
                 isExist = true;
@@ -163,12 +163,14 @@ public class DetectionActivity2 extends AppCompatActivity implements View.OnClic
         long startTime = SystemClock.uptimeMillis();
 
         caffeDetection.setNumThreads(4);
-        caffeDetection.loadModel(Config.dModelProto, Config.dModelBinary);
+        Log.e(TAG, "loadModel: "+Config.getIsCPUMode(DetectionActivity2.this));
+        caffeDetection.loadModel(Config.dModelProto, Config.dModelBinary,Config.getIsCPUMode(DetectionActivity2.this));
         caffeDetection.setMean(Config.dModelMean);
 
         loadDTime = SystemClock.uptimeMillis() - startTime;
 
         Config.isResNet101 = false;
+        Config.isResNet50 = true;
 
         Log.e(TAG, "loadModel: end");
         Message msg_end = new Message();
@@ -262,19 +264,37 @@ public class DetectionActivity2 extends AppCompatActivity implements View.OnClic
         if (isExist) {
             ivCaptured.setScaleType(ImageView.ScaleType.FIT_XY);
             ivCaptured.setImageBitmap(resBitmap);
-            detectionDB.addDetection(Config.dImageArray[index], String.valueOf((int) detectionTime), getFps(detectionTime));
+            String netType;
+            if(index>(Config.dImageArray.length/2)-1){
+                netType = "ResNet101";
+            }else{
+                netType = "ResNet50";
+            }
+
+            Log.e(TAG, "onTaskCompleted: "+index);
+            Log.e(TAG, "onTaskCompleted: "+index+":"+netType);
+
+            if(Config.getIsCPUMode(DetectionActivity2.this)){
+                detectionDB.addDetection(Config.dImageArray[index], String.valueOf((int) detectionTime), getFps(detectionTime),netType);
+            }else{
+                detectionDB.addIPUClassification(Config.dImageArray[index],String.valueOf((int)detectionTime),getFps(detectionTime),netType);
+            }
+
+
             storeImage(resBitmap);
-            index++;
+
 
             testTime.setText(getResources().getString(R.string.test_time) + String.valueOf(detectionTime) + "ms");
             textFps.setText(getResources().getString(R.string.test_fps) + ConvertUtil.getFps(getFps(detectionTime)) + getResources().getString(R.string.test_fps_units));
-            if ((index > Config.dImageArray.length-1) && !Config.isResNet101) {
+
+            if ((index > (Config.dImageArray.length/2)-1) && !Config.isResNet101) {
                 loadResNet();
-                index = 0;
-                Config.isResNet101=true;
+//                index = 0;
+                /*Config.isResNet101=true;
+                Config.isResNet50=false;*/
             }
             Log.e(TAG, "startIndex: " + index);
-            if (index < Config.imageName.length) {
+            if (index < Config.dImageArray.length-1) {
                 executeImg();
             } else {
                 Toast.makeText(this, "检测结束", Toast.LENGTH_SHORT).show();
@@ -283,6 +303,8 @@ public class DetectionActivity2 extends AppCompatActivity implements View.OnClic
                 detection_begin.setVisibility(View.VISIBLE);
                 detection_end.setVisibility(View.GONE);
             }
+            index++;
+
         } else {
             testPro.setText(getString(R.string.detection_end_guide));
         }
@@ -291,10 +313,12 @@ public class DetectionActivity2 extends AppCompatActivity implements View.OnClic
     protected void loadResNet(){
         long startTime = SystemClock.uptimeMillis();
         caffeDetection.setNumThreads(4);
-        caffeDetection.loadModel(Config.dModelProto_101, Config.dModelBinary_101);
+        caffeDetection.loadModel(Config.dModelProto_101, Config.dModelBinary_101,Config.getIsCPUMode(DetectionActivity2.this));
         caffeDetection.setMean(Config.dModelMean_101);
 
         Config.isResNet50 = false;
+        Config.isResNet101 = true;
+        Log.e(TAG, "loadResNet: "+"转换模型");
         loadDTime = SystemClock.uptimeMillis() - startTime;
         loadCaffe.setText(getResources().getString(R.string.detection_change_model)+loadDTime+"ms");
         testNet.setText(getString(R.string.decete_type)+"ResNet101");
@@ -330,6 +354,7 @@ public class DetectionActivity2 extends AppCompatActivity implements View.OnClic
     @Override
     protected void onPause() {
         super.onPause();
+
     }
 }
 

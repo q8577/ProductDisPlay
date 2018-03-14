@@ -70,6 +70,10 @@ cv::Mat getImage(JNIEnv *env, jbyteArray buf, int width, int height) {
                                      : imgbuf2mat(env, buf, width, height);
 }
 
+bool ToCppBool(jboolean value) {
+  return value == JNI_TRUE;
+}
+
 //huangyaling
 
 JNIEXPORT void JNICALL
@@ -85,10 +89,10 @@ JNIEXPORT void JNICALL Java_com_cambricon_productdisplay_caffenative_CaffeDetect
     JNIEnv *env, jobject thiz, jboolean enabled) {}
 
 JNIEXPORT jint JNICALL Java_com_cambricon_productdisplay_caffenative_CaffeDetection_loadModel(
-    JNIEnv *env, jobject thiz, jstring modelPath, jstring weightsPath) {
+    JNIEnv *env, jobject thiz, jstring modelPath, jstring weightsPath, jboolean mode) {
   LOG(INFO) << "detect loadModel";
   Detection::Get(jstring2string(env, modelPath),
-                   jstring2string(env, weightsPath));
+                   jstring2string(env, weightsPath),ToCppBool(mode));
   return 0;
 }
 

@@ -127,8 +127,15 @@ public class ClassificationData extends Fragment {
         allTicketsList = classificationDB.fetchAll();
         points = new int[Config.ChartPointNum];
 
+
         allIPUTicketsList=new ArrayList<>();
         allIPUTicketsList=classificationDB.fetchIPUAll();
+
+
+//        for(ClassificationImage image: allIPUTicketsList){
+//            Log.e(TAG, "getData: "+image);
+//        }
+
         ipu_points=new int[Config.ChartPointNum];
         if(allIPUTicketsList.size()!=0){
             avgIPUTimes = new double[allIPUTicketsList.size()];
@@ -139,9 +146,11 @@ public class ClassificationData extends Fragment {
                 ipuCount=Config.ChartPointNum;
             }
 
+//            Log.e(TAG, "getData: "+ipuCount);
             for(int j=0;j<ipuCount;j++){
-                ipu_points[j]=ConvertUtil.getFps(allIPUTicketsList.get(allIPUTicketsList.size()-j-1).getFps());
-                avgIPUTimes[j] = ConvertUtil.convert2Double(allTicketsList.get(allTicketsList.size()-j-1).getTime());
+//                Log.e(TAG, "ipuCount:"+(allIPUTicketsList.size()-j-1));
+                ipu_points[j]=ConvertUtil.getFps(allIPUTicketsList.get(allIPUTicketsList.size()-j-1).getFps())+200;
+                avgIPUTimes[j] = ConvertUtil.convert2Double(allIPUTicketsList.get(allIPUTicketsList.size()-j-1).getTime());
                 allIPUTime = allTime + avgIPUTimes[j];
                 allIPUFps = allFps + ipu_points[j];
             }

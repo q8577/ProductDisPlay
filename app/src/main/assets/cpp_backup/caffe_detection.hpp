@@ -46,13 +46,13 @@ class Detection {
     cv::Mat show(const cv::Mat& img);
 
     static Detection *Get();
-    static Detection *Get(const string &model_path, const string &weights_path);
+    static Detection *Get(const string &model_path, const string &weights_path, const bool &mode);
     void SetScale(const float scale);
 
     void SetMean(const string& mean_file);
     void SetMean(const vector<float> &mean_values);
 
-    Detection(const string &model_path, const string &weights_path);
+    Detection(const string &model_path, const string &weights_path,const bool &mode);
     void im_detect(const cv::Mat& img, float scores[], float boxes[]);
 
   private:
@@ -66,6 +66,7 @@ class Detection {
     int im_shape[3];
     cv::Mat mean_;
     float scales;
+    static bool mode_;
 
     //methods
     

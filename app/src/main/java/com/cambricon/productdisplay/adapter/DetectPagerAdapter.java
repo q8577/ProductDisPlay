@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cambricon.productdisplay.R;
+import com.cambricon.productdisplay.bean.ClassificationImage;
 import com.cambricon.productdisplay.bean.DetectionImage;
 import com.cambricon.productdisplay.utils.Config;
 
@@ -24,12 +25,12 @@ import java.util.ArrayList;
 
 public class DetectPagerAdapter extends PagerAdapter {
     private boolean isMultiScr;
-    private Bitmap mBitmap;
+    private Bitmap sdBitmap;
     private ArrayList<DetectionImage> allTicketsList;
 
     public DetectPagerAdapter(boolean isMultiScr, ArrayList<DetectionImage> allTicketsList) {
         this.isMultiScr = isMultiScr;
-        this.allTicketsList = allTicketsList;
+        this.allTicketsList=allTicketsList;
     }
 
     @Override
@@ -46,16 +47,16 @@ public class DetectPagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         LinearLayout linearLayout = (LinearLayout) LayoutInflater.from(container.getContext()).inflate(R.layout.layout_child, null);
         TextView textView = linearLayout.findViewById(R.id.pager_result_tv);
-        TextView timeTV = linearLayout.findViewById(R.id.pager_time_tv);
-        ImageView imageView = linearLayout.findViewById(R.id.pager_image);
-        File file = new File(Config.dImagePath, "detec-" + position + ".jpg");
-        mBitmap = BitmapFactory.decodeFile(file.getPath());
-        imageView.setImageBitmap(mBitmap);
-        textView.setText("目标检测用时：");
-        timeTV.setText(getTime(position) + "ms");
+        TextView timeTV=linearLayout.findViewById(R.id.pager_time_tv);
+        ImageView imageView=linearLayout.findViewById(R.id.pager_image);
+        File file = new File(Config.dImagePath,"detec-"+position+".jpg");
+        sdBitmap=BitmapFactory.decodeFile(file.getPath());
+        imageView.setImageBitmap(sdBitmap);
+        timeTV.setText("检测网络类型："+getNetType(position));
+        textView.setText("检测所需时间："+getTime(position)+"ms");
         linearLayout.setId(R.id.item_id);
         imageView.setId(R.id.item_id);
-        switch (position % 4) {
+        switch (position%4) {
             case 0:
                 linearLayout.setBackgroundColor(Color.parseColor("#2196F3"));
                 break;
@@ -73,18 +74,20 @@ public class DetectPagerAdapter extends PagerAdapter {
         return linearLayout;
     }
 
-    private String getResult(int position) {
-        String result = allTicketsList.get(position).getResult();
+    private String getResult(int position){
+        String result=allTicketsList.get(position).getResult();
         return result;
     }
-
-    private String getImage(int position) {
-        String result = allTicketsList.get(position).getName();
+    private String getImage(int position){
+        String result=allTicketsList.get(position).getName();
         return result;
     }
-
-    private String getTime(int position) {
-        String result = allTicketsList.get(position).getTime();
+    private String getTime(int position){
+        String result=allTicketsList.get(position).getTime();
+        return result;
+    }
+    private String getNetType(int position){
+        String result=allTicketsList.get(position).getNetType();
         return result;
     }
 
