@@ -2,10 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:layout_margin="5dp"
+    android:layout_margin="4dp"
     android:paddingLeft="@dimen/function_item_padding"
     android:paddingRight="@dimen/function_item_padding"
-    android:background="@color/main_line">
+    android:background="@android:color/white">
 
     <ImageView
         android:id="@+id/header_img"
