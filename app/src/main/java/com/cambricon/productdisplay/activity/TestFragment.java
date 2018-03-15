@@ -64,7 +64,7 @@ public class TestFragment extends Fragment {
                         startActivity(intent);
                         break;
                     case MOREFUNCTIONS:
-                        startActivity(new Intent(getActivity(), TestActivity.class));
+                        startActivity(new Intent(getActivity(), MoreFunctionsAct.class));
                         break;
                 }
             }
