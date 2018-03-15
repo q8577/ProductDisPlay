@@ -12,43 +12,41 @@ import android.util.Log;
 
 public class CommDB {
 
-    public static final String DATABASE_NAME="BenchMarkDB";
-    public static final int DATABASE_VERSION=8;
+    public static final String DATABASE_NAME = "BenchMarkDB.db";
+    public static final int DATABASE_VERSION = 9;
     //创建图片分类表
-    private static final String CREATE_TABLE_Classification="CREATE TABLE if not exists " + ClassificationDB.SQLITE_TABLE + " (" +
+    private static final String CREATE_TABLE_Classification = "CREATE TABLE if not exists " + ClassificationDB.SQLITE_TABLE + " (" +
             ClassificationDB.KEY_ROWID + " integer PRIMARY KEY autoincrement," +
             ClassificationDB.KEY_NAME + "," +
             ClassificationDB.KEY_TIME + "," +
             ClassificationDB.KEY_FPS + "," +
             ClassificationDB.KEY_RESULT + "," +
-           " UNIQUE (" + ClassificationDB.KEY_NAME +")"+"ON CONFLICT REPLACE"+");";
+            " UNIQUE (" + ClassificationDB.KEY_NAME + ")" + "ON CONFLICT REPLACE" + ");";
 
-    private static final String CREATE_TABLE_IPU_Classification="CREATE TABLE if not exists " + ClassificationDB.SQLITE_TABLE_IPU + " (" +
+    private static final String CREATE_TABLE_IPU_Classification = "CREATE TABLE if not exists " + ClassificationDB.SQLITE_TABLE_IPU + " (" +
             ClassificationDB.KEY_ROWID_IPU + " integer PRIMARY KEY autoincrement," +
             ClassificationDB.KEY_NAME_IPU + "," +
             ClassificationDB.KEY_TIME_IPU + "," +
             ClassificationDB.KEY_FPS_IPU + "," +
             ClassificationDB.KEY_RESULT_IPU + "," +
-            " UNIQUE (" + ClassificationDB.KEY_NAME_IPU +")"+"ON CONFLICT REPLACE"+");";
+            " UNIQUE (" + ClassificationDB.KEY_NAME_IPU + ")" + "ON CONFLICT REPLACE" + ");";
 
     //创建目标检测分类表
-    private static final String CREATE_TABLE_Detection="CREATE TABLE if not exists " + DetectionDB.SQLITE_TABLE + " (" +
+    private static final String CREATE_TABLE_Detection = "CREATE TABLE if not exists " + DetectionDB.SQLITE_TABLE + " (" +
             DetectionDB.KEY_ROWID + " integer PRIMARY KEY autoincrement," +
             DetectionDB.KEY_NAME + "," +
             DetectionDB.KEY_TIME + "," +
             DetectionDB.KEY_FPS + "," +
             DetectionDB.KEY_NETTYPE + "," +
-            " UNIQUE (" + DetectionDB.KEY_NAME +")"+"ON CONFLICT REPLACE"+");";
+            " UNIQUE (" + DetectionDB.KEY_NAME + ")" + "ON CONFLICT REPLACE" + ");";
 
-    private static final String CREATE_TABLE_IPU_Detection="CREATE TABLE if not exists " + DetectionDB.SQLITE_TABLE_IPU + " (" +
+    private static final String CREATE_TABLE_IPU_Detection = "CREATE TABLE if not exists " + DetectionDB.SQLITE_TABLE_IPU + " (" +
             DetectionDB.KEY_ROWID_IPU + " integer PRIMARY KEY autoincrement," +
             DetectionDB.KEY_NAME_IPU + "," +
             DetectionDB.KEY_TIME_IPU + "," +
             DetectionDB.KEY_FPS_IPU + "," +
             DetectionDB.KEY_NETTYPE_IPU + "," +
-            " UNIQUE (" + DetectionDB.KEY_NAME_IPU +")"+"ON CONFLICT REPLACE"+");";
-
-
+            " UNIQUE (" + DetectionDB.KEY_NAME_IPU + ")" + "ON CONFLICT REPLACE" + ");";
 
     //创建人脸检测分类表
     private static final String CREATE_TABLE_Face_Detection = "CREATE TABLE if not exists " + FaceDetectDB.SQLITE_TABLE + " (" +
@@ -58,19 +56,27 @@ public class CommDB {
             FaceDetectDB.KEY_FPS + "," +
             " UNIQUE (" + FaceDetectDB.KEY_NAME + ")" + "ON CONFLICT REPLACE" + ");";
 
+    private static final String CREATE_TABLE_IPU_Face_Detection = "CREATE TABLE if not exists " + FaceDetectDB.SQLITE_TABLE_IPU + " (" +
+            FaceDetectDB.KEY_ROWID_IPU + " integer PRIMARY KEY autoincrement," +
+            FaceDetectDB.KEY_NAME_IPU + "," +
+            FaceDetectDB.KEY_TIME_IPU + "," +
+            FaceDetectDB.KEY_FPS_IPU + "," +
+            " UNIQUE (" + FaceDetectDB.KEY_NAME_IPU + ")" + "ON CONFLICT REPLACE" + ");";
+
     private final Context context;
     private DataBaseHelper dataBaseHelper;
     private SQLiteDatabase db;
 
-    public CommDB(Context context){
-        this.context=context;
-        this.dataBaseHelper=new DataBaseHelper(this.context);
+    public CommDB(Context context) {
+        this.context = context;
+        this.dataBaseHelper = new DataBaseHelper(this.context);
     }
 
     private class DataBaseHelper extends SQLiteOpenHelper {
         private final String TAG = "DataBaseHelper";
+
         DataBaseHelper(Context context) {
-            super(context,DATABASE_NAME,null,DATABASE_VERSION);
+            super(context, DATABASE_NAME, null, DATABASE_VERSION);
         }
 
         @Override
@@ -80,6 +86,7 @@ public class CommDB {
             sqLiteDatabase.execSQL(CREATE_TABLE_Detection);
             sqLiteDatabase.execSQL(CREATE_TABLE_IPU_Detection);
             sqLiteDatabase.execSQL(CREATE_TABLE_Face_Detection);
+            sqLiteDatabase.execSQL(CREATE_TABLE_IPU_Face_Detection);
         }
 
         @Override
@@ -90,20 +97,21 @@ public class CommDB {
 
     /**
      * open db
+     *
      * @return
      * @throws SQLException
      */
 
-    public CommDB open() throws SQLException{
-        this.db=this.dataBaseHelper.getWritableDatabase();
+    public CommDB open() throws SQLException {
+        this.db = this.dataBaseHelper.getWritableDatabase();
         return this;
     }
 
     /**
      * close db
      */
-    public void close(){
-        if(this.dataBaseHelper!=null){
+    public void close() {
+        if (this.dataBaseHelper != null) {
             this.dataBaseHelper.close();
         }
     }

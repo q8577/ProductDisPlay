@@ -49,7 +49,7 @@ public class FaceDetectorAdapter extends PagerAdapter {
         TextView textView = linearLayout.findViewById(R.id.pager_result_tv);
         TextView timeTV = linearLayout.findViewById(R.id.pager_time_tv);
         ImageView imageView = linearLayout.findViewById(R.id.pager_image);
-        File file = new File(Config.faceDetectedImgDir, "detec-" + position + ".jpg");
+        File file = new File(Config.faceDetectedImgDir, "faceDetected-" + position + ".jpg");
         sdBitmap = BitmapFactory.decodeFile(file.getPath());
         imageView.setImageBitmap(sdBitmap);
         textView.setText("目标检测用时：");

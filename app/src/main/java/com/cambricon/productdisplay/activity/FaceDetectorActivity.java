@@ -133,7 +133,7 @@ public class FaceDetectorActivity extends AppCompatActivity implements View.OnCl
                 mTv_face_detect_guide.setText(getString(R.string.face_detection_begin_guide));
                 mTv_face_detect_time.setVisibility(View.VISIBLE);
                 mTV_face_detect_fps_time.setVisibility(View.VISIBLE);
-                mFaceDetectDB.deleteAllClassification();//清空DB重新记录
+//              mFaceDetectDB.deleteAllFaceDetection();//清空DB重新记录
                 isExist = true;
                 startFaceDetector();
                 mBtn_face_detector_begin.setVisibility(View.GONE);
@@ -224,8 +224,15 @@ public class FaceDetectorActivity extends AppCompatActivity implements View.OnCl
             mIv_face_detector.setScaleType(ImageView.ScaleType.FIT_XY);
             mIv_face_detector.setImageBitmap(mResultFace);
             Log.i(TAG, Config.faceImgArray[index] + " add into db");
-            mFaceDetectDB.addFaceDetection(Config.faceImgArray[index], String.valueOf((int) mDetectionTime), getFps(mDetectionTime));
+
+            if (Config.getIsCPUMode(FaceDetectorActivity.this)) {
+                mFaceDetectDB.addFaceDetection(Config.faceImgArray[index], String.valueOf((int) mDetectionTime), getFps(mDetectionTime));
+            } else {
+                mFaceDetectDB.addIPUFaceDetection(Config.faceImgArray[index], String.valueOf((int) mDetectionTime), getFps(mDetectionTime));
+            }
+
             storeImage(mResultFace);
+
             index++;
 
             mTv_face_detect_time.setText(getResources().getString(R.string.test_time) +
@@ -284,6 +291,7 @@ public class FaceDetectorActivity extends AppCompatActivity implements View.OnCl
         Log.e(TAG, "loadModel: start");
         long startTime = SystemClock.uptimeMillis();
 
+        Log.e(TAG, "loadModel: " + Config.getIsCPUMode(FaceDetectorActivity.this));
         int i = 0;
         while (i < Config.faceModelArray.length) {
             File file = new File(Config.faceModelDir, Config.faceModelArray[i]);

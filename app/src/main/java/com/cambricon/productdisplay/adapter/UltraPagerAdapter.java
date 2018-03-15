@@ -29,9 +29,9 @@ public class UltraPagerAdapter extends PagerAdapter {
     private Bitmap sdBitmap;
     private ArrayList<ClassificationImage> allTicketsList;
 
-    public UltraPagerAdapter(boolean isMultiScr,ArrayList<ClassificationImage> allTicketsList) {
+    public UltraPagerAdapter(boolean isMultiScr, ArrayList<ClassificationImage> allTicketsList) {
         this.isMultiScr = isMultiScr;
-        this.allTicketsList=allTicketsList;
+        this.allTicketsList = allTicketsList;
     }
 
     @Override
@@ -48,15 +48,15 @@ public class UltraPagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         LinearLayout linearLayout = (LinearLayout) LayoutInflater.from(container.getContext()).inflate(R.layout.layout_child, null);
         TextView textView = linearLayout.findViewById(R.id.pager_result_tv);
-        TextView timeTV=linearLayout.findViewById(R.id.pager_time_tv);
-        ImageView imageView=linearLayout.findViewById(R.id.pager_image);
-        sdBitmap=BitmapFactory.decodeFile(Config.imagePath+"/"+ getImage(position));
+        TextView timeTV = linearLayout.findViewById(R.id.pager_time_tv);
+        ImageView imageView = linearLayout.findViewById(R.id.pager_image);
+        sdBitmap = BitmapFactory.decodeFile(Config.imagePath + "/" + getImage(position));
         imageView.setImageBitmap(sdBitmap);
         textView.setText(getResult(position));
-        timeTV.setText(getTime(position)+"ms");
+        timeTV.setText(getTime(position) + "ms");
         linearLayout.setId(R.id.item_id);
         imageView.setId(R.id.item_id);
-        switch (position%4) {
+        switch (position % 4) {
             case 0:
                 linearLayout.setBackgroundColor(Color.parseColor("#2196F3"));
                 break;
@@ -74,16 +74,18 @@ public class UltraPagerAdapter extends PagerAdapter {
         return linearLayout;
     }
 
-    private String getResult(int position){
-        String result=allTicketsList.get(position).getResult();
+    private String getResult(int position) {
+        String result = allTicketsList.get(position).getResult();
         return result;
     }
-    private String getImage(int position){
-        String result=allTicketsList.get(position).getName();
+
+    private String getImage(int position) {
+        String result = allTicketsList.get(position).getName();
         return result;
     }
-    private String getTime(int position){
-        String result=allTicketsList.get(position).getTime();
+
+    private String getTime(int position) {
+        String result = allTicketsList.get(position).getTime();
         return result;
     }
 

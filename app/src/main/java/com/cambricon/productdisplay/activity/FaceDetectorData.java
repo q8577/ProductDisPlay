@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.cambricon.productdisplay.R;
 import com.cambricon.productdisplay.adapter.DetectPagerAdapter;
 import com.cambricon.productdisplay.adapter.FaceDetectorAdapter;
+import com.cambricon.productdisplay.adapter.UltraPagerAdapter;
 import com.cambricon.productdisplay.bean.FaceDetectionImage;
 import com.cambricon.productdisplay.db.FaceDetectDB;
 import com.cambricon.productdisplay.utils.Config;
@@ -45,6 +46,7 @@ import java.util.ArrayList;
 public class FaceDetectorData extends Fragment implements View.OnClickListener {
 
     private static final String TAG = FaceDetectorData.class.getSimpleName();
+
     private View mView;
     private String mContent;
     private Context mContext;
@@ -62,6 +64,8 @@ public class FaceDetectorData extends Fragment implements View.OnClickListener {
     private ArrayList<FaceDetectionImage> mAllIPUTicketsList;
 
     private UltraViewPager ultraViewPager_dialog;
+    private UltraViewPager ultraViewPager_ipuDialog;
+
     private PagerAdapter adapter_dialog;
 
     private FaceDetectDB mFaceDetectDB;
@@ -115,8 +119,6 @@ public class FaceDetectorData extends Fragment implements View.OnClickListener {
 
     private void getData() {
 
-        //TODO: IPU mode face detect data
-
         double allTime = 0.00;
         int allFps = 0;
 
@@ -128,12 +130,31 @@ public class FaceDetectorData extends Fragment implements View.OnClickListener {
         points = new int[Config.ChartPointNum];
 
         mAllIPUTicketsList = new ArrayList<>();
-        //mAllIPUTicketsList=mFaceDetectDB.fetchIPUAll();
+        mAllIPUTicketsList = mFaceDetectDB.fetchIPUAll();
         ipu_points = new int[Config.ChartPointNum];
 
 
         if (mAllIPUTicketsList.size() != 0) {
-            //TODO
+            avgIPUTimes = new double[mAllIPUTicketsList.size()];
+            int ipuCount = 0;
+            if (Config.ChartPointNum > mAllIPUTicketsList.size()) {
+                ipuCount = mAllIPUTicketsList.size();
+            } else {
+                ipuCount = Config.ChartPointNum;
+            }
+
+            for (int j = 0; j < ipuCount; j++) {
+                ipu_points[j] = ConvertUtil.getFps(mAllIPUTicketsList.get(mAllIPUTicketsList.size() - j - 1).getFps()) + 200;
+                avgIPUTimes[j] = ConvertUtil.convert2Double(mAllIPUTicketsList.get(mAllIPUTicketsList.size() - j - 1).getTime());
+                allIPUTime = allTime + avgIPUTimes[j];
+                allIPUFps = allFps + ipu_points[j];
+            }
+            avgIPUTimeValue = allIPUTime / ipuCount;
+            avgIPUFpsValue = allIPUFps / ipuCount;
+            mTv_ipu_avg_fps.setText(R.string.classification_avg_time);
+            mTv_ipu_avg_time.setText(R.string.classification_single_time);
+            mTv_ipu_avg_fps.append(String.valueOf(avgIPUFpsValue) + "张/分钟");
+            mTv_ipu_avg_time.append(String.valueOf((int) avgIPUTimeValue) + "ms");
         }
 
         if (mAllTicketsList.size() != 0) {
@@ -174,6 +195,24 @@ public class FaceDetectorData extends Fragment implements View.OnClickListener {
         super.onResume();
     }
 
+    private XYMultipleSeriesDataset getDataSet() {
+        XYMultipleSeriesDataset seriesDataset = new XYMultipleSeriesDataset();
+        XYSeries xySeries1 = new XYSeries(getContext().getResources().getString(R.string.face_detection_chart_desc));
+        XYSeries xySeries2 = new XYSeries(getContext().getResources().getString(R.string.face_detection_chart_ipu_desc));
+        for (int i = 1; i <= Config.ChartPointNum; i++) {
+            if (points[i - 1] != 0) {
+                xySeries1.add(i, points[i - 1]);
+            }
+            if (ipu_points[i - 1] != 0) {
+                xySeries2.add(i, ipu_points[i - 1]);
+            }
+        }
+        seriesDataset.addSeries(xySeries1);
+        seriesDataset.addSeries(xySeries2);
+
+        return seriesDataset;
+    }
+
     private void showChart() {
         if (mAllTicketsList.size() > 0 || mAllIPUTicketsList.size() > 0) {
             XYMultipleSeriesDataset mDataSet = getDataSet();
@@ -191,23 +230,51 @@ public class FaceDetectorData extends Fragment implements View.OnClickListener {
         }
     }
 
-    private XYMultipleSeriesDataset getDataSet() {
-        //TODO:IPU mode
-        XYMultipleSeriesDataset seriesDataset = new XYMultipleSeriesDataset();
-        XYSeries xySeries1 = new XYSeries(getContext().getResources().getString(R.string.classification_chart_desc));
-        XYSeries xySeries2 = new XYSeries(getContext().getResources().getString(R.string.classification_chart_ipu_desc));
-        for (int i = 1; i <= Config.ChartPointNum; i++) {
-            if (points[i - 1] != 0) {
-                xySeries1.add(i, points[i - 1]);
-            }
-            if (ipu_points[i - 1] != 0) {
-                xySeries2.add(i, ipu_points[i - 1]);
-            }
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_face_data_all_result:
+                ResultDialog dialog = new ResultDialog(getContext());
+                View contentView1 = LayoutInflater.from(getContext()).inflate(R.layout.result_dialog, null);
+                ultraViewPager_dialog = contentView1.findViewById(R.id.ultra_viewpager_dialog);
+                ultraViewPager_dialog.setScrollMode(UltraViewPager.ScrollMode.HORIZONTAL);
+                adapter_dialog = new FaceDetectorAdapter(true, mAllTicketsList);
+                ultraViewPager_dialog.setAdapter(adapter_dialog);
+                ultraViewPager_dialog.setMultiScreen(0.6f);
+                ultraViewPager_dialog.setItemRatio(1.0f);
+                ultraViewPager_dialog.setAutoMeasureHeight(true);
+                ultraViewPager_dialog.setPageTransformer(false, new UltraDepthScaleTransformer());
+                dialog.setContentView(contentView1);
+                dialog.setTitle("测试结果");
+                dialog.setCanceledOnTouchOutside(true);
+                if (mAllTicketsList.size() > 0) {
+                    dialog.show();
+                } else {
+                    Toast.makeText(getContext(), getString(R.string.classification_dialog_null), Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.btn_face_data_all_ipu_result:
+                dialog = new ResultDialog(getContext());
+                View contentView2 = LayoutInflater.from(getContext()).inflate(
+                        R.layout.result_dialog, null);
+                ultraViewPager_ipuDialog = contentView2.findViewById(R.id.ultra_viewpager_dialog);
+                ultraViewPager_ipuDialog.setScrollMode(UltraViewPager.ScrollMode.HORIZONTAL);
+                adapter_dialog = new FaceDetectorAdapter(true, mAllTicketsList);
+                ultraViewPager_ipuDialog.setAdapter(adapter_dialog);
+                ultraViewPager_ipuDialog.setMultiScreen(0.6f);
+                ultraViewPager_ipuDialog.setItemRatio(1.0f);
+                ultraViewPager_ipuDialog.setAutoMeasureHeight(true);
+                ultraViewPager_ipuDialog.setPageTransformer(false, new UltraDepthScaleTransformer());
+                dialog.setContentView(contentView2);
+                dialog.setTitle("测试结果");
+                dialog.setCanceledOnTouchOutside(true);
+                if (mAllIPUTicketsList.size() > 0) {
+                    dialog.show();
+                } else {
+                    Toast.makeText(getContext(), getString(R.string.classification_dialog_null), Toast.LENGTH_SHORT).show();
+                }
+                break;
         }
-        seriesDataset.addSeries(xySeries1);
-        seriesDataset.addSeries(xySeries2);
-
-        return seriesDataset;
     }
 
     private XYMultipleSeriesRenderer getRefender() {
@@ -223,14 +290,10 @@ public class FaceDetectorData extends Fragment implements View.OnClickListener {
         seriesRenderer.setYLabels(10);//设置y轴显示点数
         seriesRenderer.setXAxisMin(0.5);//设置x轴起始值
         seriesRenderer.setXAxisMax(10.5);//设置x轴最大值
-        //seriesRenderer.setYTitle(getActivity().getResources().getString(R.string.classification_chart_y));//设置y轴标题
         seriesRenderer.setYLabelsColor(0, Color.BLACK);
         seriesRenderer.setXLabelsColor(Color.BLACK);
-        //seriesRenderer.setXTitle(getActivity().getResources().getString(R.string.classification_chart_x));//设置x轴标题
         //颜色设置
-        //seriesRenderer.setApplyBackgroundColor(true);//是应用设置的背景颜色
         seriesRenderer.setLabelsColor(0xFF85848D);//设置标签颜色
-        //seriesRenderer.setBackgroundColor(Color.argb(100, 255, 231, 224));//设置图表的背景颜色
         seriesRenderer.setBackgroundColor(R.color.gridview_bg);//设置图表的背景颜色
         //缩放设置
         seriesRenderer.setZoomButtonsVisible(false);//设置缩放按钮是否可见
@@ -250,7 +313,6 @@ public class FaceDetectorData extends Fragment implements View.OnClickListener {
         seriesRenderer.setPointSize(5);//设置坐标点大小
         seriesRenderer.setMarginsColor(Color.WHITE);//设置外边距空间的颜色
         seriesRenderer.setClickEnabled(false);
-        //seriesRenderer.setChartTitle(getContext().getResources().getString(R.string.classification_chart_title));
 
         /*某一组数据的描绘器，描绘该组数据的个性化显示效果，主要是字体跟颜色的效果*/
         XYSeriesRenderer xySeriesRenderer1 = new XYSeriesRenderer();
@@ -281,33 +343,5 @@ public class FaceDetectorData extends Fragment implements View.OnClickListener {
         seriesRenderer.addSeriesRenderer(xySeriesRenderer1);
         seriesRenderer.addSeriesRenderer(xySeriesRenderer2);
         return seriesRenderer;
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_face_data_all_result:
-                ResultDialog dialog = new ResultDialog(getContext());
-                View contentView1 = LayoutInflater.from(getContext()).inflate(R.layout.result_dialog, null);
-                ultraViewPager_dialog = contentView1.findViewById(R.id.ultra_viewpager_dialog);
-                ultraViewPager_dialog.setScrollMode(UltraViewPager.ScrollMode.HORIZONTAL);
-                adapter_dialog = new FaceDetectorAdapter(true, mAllTicketsList);
-                ultraViewPager_dialog.setAdapter(adapter_dialog);
-                ultraViewPager_dialog.setMultiScreen(0.6f);
-                ultraViewPager_dialog.setItemRatio(1.0f);
-                ultraViewPager_dialog.setAutoMeasureHeight(true);
-                ultraViewPager_dialog.setPageTransformer(false, new UltraDepthScaleTransformer());
-                dialog.setContentView(contentView1);
-                dialog.setTitle("测试结果");
-                dialog.setCanceledOnTouchOutside(true);
-                if (mAllTicketsList.size() > 0) {
-                    dialog.show();
-                } else {
-                    Toast.makeText(getContext(), getString(R.string.classification_dialog_null), Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case R.id.btn_face_data_all_ipu_result:
-                break;
-        }
     }
 }

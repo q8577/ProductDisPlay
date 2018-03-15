@@ -51,5 +51,7 @@
     <string name="face_detection_pasue_guide">人脸检测暂停中...</string>
     <string name="face_detection_end_guide">人脸检测已结束</string>
     <string name="face_detector_function">"人脸检测：\n\t\t\t\t通过MTCNN，不仅仅要识别出人脸，而且还要用边框标记人脸。"</string>
+    <string name="face_detection_chart_desc">CPU模式人脸检测fps值</string>
+    <string name="face_detection_chart_ipu_desc">IPU模式人脸检测fps值</string>
 
 </resources>
