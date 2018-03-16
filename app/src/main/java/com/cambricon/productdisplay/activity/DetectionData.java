@@ -156,7 +156,7 @@ public class DetectionData extends Fragment {
                     x++;
                 } else if (y <= rePoints.length) {
                     rePoints[y] = ConvertUtil.getFps(allTicketsList.get(i).getFps());
-                    avg101+=rePoints[x];
+                    avg101+=rePoints[y];
                     time101+=Integer.valueOf(allTicketsList.get(i).getTime());
                     y++;
                 }
