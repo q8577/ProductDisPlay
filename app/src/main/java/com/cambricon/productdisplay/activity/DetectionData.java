@@ -161,11 +161,14 @@ public class DetectionData extends Fragment {
                     y++;
                 }
             }
-
-            avg50/=x;
-            avg101/=y;
-            time50/=x;
-            time101/=y;
+            if(x>0){
+                avg50/=x;
+                time50/=x;
+            }
+            if(y>0){
+                avg101/=y;
+                time101/=y;
+            }
 
             //数据库图片属性输出
             for (DetectionImage image : ipu_allTickets) {
@@ -194,10 +197,14 @@ public class DetectionData extends Fragment {
                     b++;
                 }
             }
-            ipu_avg50/=a;
-            ipu_avg101/=b;
-            ipu_time50/=a;
-            ipu_time101/=b;
+            if(a>0){
+                ipu_avg50/=a;
+                ipu_time50/=a;
+            }
+            if(b>0){
+                ipu_avg101/=b;
+                ipu_time101/=b;
+            }
 
         }
 
