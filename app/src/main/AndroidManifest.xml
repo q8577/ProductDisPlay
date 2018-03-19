@@ -22,18 +22,20 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activity.DetectionActivity"/>
         <activity android:name=".activity.NewsInfoActivity"/>
+<!--
+        android:theme="@android：style/Theme.NoTitleBar.Fullscreen"
+-->
+
         <activity
             android:name=".activity.ClassificationActivity"
             android:screenOrientation="landscape"/>
-        <activity android:name=".activity.TestActivity"/>
         <activity
             android:name=".activity.HomeActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".activity.SemanticsActivity"/>
         <activity
-            android:name=".activity.DetectionActivity2"
+            android:name=".activity.DetectionActivity"
             android:screenOrientation="landscape"
             />
         <activity

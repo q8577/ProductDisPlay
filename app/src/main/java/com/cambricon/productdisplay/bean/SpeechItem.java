@@ -1,9 +1,5 @@
 package com.cambricon.productdisplay.bean;
 
-/**
- * Created by dell on 2018/2/7.
- */
-
 public class SpeechItem {
 
     private String resourse;

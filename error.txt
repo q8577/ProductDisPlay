@@ -2748,7 +2748,7 @@ Note: log switch off, only log_main and log_events will have logs!
 03-06 10:46:00.059   437   445 I vold    : TrimTask running tasks: 0
 03-06 10:46:00.129  3043  7770 W ContextImpl: Calling a method in the system process without a qualified user: android.app.ContextImpl.bindService:1736 android.content.ContextWrapper.bindService:678 com.huawei.nb.dataservice.dsclient.RemoteServiceConnection.open:90 com.huawei.nb.dataservice.dsclient.DataServiceProxy.connect:105 com.huawei.nb.dataservice.rsclient.internal.RemoteRuleService.start:27 
 03-06 10:46:04.678 29205 29205 V ActivityThread: ActivityThread,callActivityOnCreate
-03-06 10:46:04.850 29205 29205 D ActivityThread: add activity client record, r= ActivityRecord{3100719 token=android.os.BinderProxy@b1ac5ff {com.cambricon.productdisplay/com.cambricon.productdisplay.activity.DetectionActivity2}} token= android.os.BinderProxy@b1ac5ff
+03-06 10:46:04.850 29205 29205 D ActivityThread: add activity client record, r= ActivityRecord{3100719 token=android.os.BinderProxy@b1ac5ff {com.cambricon.productdisplay/com.cambricon.productdisplay.activity.DetectionActivity}} token= android.os.BinderProxy@b1ac5ff
 03-06 10:46:04.885  2004  2639 I CommandQueue: updateBarBgColor
 03-06 10:46:04.885  2004  2639 D CommandQueue: CommandQueue, setBarBackgroundColor
 03-06 10:46:18.573  1256  9301 I chatty  : uid=1000(system) Binder:1256_1B expire 23 lines
@@ -2759,7 +2759,7 @@ Note: log switch off, only log_main and log_events will have logs!
 03-06 10:46:32.366   605  1232 W SocketListener: sending broadcast to Pid = 1256, Uid = 1000 
 03-06 10:46:32.371  1256  9301 I chatty  : uid=1000(system) Binder:1256_1B expire 49 lines
 03-06 10:46:33.193   759   759 I chatty  : uid=1010(wifi) /system/bin/wificond expire 45 lines
-03-06 10:46:37.622 29205 29205 V ActivityThread: Finishing stop of ActivityRecord{3100719 token=android.os.BinderProxy@b1ac5ff {com.cambricon.productdisplay/com.cambricon.productdisplay.activity.DetectionActivity2}}
+03-06 10:46:37.622 29205 29205 V ActivityThread: Finishing stop of ActivityRecord{3100719 token=android.os.BinderProxy@b1ac5ff {com.cambricon.productdisplay/com.cambricon.productdisplay.activity.DetectionActivity}}
 03-06 10:46:37.632  1256  2740 I chatty  : uid=1000(system) Binder:1256_C expire 14 lines
 03-06 10:46:37.827  1256  1256 I chatty  : uid=1000 system_server expire 24 lines
 03-06 10:46:37.827  1256  1796 I chatty  : uid=1000(system) WifiP2pService expire 10 lines
@@ -2782,7 +2782,7 @@ Note: log switch off, only log_main and log_events will have logs!
 03-06 10:47:07.355  2004  2751 I CommandQueue: updateBarBgColor
 03-06 10:47:07.355  2004  2751 D CommandQueue: CommandQueue, setBarBackgroundColor
 03-06 10:47:07.425  1256  3138 I chatty  : uid=1000(system) Binder:1256_11 expire 11 lines
-03-06 10:47:07.447 29205 29205 D ActivityThread: Remove activity client record, r= ActivityRecord{3100719 token=android.os.BinderProxy@b1ac5ff {com.cambricon.productdisplay/com.cambricon.productdisplay.activity.DetectionActivity2}} token= android.os.BinderProxy@b1ac5ff
+03-06 10:47:07.447 29205 29205 D ActivityThread: Remove activity client record, r= ActivityRecord{3100719 token=android.os.BinderProxy@b1ac5ff {com.cambricon.productdisplay/com.cambricon.productdisplay.activity.DetectionActivity}} token= android.os.BinderProxy@b1ac5ff
 03-06 10:47:07.449  1256  2740 I chatty  : uid=1000(system) Binder:1256_C expire 60 lines
 03-06 10:47:16.002 29205 29205 V ActivityThread: ActivityThread,callActivityOnCreate
 03-06 10:47:16.037 29205 29205 D ActivityThread: add activity client record, r= ActivityRecord{2a28c3d token=android.os.BinderProxy@c92b8f6 {com.cambricon.productdisplay/com.cambricon.productdisplay.activity.SemanticsActivity}} token= android.os.BinderProxy@c92b8f6
@@ -3102,7 +3102,7 @@ Note: log switch off, only log_main and log_events will have logs!
 03-06 11:26:44.865  1256  1570 I chatty  : uid=1000(system) android.anim expire 23 lines
 03-06 11:26:45.181   354   354 D ActivityThread: Remove activity client record, r= ActivityRecord{ae2a9f1 token=android.os.BinderProxy@1bc7b26 {com.cambricon.productdisplay/com.cambricon.productdisplay.activity.SplashActivity}} token= android.os.BinderProxy@1bc7b26
 03-06 11:26:45.810   354   354 V ActivityThread: ActivityThread,callActivityOnCreate
-03-06 11:26:45.982   354   354 D ActivityThread: add activity client record, r= ActivityRecord{75f6660 token=android.os.BinderProxy@90fd91e {com.cambricon.productdisplay/com.cambricon.productdisplay.activity.DetectionActivity2}} token= android.os.BinderProxy@90fd91e
+03-06 11:26:45.982   354   354 D ActivityThread: add activity client record, r= ActivityRecord{75f6660 token=android.os.BinderProxy@90fd91e {com.cambricon.productdisplay/com.cambricon.productdisplay.activity.DetectionActivity}} token= android.os.BinderProxy@90fd91e
 03-06 11:26:46.025  2004  4607 I CommandQueue: updateBarBgColor
 03-06 11:26:46.025  2004  4607 D CommandQueue: CommandQueue, setBarBackgroundColor
 03-06 11:26:47.091  1256  1799 I chatty  : uid=1000(system) ConnectivitySer expire 32 lines
@@ -3110,7 +3110,7 @@ Note: log switch off, only log_main and log_events will have logs!
 03-06 11:27:00.414   500   500 D ActivityThread: ActivityThread,attachApplication
 03-06 11:27:02.146   759   759 I chatty  : uid=1010(wifi) /system/bin/wificond expire 30 lines
 03-06 11:27:10.140  1256  1453 I chatty  : uid=1000(system) PowerManagerSer expire 41 lines
-03-06 11:27:17.238   354   354 V ActivityThread: Finishing stop of ActivityRecord{75f6660 token=android.os.BinderProxy@90fd91e {com.cambricon.productdisplay/com.cambricon.productdisplay.activity.DetectionActivity2}}
+03-06 11:27:17.238   354   354 V ActivityThread: Finishing stop of ActivityRecord{75f6660 token=android.os.BinderProxy@90fd91e {com.cambricon.productdisplay/com.cambricon.productdisplay.activity.DetectionActivity}}
 03-06 11:27:17.245  1256  2388 I chatty  : uid=1000(system) Binder:1256_B expire 12 lines
 03-06 11:27:17.498  1256  1440 I chatty  : uid=1000(system) android.display expire 5 lines
 03-06 11:27:17.553  1256  1796 I chatty  : uid=1000(system) WifiP2pService expire 10 lines
@@ -3130,7 +3130,7 @@ Note: log switch off, only log_main and log_events will have logs!
 03-06 11:27:51.462  2004 27692 I CommandQueue: updateBarBgColor
 03-06 11:27:51.462  2004 27692 D CommandQueue: CommandQueue, setBarBackgroundColor
 03-06 11:27:51.463  1256  1282 I chatty  : uid=1000(system) Binder:1256_1 expire 19 lines
-03-06 11:27:51.546   354   354 D ActivityThread: Remove activity client record, r= ActivityRecord{75f6660 token=android.os.BinderProxy@90fd91e {com.cambricon.productdisplay/com.cambricon.productdisplay.activity.DetectionActivity2}} token= android.os.BinderProxy@90fd91e
+03-06 11:27:51.546   354   354 D ActivityThread: Remove activity client record, r= ActivityRecord{75f6660 token=android.os.BinderProxy@90fd91e {com.cambricon.productdisplay/com.cambricon.productdisplay.activity.DetectionActivity}} token= android.os.BinderProxy@90fd91e
 03-06 11:27:51.558  1256  3138 I chatty  : uid=1000(system) Binder:1256_11 expire 15 lines
 03-06 11:27:53.134  1256  1596 I chatty  : uid=1000(system) InputDispatcher expire 4 lines
 03-06 11:27:53.216  1972  2584 I HwNetworkPolicyManager: getHwUidPolicy uid = 10067 policy = 0

@@ -257,7 +257,7 @@ public class FaceDetectorData extends Fragment implements View.OnClickListener {
                         R.layout.result_dialog, null);
                 ultraViewPager_ipuDialog = contentView2.findViewById(R.id.ultra_viewpager_dialog);
                 ultraViewPager_ipuDialog.setScrollMode(UltraViewPager.ScrollMode.HORIZONTAL);
-                adapter_dialog = new FaceDetectorAdapter(true, mAllTicketsList);
+                adapter_dialog = new FaceDetectorAdapter(true, mAllIPUTicketsList);
                 ultraViewPager_ipuDialog.setAdapter(adapter_dialog);
                 ultraViewPager_ipuDialog.setMultiScreen(0.6f);
                 ultraViewPager_ipuDialog.setItemRatio(1.0f);

@@ -110,18 +110,19 @@
             android:gravity="center"
             android:orientation="horizontal">
 
+
             <ImageView
                 android:id="@+id/iv_face_detector_img"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
                 android:layout_gravity="center_horizontal"
-                android:paddingBottom="20dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:paddingTop="20dp"
-                android:scaleType="centerInside"
+                android:layout_margin="20dp"
+                android:scaleType="fitXY"
+                android:background="@color/green"
                 android:src="@mipmap/classification_bg"/>
+
+
 
             <TextView
                 android:id="@+id/tv_face_detector_function_describe"

@@ -117,10 +117,11 @@
                     android:layout_alignParentRight="true"
                     app:kswThumbWidth="@dimen/switch_btn_width"
                     app:kswThumbHeight="@dimen/switch_btn_height"
-                    app:kswTintColor="@android:color/white"
+                    app:kswTintColor="@color/green"
                     app:kswBackColor="@color/news_item_line"
                     android:paddingRight="@dimen/switch_btn_paddingright"/>
             </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/ipu_mode"
                 android:layout_width="match_parent"
@@ -148,7 +149,7 @@
                     android:layout_alignParentRight="true"
                     app:kswThumbWidth="@dimen/switch_btn_width"
                     app:kswThumbHeight="@dimen/switch_btn_height"
-                    app:kswTintColor="@android:color/white"
+                    app:kswTintColor="@color/green"
                     app:kswBackColor="@color/news_item_line"
                     android:paddingRight="@dimen/switch_btn_paddingright"/>
             </RelativeLayout>

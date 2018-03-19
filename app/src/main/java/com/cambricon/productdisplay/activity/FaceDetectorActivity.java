@@ -87,7 +87,7 @@ public class FaceDetectorActivity extends AppCompatActivity implements View.OnCl
      * 装载UI
      */
     private void initUI() {
-        //装在UI组件
+        //装载UI组件
         mToolbar = findViewById(R.id.toolbar_face_detector);
         mIv_face_detector = findViewById(R.id.iv_face_detector_img);
         mTv_face_detect_guide = findViewById(R.id.tv_guide_face_detector);

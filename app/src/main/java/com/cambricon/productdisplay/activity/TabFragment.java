@@ -11,16 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-/**
- * Created by dell on 18-2-6.
- */
-
 public class TabFragment extends Fragment {
     private Context context;
     private String content;
-    public TabFragment(){
 
-    }
+    public TabFragment(){}
 
     @SuppressLint("ValidFragment")
     public TabFragment(Context contexts, String content) {
@@ -28,7 +23,6 @@ public class TabFragment extends Fragment {
         this.content = content;
     }
 
-    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         TextView textView = new TextView(context);

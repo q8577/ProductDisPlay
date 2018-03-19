@@ -33,6 +33,7 @@
     <ImageView
         android:id="@+id/pager_image"
         android:layout_width="200dp"
+        android:scaleType="fitXY"
         android:layout_height="150dp"/>
 
     <TextView

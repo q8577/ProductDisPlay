@@ -1,6 +1,5 @@
 package com.cambricon.productdisplay.activity;
 
-import android.app.ProgressDialog;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,6 +14,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,44 +35,62 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+public class ClassificationActivity extends AppCompatActivity implements CNNListener {
+    private static final String LOG_TAG = String.valueOf(R.string.log_tag_classfication);
+    private final int START_LOADMODEL = 1;
+    private final int END_LODEMODEL = 2;
 
-public class ClassificationActivity extends AppCompatActivity implements CNNListener, View.OnClickListener {
-    private static final String LOG_TAG = "ClassificationActivity";
-    private static String[] IMAGENET_CLASSES;
-
+    /**
+     * 相关组件
+     */
     private android.support.v7.widget.Toolbar toolbar;
-
     private Button classification_begin;
     private Button classification_end;
     private ImageView ivCaptured;
+    private TextView textFps;
     private TextView testResult;
     private TextView loadCaffe;
     private TextView testTime;
     private TextView function_text;
-    private TextView textFps;
     private TextView testPro;
-    private Bitmap bmp;
     private CaffeMobile caffeMobile;
 
-    public static int startIndex = 0;
+    /**
+     * 相关变量
+     */
+    private Bitmap bmp;
+    private long end_time;
     public Thread testThread;
+    public static int startIndex = 0;
     public static boolean isExist = true;
     private double classificationTime;
+    private static String[] IMAGENET_CLASSES;
     private ClassificationDB classificationDB;
-
     private static float TARGET_WIDTH;
     private static float TARGET_HEIGHT;
+    private File imageFile = new File(Config.sdcard, Config.imageName[0]);
 
-    private final int START_LOAD_DETECT = 2;
-    private final int LOED_DETECT_END = 3;
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case START_LOADMODEL:
+                    loadCaffe.setText("开始加载分类网络...");
+                    break;
+                case END_LODEMODEL:
+                    loadCaffe.setText(getResources().getString(R.string.load_model) + Config.loadClassifyTime + "ms");
+                default:
+                    break;
+            }
+        }
+    };
 
-    File imageFile = new File(Config.sdcard, Config.imageName[0]);
-
+    /**
+     * 加载模型
+     */
     static {
         System.loadLibrary("caffe_jni");
     }
-
-    private long mEnd_time;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,9 +99,51 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
         setContentView(R.layout.classification_layout);
         init();
         setActionBar();
-        initSynsetWords();
+        classification_begin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                function_text.setVisibility(View.GONE);
+                testPro.setText(getString(R.string.classification_begin_guide));
+                testResult.setVisibility(View.VISIBLE);
+                testTime.setVisibility(View.VISIBLE);
+                textFps.setVisibility(View.VISIBLE);
+                startIndex = 0;
+                isExist = true;
+                startThread();
+                classification_begin.setVisibility(View.GONE);
+                classification_end.setVisibility(View.VISIBLE);
+            }
+        });
+        classification_end.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                testPro.setText(getString(R.string.classification_pasue_guide));
+                isExist = false;
+                classification_begin.setVisibility(View.VISIBLE);
+                classification_end.setVisibility(View.GONE);
+            }
+        });
+
+
+        //读取类别文件
+        AssetManager am = this.getAssets();
+        try {
+            InputStream is = am.open("synset_words.txt");
+            Scanner sc = new Scanner(is);
+            List<String> lines = new ArrayList<String>();
+            while (sc.hasNextLine()) {
+                final String temp = sc.nextLine();
+                lines.add(temp.substring(temp.indexOf(" ") + 1));
+            }
+            IMAGENET_CLASSES = lines.toArray(new String[0]);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
+    /**
+     * 初始化组件
+     */
     private void init() {
         ivCaptured = findViewById(R.id.classification_img);
         testResult = findViewById(R.id.test_result);
@@ -94,17 +154,68 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
         testPro = findViewById(R.id.test_guide);
         classification_begin = findViewById(R.id.classification_begin);
         classification_end = findViewById(R.id.classification_end);
-        this.toolbar = findViewById(R.id.classification_toolbar);
-
+        toolbar = findViewById(R.id.classification_toolbar);
         loadCaffe.setText("");
-
-        classification_begin.setOnClickListener(this);
-        classification_end.setOnClickListener(this);
-
         classificationDB = new ClassificationDB(getApplicationContext());
         classificationDB.open();
 
+    }
+
+    /**
+     * 开始检测
+     */
+    public void startThread() {
+        testThread = new Thread(new Runnable() {
+            @Override
+            public synchronized void run() {
+                load();
+                executeImg();
+
+            }
+        });
+        if (isExist) {
+            testThread.start();
+        }
+    }
+
+    /**
+     * 加载模型
+     */
+    private void load() {
+        Message msg = new Message();
+        msg.what = START_LOADMODEL;
+        handler.sendMessage(msg);
+
+        //加载模型
         caffeMobile = new CaffeMobile();
+        caffeMobile.setNumThreads(4);
+        long start_time = SystemClock.uptimeMillis();
+        caffeMobile.loadModel(Config.modelProto, Config.modelBinary, Config.getIsCPUMode(ClassificationActivity.this));
+        end_time = SystemClock.uptimeMillis() - start_time;
+        float[] meanValues = {104, 117, 123};
+        caffeMobile.setMean(meanValues);
+
+        if (end_time>100) {
+            Config.loadClassifyTime = end_time;
+        }
+
+        Message msg_end = new Message();
+        msg_end.what = END_LODEMODEL;
+        handler.sendMessage(msg_end);
+    }
+
+    /**
+     * 传入检测图片
+     */
+    private void executeImg() {
+        imageFile = new File(Config.imagePath, Config.imageName[startIndex]);
+        bmp = BitmapFactory.decodeFile(imageFile.getPath());
+        CNNTask cnnTask = new CNNTask(ClassificationActivity.this);
+        if (imageFile.exists()) {
+            cnnTask.execute(imageFile.getPath());
+        } else {
+            Log.d(LOG_TAG, "file is not exist");
+        }
     }
 
     /**
@@ -127,112 +238,7 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
         });
     }
 
-    private void initSynsetWords() {
-        AssetManager am = this.getAssets();
-        try {
-            InputStream is = am.open("synset_words.txt");
-            Scanner sc = new Scanner(is);
-            List<String> lines = new ArrayList<String>();
-            while (sc.hasNextLine()) {
-                final String temp = sc.nextLine();
-                lines.add(temp.substring(temp.indexOf(" ") + 1));
-            }
-            IMAGENET_CLASSES = lines.toArray(new String[0]);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
-    //加载模型
-    private void load() {
-        Message msg = new Message();
-        msg.what = START_LOAD_DETECT;
-        handler.sendMessage(msg);
-        Log.e(LOG_TAG, "loadModel: start");
-
-        long start_time = SystemClock.uptimeMillis();
-
-        caffeMobile.setNumThreads(4);
-        caffeMobile.loadModel(Config.modelProto, Config.modelBinary, Config.getIsCPUMode(ClassificationActivity.this));
-        float[] meanValues = {104, 117, 123};
-        caffeMobile.setMean(meanValues);
-        mEnd_time = SystemClock.uptimeMillis() - start_time;
-
-        Log.e(LOG_TAG, "loadModel: end");
-        Message msg_end = new Message();
-        msg_end.what = LOED_DETECT_END;
-        handler.sendMessage(msg_end);
-    }
-
-    Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case START_LOAD_DETECT:
-                    loadCaffe.setText(R.string.load_data_detection);
-                    break;
-                case LOED_DETECT_END:
-                    loadCaffe.setText(getResources().getString(R.string.detection_load_model) + mEnd_time + "ms");
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.classification_begin:
-                function_text.setVisibility(View.GONE);
-                testPro.setText(getString(R.string.classification_begin_guide));
-                testResult.setVisibility(View.VISIBLE);
-                testTime.setVisibility(View.VISIBLE);
-                textFps.setVisibility(View.VISIBLE);
-                //classificationDB.deleteAllClassification();
-                startIndex = 0;
-                isExist = true;
-                startThread();
-                classification_begin.setVisibility(View.GONE);
-                classification_end.setVisibility(View.VISIBLE);
-                break;
-            case R.id.classification_end:
-                testPro.setText(getString(R.string.classification_pasue_guide));
-                isExist = false;
-                classification_begin.setVisibility(View.VISIBLE);
-                classification_end.setVisibility(View.GONE);
-                break;
-        }
-    }
-
-    public void startThread() {
-        testThread = new Thread(new Runnable() {
-            @Override
-            public synchronized void run() {
-                load();
-                executeImg();
-            }
-        });
-        if (isExist) {
-            testThread.start();
-        }
-    }
-
-    private void executeImg() {
-        imageFile = new File(Config.imagePath, Config.imageName[startIndex]);
-        bmp = BitmapFactory.decodeFile(imageFile.getPath());
-        CNNTask cnnTask = new CNNTask(ClassificationActivity.this);
-        if (imageFile.exists()) {
-            cnnTask.execute(imageFile.getPath());
-        } else {
-            Log.d(LOG_TAG, "file is not exist");
-        }
-    }
-
-    /**
-     * @param target
-     * @return
-     */
     public static Bitmap zoomBitmap(Bitmap target) {
         int width = target.getWidth();
         int height = target.getHeight();
@@ -245,6 +251,12 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
         return result;
     }
 
+    /**
+     * FPS格式转换
+     *
+     * @param classificationTime
+     * @return
+     */
     private String getFps(double classificationTime) {
         double fps = 60 * 1000 / classificationTime;
         Log.d(LOG_TAG, "fps:" + fps);
@@ -255,6 +267,7 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
 
         private CNNListener listener;
         private long startTime;
+
         public CNNTask(CNNListener listener) {
             this.listener = listener;
         }
@@ -273,6 +286,7 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
         }
 
     }
+
     @Override
     public void onTaskCompleted(int result) {
         if (isExist) {
@@ -280,34 +294,38 @@ public class ClassificationActivity extends AppCompatActivity implements CNNList
             TARGET_WIDTH = ivCaptured.getWidth();
             TARGET_HEIGHT = ivCaptured.getHeight();
             ivCaptured.setImageBitmap(zoomBitmap(bmp));
+
             if (Config.getIsCPUMode(ClassificationActivity.this)) {
-                Log.e(LOG_TAG, "CPU modeIMAGENET_CLASSES=" + IMAGENET_CLASSES[result]);
+                Log.i(LOG_TAG, "CPU modeIMAGENET_CLASSES=" + IMAGENET_CLASSES[result]);
                 classificationDB.addClassification(Config.imageName[startIndex], String.valueOf((int) classificationTime), getFps(classificationTime), IMAGENET_CLASSES[result]);
             } else {
-                Log.e(LOG_TAG, "IPU mode IMAGENET_CLASSES=" + IMAGENET_CLASSES[result]);
+                Log.i(LOG_TAG, "IPU mode IMAGENET_CLASSES=" + IMAGENET_CLASSES[result]);
                 classificationDB.addIPUClassification(Config.imageName[startIndex], String.valueOf((int) classificationTime), getFps(classificationTime), IMAGENET_CLASSES[result]);
             }
+
             startIndex++;
+            testPro.setText("图片分类进行中...(" + startIndex + "%)");
             testResult.setText(getResources().getString(R.string.test_result) + IMAGENET_CLASSES[result]);
             testTime.setText(getResources().getString(R.string.test_time) + String.valueOf((int) classificationTime) + "ms");
             textFps.setText(getResources().getString(R.string.test_fps) + ConvertUtil.getFps(getFps(classificationTime)) + getResources().getString(R.string.test_fps_units));
-        /*if (startIndex >= Config.imageName.length) {
-            startIndex = startIndex % Config.imageName.length;
-            Log.d(LOG_TAG, "startIndex=" + startIndex);
-        }*/
-            Log.e(LOG_TAG, "startIndex: " + startIndex);
+
+            Log.w(LOG_TAG, "startIndex: " + startIndex);
             if (startIndex < Config.imageName.length) {
                 executeImg();
             } else {
-                Toast.makeText(this, "检测结束", Toast.LENGTH_SHORT).show();
-                testPro.setText(getString(R.string.classification_end_guide));
+                Toast.makeText(this, R.string.end_testing, Toast.LENGTH_SHORT).show();
+                testPro.setText("图片分类检测结束");
                 isExist = false;
                 classification_begin.setVisibility(View.VISIBLE);
                 classification_end.setVisibility(View.GONE);
             }
+
+
         } else {
             testPro.setText(getString(R.string.classification_end_guide));
         }
+
+
     }
 
     @Override

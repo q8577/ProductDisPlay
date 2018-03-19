@@ -14,12 +14,17 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -31,12 +36,10 @@ import com.cambricon.productdisplay.db.CommDB;
 import com.cambricon.productdisplay.utils.StatusBarCompat;
 import com.kyleduo.switchbutton.SwitchButton;
 
-/**
- * Created by dell on 18-2-3.
- */
-
 public class HomeActivity extends AppCompatActivity {
     private android.support.v7.widget.Toolbar toolbar;
+    final int PERMISSION_REQUST_CODE = 0x001;
+
     /*创建一个Drawerlayout和Toolbar联动的开关*/
     private ActionBarDrawerToggle toggle;
 
@@ -45,31 +48,36 @@ public class HomeActivity extends AppCompatActivity {
     private LinearLayout relMenu;
     private RadioButton testbtn;
     private RadioButton databtn;
-    private RadioButton newsbtn;
 
+    private RadioButton newsbtn;
     private Drawable test_on;
     private Drawable test_off;
     private Drawable data_on;
     private Drawable data_off;
     private Drawable news_on;
-    private Drawable news_off;
 
+    private Drawable news_off;
     private TestFragment testFragment;
     private DataFragment dataFragment;
     private NewsFragment newsFragment;
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
-    final int PERMISSION_REQUST_CODE = 0x001;
-
     private SwitchButton cpu_mode_btn;
     private SwitchButton ipu_mode_btn;
-
     private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor editor;
 
     private static boolean isExit = false;
-
     private CommDB commDB;
+
+    Handler mHandler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            isExit = false;
+        }
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -82,20 +90,6 @@ public class HomeActivity extends AppCompatActivity {
         setActionBar();
         setListener();
         setDrawerToggle();
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUST_CODE);
-        } else {
-
-        }
-
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == PERMISSION_REQUST_CODE) {
-
-        }
     }
 
     private void setDrawerToggle() {
@@ -114,12 +108,10 @@ public class HomeActivity extends AppCompatActivity {
         newsbtn = findViewById(R.id.tab_adv);
         cpu_mode_btn = findViewById(R.id.cpu_mode_switchbtn);
         ipu_mode_btn = findViewById(R.id.ipu_mode_switchbtn);
-
         mSharedPreferences = getSharedPreferences("Cambricon_mode", Context.MODE_PRIVATE);
         editor = mSharedPreferences.edit();
-
-        ipu_mode_btn.setChecked(mSharedPreferences.getBoolean("IPU_mode", false));
-        cpu_mode_btn.setChecked(mSharedPreferences.getBoolean("CPU_mode", true));
+        ipu_mode_btn.setChecked(mSharedPreferences.getBoolean(String.valueOf(R.string.ipu_mode), false));
+        cpu_mode_btn.setChecked(mSharedPreferences.getBoolean(String.valueOf(R.string.cpu_mode), true));
 
         commDB = new CommDB(this);
         commDB.open();
@@ -170,7 +162,6 @@ public class HomeActivity extends AppCompatActivity {
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int checkId) {
-                Log.d("huangyaling", "checkId:" + checkId);
                 switch (checkId) {
                     case R.id.tab_test:
                         databtn.setCompoundDrawables(null, data_off, null, null);
@@ -234,13 +225,13 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (cpu_mode_btn.isChecked()) {
-                    editor.putBoolean("CPU_mode", true);
-                    editor.putBoolean("IPU_mode", false);
+                    editor.putBoolean(String.valueOf(R.string.cpu_mode), true);
+                    editor.putBoolean(String.valueOf(R.string.ipu_mode), false);
                     editor.commit();
                     ipu_mode_btn.setChecked(false);
                 } else {
-                    editor.putBoolean("CPU_mode", false);
-                    editor.putBoolean("IPU_mode", true);
+                    editor.putBoolean(String.valueOf(R.string.cpu_mode), false);
+                    editor.putBoolean(String.valueOf(R.string.ipu_mode), true);
                     editor.commit();
                     ipu_mode_btn.setChecked(true);
                 }
@@ -250,13 +241,13 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (ipu_mode_btn.isChecked()) {
-                    editor.putBoolean("IPU_mode", true);
-                    editor.putBoolean("CPU_mode", false);
+                    editor.putBoolean(String.valueOf(R.string.ipu_mode), true);
+                    editor.putBoolean(String.valueOf(R.string.cpu_mode), false);
                     editor.commit();
                     cpu_mode_btn.setChecked(false);
                 } else {
-                    editor.putBoolean("IPU_mode", false);
-                    editor.putBoolean("CPU_mode", true);
+                    editor.putBoolean(String.valueOf(R.string.ipu_mode), false);
+                    editor.putBoolean(String.valueOf(R.string.cpu_mode), true);
                     editor.commit();
                     cpu_mode_btn.setChecked(true);
                 }
@@ -271,6 +262,7 @@ public class HomeActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         /*显示Home图标*/
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
     }
 
     @Override
@@ -286,7 +278,7 @@ public class HomeActivity extends AppCompatActivity {
         if(keyCode == KeyEvent.KEYCODE_BACK){
             if(!isExit){
                 isExit = true;
-                Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.exit, Toast.LENGTH_SHORT).show();
                 mHandler.sendEmptyMessageDelayed(0, 2000);
             }else{
                 finish();
@@ -296,13 +288,4 @@ public class HomeActivity extends AppCompatActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
-
-    Handler mHandler = new Handler() {
-
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            isExit = false;
-        }
-    };
 }

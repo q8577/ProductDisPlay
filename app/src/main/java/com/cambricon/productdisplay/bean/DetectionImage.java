@@ -1,7 +1,7 @@
 package com.cambricon.productdisplay.bean;
 
 /**
- * Created by dell on 18-2-5.
+ * 目标检测结果
  */
 
 public class DetectionImage {

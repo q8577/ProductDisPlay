@@ -27,18 +27,46 @@ import java.util.List;
  */
 
 public class NewsFragment extends Fragment {
-    private View view;
-    private RecyclerView recyclerView;
-    private SwipeRefreshLayout swipeRefresh;
-    private NewsAdapter adapter;
-    private List<News> newsList = new ArrayList<>();
     public static final int AUTOBANNER_CODE = 0x1001;
     public static final int LOAD_MORE = 1;
     public static final int LOAD_BOTTOM = 2;
     public static final int LOAD_START = 3;
-    private ProgressBar loadMore;
 
-    @Nullable
+    private View view;
+    private ImageButton upBtn;
+    private NewsAdapter adapter;
+    private ProgressBar loadMore;
+    private RecyclerView recyclerView;
+    private SwipeRefreshLayout swipeRefresh;
+    private LinearLayoutManager mLinearLayoutManager;
+
+    List<News> testList = new ArrayList<>();
+    private List<News> newsList = new ArrayList<>();
+    int max = 50;
+    boolean start = true;
+
+    Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case LOAD_MORE:
+                    adapter.notifyDataSetChanged();
+                    loadMore.setVisibility(View.GONE);
+                    break;
+                case LOAD_BOTTOM:
+                    loadMore.setVisibility(View.GONE);
+                    Toast.makeText(getContext(), "已经到底部啦", Toast.LENGTH_SHORT).show();
+                    upBtn.setVisibility(View.VISIBLE);
+                    break;
+                case LOAD_START:
+                    loadMore.setVisibility(View.VISIBLE);
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.news_fragment, null);
@@ -49,9 +77,6 @@ public class NewsFragment extends Fragment {
     /**
      * 加载资讯列表
      */
-    private LinearLayoutManager mLinearLayoutManager;
-    private ImageButton upBtn;
-
     public void initNews() {
         initNewsData();
         upBtn = view.findViewById(R.id.up);
@@ -61,6 +86,9 @@ public class NewsFragment extends Fragment {
         recyclerView.setLayoutManager(mLinearLayoutManager);
         adapter = new NewsAdapter(newsList);
         recyclerView.setAdapter(adapter);
+        recyclerView = view.findViewById(R.id.recycler_view);
+        swipeRefresh = view.findViewById(R.id.news_refresh);
+        swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
 
         upBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,8 +98,6 @@ public class NewsFragment extends Fragment {
             }
         });
 
-        swipeRefresh = view.findViewById(R.id.news_refresh);
-        swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -99,7 +125,6 @@ public class NewsFragment extends Fragment {
             }
         });
 
-        recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.addOnScrollListener(new EndLessOnScrollListener(mLinearLayoutManager) {
             @Override
             public void onLoadMore(int currentPage) {
@@ -116,34 +141,9 @@ public class NewsFragment extends Fragment {
 
     }
 
-    Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case LOAD_MORE:
-                    adapter.notifyDataSetChanged();
-                    loadMore.setVisibility(View.GONE);
-                    break;
-                case LOAD_BOTTOM:
-                    loadMore.setVisibility(View.GONE);
-                    Toast.makeText(getContext(), "已经到底部啦", Toast.LENGTH_SHORT).show();
-                    upBtn.setVisibility(View.VISIBLE);
-                    break;
-                case LOAD_START:
-                    loadMore.setVisibility(View.VISIBLE);
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
-
     /**
      * 资讯测试集合
      */
-
-    List<News> testList = new ArrayList<>();
-
     public void test() {
         News news1 = new News(1, R.drawable.news1, "CB lnsights 最新发布全球AI 100榜单,寒武纪首度入选", "2017年12月19日",
                 "http://mp.weixin.qq.com/s?__biz=MzIwOTM3NDcxNQ==&mid=2247484072&idx=1&sn=1f59bc3d0e00f017c4d1462275e07810&chksm=97759e3ca002172aacbeb80f0d8240cd77a728d0676b3c08da872b595d68d90577a76d4d5938&mpshare=1&scene=23&srcid=0201yeAOaOULwORmRuKWM8gY#rd\n");
@@ -162,8 +162,7 @@ public class NewsFragment extends Fragment {
         testList.add(news5);
     }
 
-    int max = 50;
-    boolean start = true;
+
 
     /**
      * 加载初始页面资讯

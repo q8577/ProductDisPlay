@@ -22,10 +22,11 @@ import com.cambricon.productdisplay.R;
 public class NewsInfoActivity extends AppCompatActivity {
 
     private android.support.v7.widget.Toolbar toolbar;
-    private WebView webView;
-    private ProgressBar progressBar;
-    private ImageView errorImage;
     private Button button;
+    private WebView webView;
+    private ImageView errorImage;
+    private ProgressBar progressBar;
+
     private String url;
 
     @Override
@@ -37,7 +38,7 @@ public class NewsInfoActivity extends AppCompatActivity {
         initNewsInfo();
     }
 
-    public void initView(){
+    public void initView() {
         toolbar = findViewById(R.id.detection_toolbar);
         webView = findViewById(R.id.news_info);
         progressBar = findViewById(R.id.webProgressBar);
@@ -46,12 +47,13 @@ public class NewsInfoActivity extends AppCompatActivity {
 
     /**
      * toolBar返回按钮
+     *
      * @param item
      * @return
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             //返回按钮
             case android.R.id.home:
                 finish();
@@ -71,7 +73,7 @@ public class NewsInfoActivity extends AppCompatActivity {
     /**
      * 设置toolbar属性
      */
-    public void setToolbar(){
+    public void setToolbar() {
         toolbar.setTitle(R.string.newsinfo_title);
         setSupportActionBar(toolbar);
         /*显示Home图标*/
@@ -81,6 +83,7 @@ public class NewsInfoActivity extends AppCompatActivity {
 
     /**
      * 添加菜单栏
+     *
      * @param menu
      * @return
      */
@@ -90,17 +93,13 @@ public class NewsInfoActivity extends AppCompatActivity {
         return true;
     }
 
-
-
     /**
      * 加载资讯页面
      */
-    public void initNewsInfo(){
+    public void initNewsInfo() {
         url = getIntent().getStringExtra("url");
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebChromeClient(new WebViewClient());
-//        webView.getSettings().setSupportZoom(true);
-//        webView.getSettings().setBuiltInZoomControls(true);
         webView.setWebViewClient(new WebClient());
         webView.loadUrl(url);
     }
@@ -112,7 +111,7 @@ public class NewsInfoActivity extends AppCompatActivity {
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             progressBar.setProgress(newProgress);
-            if(newProgress==100){
+            if (newProgress == 100) {
                 webView.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
             }
@@ -121,13 +120,12 @@ public class NewsInfoActivity extends AppCompatActivity {
 
     }
 
-    private class WebClient extends android.webkit.WebViewClient{
+    private class WebClient extends android.webkit.WebViewClient {
         @Override
         public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
             super.onReceivedError(view, request, error);
             showErrorPage();
         }
-
 
 
     }
@@ -152,8 +150,6 @@ public class NewsInfoActivity extends AppCompatActivity {
             }
         });
     }
-
-
 
 
 }

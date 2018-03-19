@@ -1,7 +1,7 @@
 package com.cambricon.productdisplay.bean;
 
 /**
- * Created by cambricon on 18-3-13.
+ * 人脸检测结果
  */
 
 public class FaceDetectionImage {

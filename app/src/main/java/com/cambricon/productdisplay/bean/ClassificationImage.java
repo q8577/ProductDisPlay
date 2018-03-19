@@ -1,7 +1,7 @@
 package com.cambricon.productdisplay.bean;
 
 /**
- * Created by dell on 18-2-5.
+ * 目标分类结果
  */
 
 public class ClassificationImage {

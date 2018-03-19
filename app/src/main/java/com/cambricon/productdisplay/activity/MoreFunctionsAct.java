@@ -15,16 +15,13 @@ import com.cambricon.productdisplay.utils.Config;
 
 import java.util.ArrayList;
 
-/**
- * Created by dell on 18-3-15.
- */
-
 public class MoreFunctionsAct extends AppCompatActivity {
-    private android.support.v7.widget.Toolbar toolbar;
     private ArrayList<String> mData;
     private ArrayList<Integer> mDraw;
     private RecyclerView recyclerView;
     private MoreFunctionRecylerAdaper adapter;
+    private android.support.v7.widget.Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

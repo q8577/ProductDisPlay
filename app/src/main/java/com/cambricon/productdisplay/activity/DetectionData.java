@@ -135,11 +135,11 @@ public class DetectionData extends Fragment {
         int ipu_time50 = 0;
         int ipu_time101 = 0;
 
-        Log.e(TAG, "getData:cpu " + allTicketsList.size());
-        Log.e(TAG, "getData:ipu " + ipu_allTickets.size());
+        Log.w(TAG, "getData:cpu " + allTicketsList.size());
+        Log.w(TAG, "getData:ipu " + ipu_allTickets.size());
         //数据库图片属性输出
         for (DetectionImage image : allTicketsList) {
-            Log.e(TAG, "getData: " + image.toString());
+            Log.w(TAG, "getData: " + image.toString());
         }
 
         points = new int[Config.ChartPointNum];
@@ -172,7 +172,7 @@ public class DetectionData extends Fragment {
 
             //数据库图片属性输出
             for (DetectionImage image : ipu_allTickets) {
-                Log.e(TAG, "getData: " + image.toString());
+                Log.w(TAG, "getData: " + image.toString());
             }
 
         }
@@ -228,7 +228,7 @@ public class DetectionData extends Fragment {
 
         super.onResume();
         getData();
-        Log.e(TAG, "onResume: ");
+        Log.w(TAG, "onResume: ");
         showChart();
 
     }

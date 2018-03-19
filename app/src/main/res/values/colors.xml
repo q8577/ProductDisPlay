@@ -16,4 +16,6 @@
     <color name="test_text_color">#82F0EE</color>
     <color name="home_text_color">#484848</color>
     <color name="more_function_item">#F0FFFF</color>
+    <color name="green">#7FFFAA</color>
+
 </resources>

@@ -14,19 +14,15 @@ import android.widget.GridView;
 import com.cambricon.productdisplay.R;
 import com.cambricon.productdisplay.adapter.GridViewAdapter;
 
-/**
- * Created by dell on 18-2-3.
- */
-
 public class TestFragment extends Fragment {
+    private final int CLASSIFICATION = 0;
+    private final int DETECTION = 1;
+    private final int VOICE = 2;
+    private final int MOREFUNCTIONS = 3;
 
     private View view;
     private GridView mGridView;
     private GridViewAdapter mGridViewAdapter;
-    final int CLASSIFICATION = 0;
-    final int DETECTION = 1;
-    final int FACE_DETECTION = 2;
-    final int MOREFUNCTIONS = 3;
 
     @Nullable
     @Override
@@ -39,7 +35,6 @@ public class TestFragment extends Fragment {
 
     private void initView() {
         mGridView = view.findViewById(R.id.functions_gv);
-        mGridView.setOverScrollMode(View.OVER_SCROLL_NEVER|View.SCROLL_AXIS_NONE);
         mGridViewAdapter = new GridViewAdapter(getContext());
         mGridView.setAdapter(mGridViewAdapter);
     }
@@ -50,18 +45,14 @@ public class TestFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 switch (position) {
                     case CLASSIFICATION:
-                        Log.i("huangyaling", "classification");
                         startActivity(new Intent(getActivity(), ClassificationActivity.class));
                         break;
                     case DETECTION:
-                        Intent intent = new Intent(getActivity(), DetectionActivity2.class);
-                        intent.putExtra("Detection", getActivity().getIntent().getSerializableExtra("caffeDetection"));
-                        intent.putExtra("loadDTime", getActivity().getIntent().getSerializableExtra("loadDTime"));
+                        Intent intent = new Intent(getActivity(), DetectionActivity.class);
                         startActivity(intent);
                         break;
-                    case FACE_DETECTION:
+                    case VOICE:
                         intent = new Intent(getActivity(), FaceDetectorActivity.class);
-                        intent.putExtra("loadDTime", getActivity().getIntent().getSerializableExtra("loadDTime"));
                         startActivity(intent);
                         break;
                     case MOREFUNCTIONS:

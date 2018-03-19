@@ -88,7 +88,6 @@ public class SemanticsActivity extends AppCompatActivity implements View.OnClick
 
     /**
      * toolBar返回按钮
-     *
      * @param item
      * @return
      */
