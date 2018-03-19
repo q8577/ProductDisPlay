@@ -25,7 +25,7 @@ public class TestFragment extends Fragment {
     private GridViewAdapter mGridViewAdapter;
     final int CLASSIFICATION = 0;
     final int DETECTION = 1;
-    final int VOICE = 2;
+    final int FACE_DETECTION = 2;
     final int MOREFUNCTIONS = 3;
 
     @Nullable
@@ -39,6 +39,7 @@ public class TestFragment extends Fragment {
 
     private void initView() {
         mGridView = view.findViewById(R.id.functions_gv);
+        mGridView.setOverScrollMode(View.OVER_SCROLL_NEVER|View.SCROLL_AXIS_NONE);
         mGridViewAdapter = new GridViewAdapter(getContext());
         mGridView.setAdapter(mGridViewAdapter);
     }
@@ -58,13 +59,13 @@ public class TestFragment extends Fragment {
                         intent.putExtra("loadDTime", getActivity().getIntent().getSerializableExtra("loadDTime"));
                         startActivity(intent);
                         break;
-                    case VOICE:
+                    case FACE_DETECTION:
                         intent = new Intent(getActivity(), FaceDetectorActivity.class);
                         intent.putExtra("loadDTime", getActivity().getIntent().getSerializableExtra("loadDTime"));
                         startActivity(intent);
                         break;
                     case MOREFUNCTIONS:
-                        startActivity(new Intent(getActivity(), TestActivity.class));
+                        startActivity(new Intent(getActivity(), MoreFunctionsAct.class));
                         break;
                 }
             }

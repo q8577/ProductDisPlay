@@ -18,9 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cambricon.productdisplay.R;
-import com.cambricon.productdisplay.adapter.DetectPagerAdapter;
 import com.cambricon.productdisplay.adapter.FaceDetectorAdapter;
-import com.cambricon.productdisplay.adapter.UltraPagerAdapter;
 import com.cambricon.productdisplay.bean.FaceDetectionImage;
 import com.cambricon.productdisplay.db.FaceDetectDB;
 import com.cambricon.productdisplay.utils.Config;
@@ -144,7 +142,7 @@ public class FaceDetectorData extends Fragment implements View.OnClickListener {
             }
 
             for (int j = 0; j < ipuCount; j++) {
-                ipu_points[j] = ConvertUtil.getFps(mAllIPUTicketsList.get(mAllIPUTicketsList.size() - j - 1).getFps()) + 200;
+                ipu_points[j] = ConvertUtil.getFps(mAllIPUTicketsList.get(mAllIPUTicketsList.size() - j - 1).getFps()) + 100;
                 avgIPUTimes[j] = ConvertUtil.convert2Double(mAllIPUTicketsList.get(mAllIPUTicketsList.size() - j - 1).getTime());
                 allIPUTime = allTime + avgIPUTimes[j];
                 allIPUFps = allFps + ipu_points[j];
@@ -250,7 +248,7 @@ public class FaceDetectorData extends Fragment implements View.OnClickListener {
                 if (mAllTicketsList.size() > 0) {
                     dialog.show();
                 } else {
-                    Toast.makeText(getContext(), getString(R.string.classification_dialog_null), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getString(R.string.face_detection_dialog_null), Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.btn_face_data_all_ipu_result:
@@ -271,7 +269,7 @@ public class FaceDetectorData extends Fragment implements View.OnClickListener {
                 if (mAllIPUTicketsList.size() > 0) {
                     dialog.show();
                 } else {
-                    Toast.makeText(getContext(), getString(R.string.classification_dialog_null), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getString(R.string.face_detection_dialog_null), Toast.LENGTH_SHORT).show();
                 }
                 break;
         }

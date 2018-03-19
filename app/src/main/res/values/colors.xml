@@ -15,4 +15,5 @@
     <color name="gray">#256CE0</color>
     <color name="test_text_color">#82F0EE</color>
     <color name="home_text_color">#484848</color>
+    <color name="more_function_item">#F0FFFF</color>
 </resources>
