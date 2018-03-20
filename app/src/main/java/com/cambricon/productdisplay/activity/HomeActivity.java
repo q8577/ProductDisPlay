@@ -261,13 +261,6 @@ public class HomeActivity extends AppCompatActivity {
         toolbar.setTitle("ProductDisPlay");
         /*显示Home图标*/
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        ActionBar actionBar = getSupportActionBar();
-//        if(actionBar != null){
-//            actionBar.setDisplayHomeAsUpEnabled(true);
-//            actionBar.setHomeAsUpIndicator(R.drawable.icon);
-//        }
-
-
 
     }
 
