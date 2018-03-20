@@ -9,7 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageButton;
 
 import com.cambricon.productdisplay.R;
 import com.cambricon.productdisplay.adapter.GridViewAdapter;
@@ -23,6 +25,7 @@ public class TestFragment extends Fragment {
     private View view;
     private GridView mGridView;
     private GridViewAdapter mGridViewAdapter;
+    private ImageButton testingBtn;
 
     @Nullable
     @Override
@@ -37,6 +40,14 @@ public class TestFragment extends Fragment {
         mGridView = view.findViewById(R.id.functions_gv);
         mGridViewAdapter = new GridViewAdapter(getContext());
         mGridView.setAdapter(mGridViewAdapter);
+        testingBtn = view.findViewById(R.id.testing);
+
+        testingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), ClassificationActivity.class));
+            }
+        });
     }
 
     private void setListener() {

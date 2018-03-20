@@ -23,9 +23,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.NewsInfoActivity"/>
-<!--
-        android:theme="@android：style/Theme.NoTitleBar.Fullscreen"
--->
 
         <activity
             android:name=".activity.ClassificationActivity"

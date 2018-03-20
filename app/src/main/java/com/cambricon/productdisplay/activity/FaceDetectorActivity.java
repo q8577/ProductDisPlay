@@ -25,6 +25,7 @@ import com.cambricon.productdisplay.db.FaceDetectDB;
 import com.cambricon.productdisplay.task.CNNListener;
 import com.cambricon.productdisplay.utils.Config;
 import com.cambricon.productdisplay.utils.ConvertUtil;
+import com.cambricon.productdisplay.utils.StatusBarCompat;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -98,7 +99,7 @@ public class FaceDetectorActivity extends AppCompatActivity implements View.OnCl
         mBtn_face_detector_begin = findViewById(R.id.btn_face_detector_begin);
         mBtn_face_detector_end = findViewById(R.id.btn_face_detector_end);
 
-        mTv_face_detect_guide.setText("图片目标检测结果显示");
+        mTv_face_detect_guide.setText("人脸识别检测结果显示");
         mTv_face_detect_function.setText(R.string.face_detector_function);
 
         mBtn_face_detector_begin.setOnClickListener(this);
@@ -111,7 +112,7 @@ public class FaceDetectorActivity extends AppCompatActivity implements View.OnCl
      */
     private void setActionBar() {
         String mode = Config.getIsCPUMode(FaceDetectorActivity.this) ? getString(R.string.cpu_mode) : getString(R.string.ipu_mode);
-        mToolbar.setTitle(getString(R.string.detection_title) + "--" + mode);
+        mToolbar.setTitle(getString(R.string.faceDetecte_title) + "--" + mode);
         Drawable toolDrawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.toolbar_bg);
         toolDrawable.setAlpha(50);
         mToolbar.setBackground(toolDrawable);

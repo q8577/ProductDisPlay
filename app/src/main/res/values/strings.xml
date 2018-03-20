@@ -31,6 +31,7 @@
     <string name="classification_chart_y">FPS值：张/分钟</string>
     <string name="classification_chart_x">第几次</string>
     <string name="detection_title">目标检测</string>
+    <string name="faceDetecte_title">人脸检测</string>
     <string name="detection_end_guide">目标检测已停止</string>
     <string name="detection_load_model">加载检测模型耗时：</string>
     <string name="detection_change_model">切换检测模型耗时：</string>
@@ -50,7 +51,7 @@
     <string name="face_detection_begin_guide">人脸检测进行中...</string>
     <string name="face_detection_pasue_guide">人脸检测暂停中...</string>
     <string name="face_detection_end_guide">人脸检测已结束</string>
-    <string name="face_detector_function">"人脸检测：\n\t\t\t\t是人脸特征点检测,人脸识别的基础.通过MTCNN,检测出图像中存在的人脸,并把它的位置准确地框出来。"</string>
+    <string name="face_detector_function">人脸检测：\n\t\t\t\t是人脸特征点检测,人脸识别的基础.通过MTCNN,检测出图像中存在的人脸,并把它的位置准确地框出来。</string>
     <string name="face_detection_chart_desc">CPU模式人脸检测fps值</string>
     <string name="face_detection_chart_ipu_desc">IPU模式人脸检测fps值</string>
     <string name="face_detection_dialog_null">不存在已经检测的图片</string>
@@ -63,6 +64,7 @@
     <string name="exit">再按一次退出程序</string>
     <string name="detection_result">图片目标检测结果显示</string>
     <string name="detection_introduce">目标检测：\n\t\t\t\t通过特定的训练模型，不仅仅要识别出来是什么物体，而且还要预测物体的位置。
+    <string name="facedetect_guide">人脸识别检测结果显示</string>
     </string>
 
 

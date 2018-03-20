@@ -45,7 +45,6 @@ public class HomeActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private RadioGroup radioGroup;
-    private LinearLayout relMenu;
     private RadioButton testbtn;
     private RadioButton databtn;
 
@@ -112,7 +111,6 @@ public class HomeActivity extends AppCompatActivity {
         editor = mSharedPreferences.edit();
         ipu_mode_btn.setChecked(mSharedPreferences.getBoolean(String.valueOf(R.string.ipu_mode), false));
         cpu_mode_btn.setChecked(mSharedPreferences.getBoolean(String.valueOf(R.string.cpu_mode), true));
-
         commDB = new CommDB(this);
         commDB.open();
 
