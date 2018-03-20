@@ -5,13 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.HomeActivity">
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/main_line"
-        app:theme="@style/Base.ThemeOverlay.AppCompat.Dark.ActionBar">
-    </android.support.v7.widget.Toolbar>
 
     <android.support.v4.widget.DrawerLayout
         android:layout_width="match_parent"
@@ -22,6 +15,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/main_line"
+                app:theme="@style/Base.ThemeOverlay.AppCompat.Dark.ActionBar">
+            </android.support.v7.widget.Toolbar>
             <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

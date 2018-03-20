@@ -9,7 +9,7 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="70606a00-bf66-4d8e-8c69-19ba3ef56675" name="Default" comment="faceDetecte-title">
+    <list default="true" id="70606a00-bf66-4d8e-8c69-19ba3ef56675" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/4.1/fileHashes/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/4.1/fileHashes/fileHashes.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/4.1/fileHashes/fileHashes.lock" afterPath="$PROJECT_DIR$/.gradle/4.1/fileHashes/fileHashes.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/4.1/javaCompile/classAnalysis.bin" afterPath="$PROJECT_DIR$/.gradle/4.1/javaCompile/classAnalysis.bin" />
@@ -18,17 +18,10 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/4.1/taskHistory/fileSnapshots.bin" afterPath="$PROJECT_DIR$/.gradle/4.1/taskHistory/fileSnapshots.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/4.1/taskHistory/taskHistory.bin" afterPath="$PROJECT_DIR$/.gradle/4.1/taskHistory/taskHistory.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/4.1/taskHistory/taskHistory.lock" afterPath="$PROJECT_DIR$/.gradle/4.1/taskHistory/taskHistory.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/assets/face_img/test12.jpg" afterPath="$PROJECT_DIR$/app/src/main/assets/face_img/test12.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/assets/face_img/test16.jpg" afterPath="$PROJECT_DIR$/app/src/main/assets/face_img/test16.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/assets/face_img/test20.jpg" afterPath="$PROJECT_DIR$/app/src/main/assets/face_img/test20.jpg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/cambricon/productdisplay/activity/FaceDetectorActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/cambricon/productdisplay/activity/FaceDetectorActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/cambricon/productdisplay/activity/HomeActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/cambricon/productdisplay/activity/HomeActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/cambricon/productdisplay/activity/TestFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/cambricon/productdisplay/activity/TestFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/test_fragment.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/test_fragment.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/home_layout.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/home_layout.xml" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -52,31 +45,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Config.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/cambricon/productdisplay/utils/Config.java">
+      <file leaf-file-name="HomeActivity.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/cambricon/productdisplay/activity/HomeActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="72">
-              <caret line="72" column="0" lean-forward="false" selection-start-line="72" selection-start-column="0" selection-end-line="72" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FaceDetectorActivity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/cambricon/productdisplay/activity/FaceDetectorActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="114" column="54" lean-forward="false" selection-start-line="114" selection-start-column="54" selection-end-line="114" selection-end-column="54" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="strings.xml" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="185">
-              <caret line="33" column="18" lean-forward="true" selection-start-line="33" selection-start-column="18" selection-end-line="33" selection-end-column="35" />
+            <state relative-caret-position="111">
+              <caret line="260" column="40" lean-forward="false" selection-start-line="260" selection-start-column="40" selection-end-line="260" selection-end-column="40" />
               <folding />
             </state>
           </provider>
@@ -1907,21 +1880,22 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/cambricon/productdisplay/utils/Config.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/cambricon/productdisplay/activity/DetectionData.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/cambricon/productdisplay/activity/FaceDetectorData.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/cambricon/productdisplay/activity/HomeActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/test_fragment.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/cambricon/productdisplay/activity/TestFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/colors.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/cambricon/productdisplay/activity/FaceDetectorActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/cambricon/productdisplay/activity/FaceDetectorActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/cambricon/productdisplay/activity/HomeActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/home_layout.xml" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="411" />
-    <option name="y" value="62" />
-    <option name="width" value="1442" />
-    <option name="height" value="974" />
+    <option name="x" value="622" />
+    <option name="y" value="104" />
+    <option name="width" value="1290" />
+    <option name="height" value="966" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -2134,7 +2108,7 @@
       <option name="DEEP_LINK" value="" />
       <option name="ACTIVITY_CLASS" value="" />
       <method>
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1521512419062" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1521515152439" />
       </method>
     </configuration>
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Instrumented Tests">
@@ -2181,7 +2155,7 @@
         <option name="ADVANCED_PROFILING_ENABLED" value="false" />
       </Profilers>
       <method>
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1521512419062" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1521515152439" />
       </method>
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -2363,7 +2337,7 @@
       <option name="DEEP_LINK" value="" />
       <option name="ACTIVITY_CLASS" value="" />
       <method>
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1521512419066" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1521515152439" />
       </method>
     </configuration>
     <list size="1">
@@ -2406,11 +2380,18 @@
       <option name="project" value="LOCAL" />
       <updated>1521453183968</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="face_title">
+      <created>1521512443085</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1521512443085</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="411" y="62" width="1442" height="974" extended-state="0" />
+    <frame x="622" y="104" width="1290" height="966" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Android Profiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32996207" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -2421,16 +2402,16 @@
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32867134" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32449856" sideWeight="0.495338" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3231511" sideWeight="0.495338" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3292232" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Logcat" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.307783" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32900944" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Logcat" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.29761904" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21275072" sideWeight="0.5" order="5" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21382637" sideWeight="0.5" order="5" side_tool="false" content_ui="combo" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Device File Explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32449856" sideWeight="0.504662" order="0" side_tool="true" content_ui="tabs" />
@@ -2451,7 +2432,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Background Update" />
-    <option name="LAST_COMMIT_MESSAGE" value="Background Update" />
+    <MESSAGE value="face_title" />
+    <option name="LAST_COMMIT_MESSAGE" value="face_title" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -2542,28 +2524,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/cambricon/productdisplay/activity/DetectionData.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="667">
-          <caret line="164" column="25" lean-forward="true" selection-start-line="164" selection-start-column="25" selection-end-line="164" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/cambricon/productdisplay/activity/FaceDetectorData.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="251">
           <caret line="192" column="25" lean-forward="true" selection-start-line="192" selection-start-column="25" selection-end-line="192" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/home_layout.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -2587,14 +2551,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/cambricon/productdisplay/activity/HomeActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="396">
-          <caret line="83" column="86" lean-forward="false" selection-start-line="83" selection-start-column="8" selection-end-line="83" selection-end-column="86" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values/colors.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="342">
@@ -2614,14 +2570,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/cambricon/productdisplay/utils/Config.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="72" column="0" lean-forward="false" selection-start-line="72" selection-start-column="0" selection-end-line="72" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/Android/Sdk/sources/android-26/android/content/Context.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="176">
@@ -2630,18 +2578,53 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/cambricon/productdisplay/activity/FaceDetectorActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="114" column="54" lean-forward="false" selection-start-line="114" selection-start-column="54" selection-end-line="114" selection-end-column="54" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="185">
           <caret line="33" column="18" lean-forward="true" selection-start-line="33" selection-start-column="18" selection-end-line="33" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/cambricon/productdisplay/activity/DetectionData.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1979">
+          <caret line="164" column="25" lean-forward="true" selection-start-line="164" selection-start-column="25" selection-end-line="164" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/cambricon/productdisplay/utils/Config.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1170">
+          <caret line="88" column="0" lean-forward="true" selection-start-line="88" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/cambricon/productdisplay/activity/FaceDetectorActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1620">
+          <caret line="120" column="66" lean-forward="false" selection-start-line="120" selection-start-column="66" selection-end-line="120" selection-end-column="66" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/home_layout.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="19" column="39" lean-forward="false" selection-start-line="19" selection-start-column="39" selection-end-line="19" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/cambricon/productdisplay/activity/HomeActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="111">
+          <caret line="260" column="40" lean-forward="false" selection-start-line="260" selection-start-column="40" selection-end-line="260" selection-end-column="40" />
           <folding />
         </state>
       </provider>

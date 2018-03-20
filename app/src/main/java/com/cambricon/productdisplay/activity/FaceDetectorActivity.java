@@ -158,9 +158,6 @@ public class FaceDetectorActivity extends AppCompatActivity implements View.OnCl
         mTestThread = new Thread(new Runnable() {
             @Override
             public synchronized void run() {
-
-                //TODO: Get the real init model time.
-
                 loadModel();
                 executeImg();
             }
